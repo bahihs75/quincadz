@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { Package, Clock, CheckCircle, XCircle, Truck } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
+import { Package, Clock, CheckCircle, XCircle, Truck } from 'lucide-react'
 
-export default function OrdersPage() {
+// Separate component that uses useSearchParams
+function OrdersContent() {
   const searchParams = useSearchParams()
   const success = searchParams.get('success')
   const supabase = createClient()
@@ -54,11 +55,11 @@ export default function OrdersPage() {
   }
 
   if (loading) {
-    return <div className="container mx-auto px-4 py-12 text-center">جاري التحميل...</div>
+    return <div className="text-center py-12">جاري التحميل...</div>
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <>
       {success && (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
           تم إنشاء طلبك بنجاح! سيتم التواصل معك قريباً.
@@ -125,6 +126,17 @@ export default function OrdersPage() {
           ))}
         </div>
       )}
+    </>
+  )
+}
+
+// Main page component with Suspense
+export default function OrdersPage() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <Suspense fallback={<div className="text-center py-12">جاري التحميل...</div>}>
+        <OrdersContent />
+      </Suspense>
     </div>
   )
 }
