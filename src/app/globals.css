@@ -2,17 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Light mode default */
+/* Light mode – white background, black text */
+html:not(.dark) {
+  background-color: white;
+}
 html:not(.dark) body {
-  background-color: white !important;
-  color: black !important;
+  background-color: white;
+  color: black;
 }
 
-/* Dark mode forced */
+/* Dark mode – black background, white text */
+html.dark {
+  background-color: black;
+}
 html.dark body {
   background-color: black !important;
   color: white !important;
 }
 
-/* Brand blue unaffected */
-/* Tailwind's blue classes already work; no changes needed */
+/* Ensure all full-page containers are transparent */
+html.dark main,
+html.dark div[class*="container"],
+html.dark section {
+  background-color: transparent !important;
+}
+
+/* Brand blue unaffected – Tailwind's blue classes work normally */

@@ -56,7 +56,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <header className="bg-white dark:bg-gray-900 shadow sticky top-0 z-40 border-b border-gray-200 dark:border-gray-800">
+      <header className=" shadow sticky top-0 z-40 border-b border-gray-200 dark:border-gray-800">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <Link href="/client" onClick={handleLinkClick} className="text-2xl font-bold text-blue-600 dark:text-blue-400 dark:text-blue-400">
@@ -195,7 +195,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       {showLocationPicker && (
         <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-900 rounded-lg max-w-md w-full">
+          <div className=" rounded-lg max-w-md w-full">
             <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center">
               <h3 className="text-lg font-bold text-black dark:text-white">تحديد الموقع</h3>
               <button onClick={() => setShowLocationPicker(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
