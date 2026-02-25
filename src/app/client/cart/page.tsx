@@ -1,11 +1,11 @@
 'use client'
 
 import { useCart } from '@/contexts/CartContext'
+import { useRouter } from 'next/navigation'
 import { Trash2, Minus, Plus, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 
-// Define a type for cart items to avoid implicit any
 interface CartItem {
   id: string
   name_ar: string
@@ -19,10 +19,10 @@ interface CartItem {
 }
 
 export default function CartPage() {
+  const router = useRouter()
   const { cartItems, updateQuantity, removeFromCart, getCartTotal, clearCart } = useCart()
   const [loading, setLoading] = useState(false)
 
-  // Group items by store with proper typing
   const storesMap = new Map<string, {
     store_id: string
     store_name: string
@@ -47,7 +47,7 @@ export default function CartPage() {
 
   const handleCheckout = () => {
     setLoading(true)
-    window.location.href = '/client/checkout'
+    router.push('/client/checkout')
   }
 
   if (cartItems.length === 0) {
