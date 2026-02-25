@@ -135,7 +135,7 @@ function ProductsContent() {
         >
           <div className="flex justify-between items-center mb-4">
             <h2 className="font-bold text-lg">تصفية</h2>
-            <button onClick={clearFilters} className="text-sm text-blue-600">
+            <button onClick={clearFilters} className="text-sm text-blue-600 dark:text-blue-400">
               مسح الكل
             </button>
           </div>

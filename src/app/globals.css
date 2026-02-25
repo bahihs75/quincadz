@@ -38,3 +38,27 @@ body {
 body {
   @apply bg-white text-black dark:bg-gray-900 dark:text-white;
 }
+
+/* Improved dark mode text */
+.dark body {
+  color: #f3f4f6 !important; /* gray-100 */
+}
+.dark .text-gray-600,
+.dark .text-gray-500,
+.dark .text-gray-700,
+.dark .text-gray-800,
+.dark .text-gray-900 {
+  color: #e5e7eb !important; /* gray-200 */
+}
+.dark .text-blue-600 {
+  color: #93c5fd !important; /* blue-300 */
+}
+.dark .bg-white {
+  background-color: #1f2937 !important; /* gray-800 */
+}
+.dark .bg-gray-50 {
+  background-color: #111827 !important; /* gray-900 */
+}
+.dark .border-gray-200 {
+  border-color: #374151 !important; /* gray-700 */
+}

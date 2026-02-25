@@ -113,7 +113,7 @@ function OrdersContent() {
                   </div>
                   <div className="text-left">
                     <span className="text-sm text-gray-500">الإجمالي: </span>
-                    <span className="font-bold text-blue-600">
+                    <span className="font-bold text-blue-600 dark:text-blue-400">
                       {order.total_amount.toLocaleString()} دج
                     </span>
                   </div>

@@ -57,7 +57,7 @@ export default function ProductDetailPage() {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
         <h1 className="text-2xl mb-4">المنتج غير موجود</h1>
-        <Link href="/client/products" className="text-blue-600">
+        <Link href="/client/products" className="text-blue-600 dark:text-blue-400">
           العودة إلى المنتجات
         </Link>
       </div>
@@ -113,7 +113,7 @@ export default function ProductDetailPage() {
             </div>
 
             <div className="mb-6">
-              <span className="text-3xl font-bold text-blue-600">
+              <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                 {product.price.toLocaleString()} دج
               </span>
               <span className="text-gray-500 mr-2">/{product.unit}</span>

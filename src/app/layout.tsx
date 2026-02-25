@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { CartProvider } from '@/contexts/CartContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
+import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <LanguageProvider>
           <CartProvider>
             {children}
+            <Toaster position="top-center" reverseOrder={false} />
           </CartProvider>
         </LanguageProvider>
       </body>

@@ -92,12 +92,12 @@ export default function CartPage() {
                     <div className="flex-1">
                       <Link
                         href={`/client/product/${item.id}`}
-                        className="font-medium hover:text-blue-600"
+                        className="font-medium hover:text-blue-600 dark:text-blue-400"
                       >
                         {item.name_ar}
                       </Link>
                       <p className="text-sm text-gray-500">{item.unit}</p>
-                      <p className="text-blue-600 font-bold mt-1">
+                      <p className="text-blue-600 dark:text-blue-400 font-bold mt-1">
                         {item.price.toLocaleString()} دج
                       </p>
                     </div>
@@ -133,7 +133,7 @@ export default function CartPage() {
               </div>
               <div className="bg-gray-50 px-6 py-3 text-left border-t">
                 <span className="font-medium">المجموع الجزئي: </span>
-                <span className="text-blue-600 font-bold">
+                <span className="text-blue-600 dark:text-blue-400 font-bold">
                   {store.subtotal.toLocaleString()} دج
                 </span>
               </div>
@@ -157,7 +157,7 @@ export default function CartPage() {
             <div className="border-t pt-4 mb-6">
               <div className="flex justify-between font-bold text-lg">
                 <span>الإجمالي</span>
-                <span className="text-blue-600">{getCartTotal().toLocaleString()} دج</span>
+                <span className="text-blue-600 dark:text-blue-400">{getCartTotal().toLocaleString()} دج</span>
               </div>
             </div>
             <button

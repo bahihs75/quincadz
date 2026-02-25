@@ -80,7 +80,7 @@ export default function ProfilePage() {
         <div className="p-6 border-b bg-gray-50">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-              <User size={32} className="text-blue-600" />
+              <User size={32} className="text-blue-600 dark:text-blue-400" />
             </div>
             <div>
               <h2 className="text-xl font-bold">{profile?.full_name || t('user')}</h2>

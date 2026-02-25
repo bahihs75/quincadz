@@ -251,7 +251,7 @@ export default function CheckoutPage() {
             <div className="border-t pt-4 mt-4">
               <div className="flex justify-between font-bold text-lg">
                 <span>الإجمالي</span>
-                <span className="text-blue-600">{total.toLocaleString()} دج</span>
+                <span className="text-blue-600 dark:text-blue-400">{total.toLocaleString()} دج</span>
               </div>
               <p className="text-sm text-gray-500 mt-2">سيتم حساب تكلفة التوصيل لاحقاً</p>
               <p className="text-sm text-gray-500 mt-1">طريقة الدفع: الدفع عند الاستلام</p>
