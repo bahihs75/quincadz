@@ -12,7 +12,6 @@ interface LanguageContextType {
 
 const translations: Record<Language, Record<string, string>> = {
   ar: {
-    // Common
     home: 'الرئيسية',
     products: 'المنتجات',
     orders: 'طلباتي',
@@ -37,16 +36,13 @@ const translations: Record<Language, Record<string, string>> = {
     to: 'إلى',
     invalid_hours: 'وقت الفتح يجب أن يكون قبل وقت الإغلاق',
     hours_help: 'اترك الحقول فارغة إذا كان المتجر مغلقاً في ذلك اليوم',
-    // Home page
     browse_categories: 'تصفح حسب الفئة',
     all_products: 'جميع المنتجات',
     view_all: 'عرض الكل',
-    // Product
     price: 'السعر',
     unit: 'الوحدة',
     add_to_cart: 'أضف إلى السلة',
     out_of_stock: 'نفذ من المخزون',
-    // Store
     dashboard: 'لوحة التحكم',
     products_management: 'إدارة المنتجات',
     orders_management: 'إدارة الطلبات',
@@ -56,17 +52,19 @@ const translations: Record<Language, Record<string, string>> = {
     address: 'العنوان',
     delivery_radius: 'نطاق التوصيل (كم)',
     opening_hours: 'ساعات العمل',
-    // Admin
     admin_dashboard: 'لوحة تحكم الإدارة',
     stores_management: 'إدارة المتاجر',
     users_management: 'إدارة المستخدمين',
     categories_management: 'إدارة التصنيفات',
     platform_settings: 'إعدادات المنصة',
-    // Language
     language: 'اللغة',
     arabic: 'العربية',
     french: 'الفرنسية',
     english: 'الإنجليزية',
+    no_image: 'لا توجد صورة',
+    last_items: 'آخر {count} قطع',
+    in_cart: 'في السلة',
+    added_to_cart: 'تمت الإضافة إلى السلة',
   },
   fr: {
     home: 'Accueil',
@@ -118,6 +116,10 @@ const translations: Record<Language, Record<string, string>> = {
     arabic: 'Arabe',
     french: 'Français',
     english: 'Anglais',
+    no_image: 'Aucune image',
+    last_items: 'Derniers {count} articles',
+    in_cart: 'dans le panier',
+    added_to_cart: 'Ajouté au panier',
   },
   en: {
     home: 'Home',
@@ -169,6 +171,10 @@ const translations: Record<Language, Record<string, string>> = {
     arabic: 'Arabic',
     french: 'French',
     english: 'English',
+    no_image: 'No image',
+    last_items: 'Last {count} items',
+    in_cart: 'in cart',
+    added_to_cart: 'Added to cart',
   },
 }
 
@@ -181,30 +187,27 @@ export const useLanguage = () => {
 }
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguage] = useState<Language>('ar')
+  const [language, setLanguage] = useState<Language>('fr')
 
   useEffect(() => {
     const saved = localStorage.getItem('quincadz_language') as Language
     if (saved && ['ar', 'fr', 'en'].includes(saved)) {
       setLanguage(saved)
-      document.documentElement.lang = saved
-      document.documentElement.dir = saved === 'ar' ? 'rtl' : 'ltr'
     }
   }, [])
 
-  const handleSetLanguage = (lang: Language) => {
-    setLanguage(lang)
-    localStorage.setItem('quincadz_language', lang)
-    document.documentElement.lang = lang
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
-  }
+  useEffect(() => {
+    document.documentElement.lang = language
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr'
+    localStorage.setItem('quincadz_language', language)
+  }, [language])
 
   const t = (key: string): string => {
     return translations[language][key] || key
   }
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   )
