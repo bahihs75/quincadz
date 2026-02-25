@@ -2,12 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base theme */
+/* Light mode default (already white bg, black text from Tailwind base) */
 body {
-  @apply bg-white text-black dark:bg-black dark:text-white;
+  background-color: white;
+  color: black;
 }
 
-/* Brand blue remains unchanged */
-.text-blue-600, .bg-blue-600 {
-  /* Tailwind already handles dark mode for these if you use dark: variants */
+/* Dark mode overrides */
+.dark body {
+  background-color: black;
+  color: white;
 }
+
+/* Brand blue remains blue – Tailwind's blue classes already work */
