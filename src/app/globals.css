@@ -130,3 +130,15 @@ body {
 .dark .border-gray-300 {
   border-color: #374151 !important; /* gray-700 */
 }
+
+/* Dark mode background – change this variable to your preferred color */
+:root {
+  --dark-bg: #1a202c; /* Default dark blue-gray (gray-900) */
+}
+
+.dark body,
+.dark .bg-white,
+.dark .bg-gray-50,
+.dark .bg-gray-100 {
+  background-color: var(#000000) !important;
+}
