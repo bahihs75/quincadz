@@ -71,7 +71,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   onClick={handleLinkClick}
                   className={`px-3 py-2 rounded-md text-sm font-medium ${
                     pathname === item.href
-                      ? 'bg-blue-600 text-white dark:bg-blue-700'
+                      ? 'bg-blue-600 text-white 
                       : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                   }`}
                 >
@@ -85,11 +85,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <button className="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-400">
                   <Globe size={20} />
                 </button>
-                <div className="absolute left-0 mt-2 w-40 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg hidden group-hover:block z-50">
+                <div className="absolute left-0 mt-2 w-40   border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg hidden group-hover:block z-50">
                   <button
                     onClick={() => setLanguage('ar')}
                     className={`block w-full text-right px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                      language === 'ar' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
+                      language === 'ar' ? 'bg-blue-50  text-blue-600 dark:text-blue-400 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     العربية
@@ -97,7 +97,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   <button
                     onClick={() => setLanguage('fr')}
                     className={`block w-full text-right px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                      language === 'fr' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
+                      language === 'fr' ? 'bg-blue-50  text-blue-600 dark:text-blue-400 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     Français
@@ -105,7 +105,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   <button
                     onClick={() => setLanguage('en')}
                     className={`block w-full text-right px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                      language === 'en' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
+                      language === 'en' ? 'bg-blue-50  text-blue-600 dark:text-blue-400 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     English
@@ -145,7 +145,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <Link
                   href="/auth/login"
                   onClick={handleLinkClick}
-                  className="bg-blue-600 dark:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 dark:hover:bg-blue-800"
+                  className="bg-blue-600  text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 dark:hover:bg-blue-800"
                 >
                   {t('login')}
                 </Link>
@@ -180,7 +180,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   href={item.href}
                   className={`block px-3 py-2 rounded-md text-sm font-medium ${
                     pathname === item.href
-                      ? 'bg-blue-600 text-white dark:bg-blue-700'
+                      ? 'bg-blue-600 text-white 
                       : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                   }`}
                   onClick={handleLinkClick}
@@ -194,7 +194,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       </header>
 
       {showLocationPicker && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50  z-50 flex items-center justify-center p-4">
           <div className=" rounded-lg max-w-md w-full">
             <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center">
               <h3 className="text-lg font-bold text-black dark:text-white">تحديد الموقع</h3>

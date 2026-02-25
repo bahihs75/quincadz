@@ -4,7 +4,6 @@ import './globals.css'
 import { CartProvider } from '@/contexts/CartContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { Toaster } from 'react-hot-toast'
-import ThemeDetector from '@/components/ThemeDetector'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,7 +20,6 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body className={inter.className}>
-        <ThemeDetector />
         <LanguageProvider>
           <CartProvider>
             {children}
