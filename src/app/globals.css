@@ -2,17 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Light mode (default) */
-body {
-  background-color: white;
-  color: black;
+/* Light mode default */
+html:not(.dark) body {
+  background-color: white !important;
+  color: black !important;
 }
 
-/* Dark mode – respects OS setting or .dark class */
-.dark body {
-  background-color: black;
-  color: white;
+/* Dark mode forced */
+html.dark body {
+  background-color: black !important;
+  color: white !important;
 }
 
-/* Brand blue – unaffected by theme */
+/* Brand blue unaffected */
 /* Tailwind's blue classes already work; no changes needed */
