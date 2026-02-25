@@ -34,7 +34,7 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400">QuincaDZ</h1>
+          <h1 className="text-3xl font-bold text-primary dark:text-primary">QuincaDZ</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">إعادة تعيين كلمة المرور</p>
         </div>
 
@@ -51,7 +51,7 @@ export default function ForgotPasswordPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="your@email.com"
                   required
                 />
@@ -60,7 +60,7 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 dark:bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition flex items-center justify-center gap-2"
+              className="w-full bg-primary dark:bg-primary text-white py-2 rounded-lg hover:bg-primary dark:hover:bg-blue-800 transition flex items-center justify-center gap-2"
             >
               {loading ? 'جاري الإرسال...' : 'إرسال الرابط'}
             </button>
@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
         )}
 
         <div className="mt-6 text-center">
-          <Link href="/auth/login" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1">
+          <Link href="/auth/login" className="text-primary dark:text-primary hover:underline inline-flex items-center gap-1">
             <ArrowLeft size={16} />
             العودة إلى تسجيل الدخول
           </Link>

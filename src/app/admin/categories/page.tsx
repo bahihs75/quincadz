@@ -195,7 +195,7 @@ export default function AdminCategoriesPage() {
             </label>
           </div>
           <div className="col-span-2 flex gap-2">
-            <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+            <button type="submit" className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary">
               {editingId ? 'تحديث' : 'إضافة'}
             </button>
             {editingId && (
@@ -234,10 +234,10 @@ export default function AdminCategoriesPage() {
                 <td className="py-3 px-4">
                   <div className="flex items-center gap-1">
                     <span>{cat.sort_order}</span>
-                    <button onClick={() => moveUp(cat)} className="text-gray-500 hover:text-blue-600 dark:text-blue-400">
+                    <button onClick={() => moveUp(cat)} className="text-gray-500 hover:text-primary dark:text-primary">
                       <ChevronUp size={16} />
                     </button>
-                    <button onClick={() => moveDown(cat)} className="text-gray-500 hover:text-blue-600 dark:text-blue-400">
+                    <button onClick={() => moveDown(cat)} className="text-gray-500 hover:text-primary dark:text-primary">
                       <ChevronDown size={16} />
                     </button>
                   </div>
@@ -255,7 +255,7 @@ export default function AdminCategoriesPage() {
                 </td>
                 <td className="py-3 px-4">
                   <div className="flex gap-2">
-                    <button onClick={() => editCategory(cat)} className="p-1 text-blue-600 dark:text-blue-400 hover:bg-blue-50 rounded">
+                    <button onClick={() => editCategory(cat)} className="p-1 text-primary dark:text-primary hover:bg-blue-50 rounded">
                       <Edit size={18} />
                     </button>
                     <button onClick={() => deleteCategory(cat.id)} className="p-1 text-red-600 hover:bg-red-50 rounded">

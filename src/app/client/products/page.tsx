@@ -121,7 +121,7 @@ function ProductsContent() {
 
       <button
         onClick={() => setShowFilters(!showFilters)}
-        className="md:hidden flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg mb-4"
+        className="md:hidden flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg mb-4"
       >
         <Filter size={18} />
         فلتر
@@ -135,7 +135,7 @@ function ProductsContent() {
         >
           <div className="flex justify-between items-center mb-4">
             <h2 className="font-bold text-lg">تصفية</h2>
-            <button onClick={clearFilters} className="text-sm text-blue-600 dark:text-blue-400">
+            <button onClick={clearFilters} className="text-sm text-primary dark:text-primary">
               مسح الكل
             </button>
           </div>
@@ -212,7 +212,7 @@ function ProductsContent() {
               <p className="text-gray-500 mb-4">لا توجد منتجات تطابق معايير البحث</p>
               <button
                 onClick={clearFilters}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg"
+                className="bg-primary text-white px-6 py-2 rounded-lg"
               >
                 مسح الفلاتر
               </button>
@@ -229,7 +229,7 @@ function ProductsContent() {
                   <button
                     onClick={loadMore}
                     disabled={loadingMore}
-                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                    className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary disabled:opacity-50"
                   >
                     {loadingMore ? 'جاري التحميل...' : 'تحميل المزيد'}
                   </button>

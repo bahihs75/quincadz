@@ -80,7 +80,7 @@ export default function ProfilePage() {
         <div className="p-6 border-b bg-gray-50">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-              <User size={32} className="text-blue-600 dark:text-blue-400" />
+              <User size={32} className="text-primary dark:text-primary" />
             </div>
             <div>
               <h2 className="text-xl font-bold">{profile?.full_name || t('user')}</h2>
@@ -101,7 +101,7 @@ export default function ProfilePage() {
                 onClick={() => setLanguage('ar')}
                 className={`px-4 py-2 rounded-lg border ${
                   language === 'ar'
-                    ? 'bg-blue-600 text-white border-blue-600'
+                    ? 'bg-primary text-white border-primary'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                 }`}
               >
@@ -111,7 +111,7 @@ export default function ProfilePage() {
                 onClick={() => setLanguage('fr')}
                 className={`px-4 py-2 rounded-lg border ${
                   language === 'fr'
-                    ? 'bg-blue-600 text-white border-blue-600'
+                    ? 'bg-primary text-white border-primary'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                 }`}
               >
@@ -121,7 +121,7 @@ export default function ProfilePage() {
                 onClick={() => setLanguage('en')}
                 className={`px-4 py-2 rounded-lg border ${
                   language === 'en'
-                    ? 'bg-blue-600 text-white border-blue-600'
+                    ? 'bg-primary text-white border-primary'
                     : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
                 }`}
               >
@@ -138,7 +138,7 @@ export default function ProfilePage() {
                   type="text"
                   value={formData.full_name}
                   onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                  className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border rounded focus:ring-2 focus:ring-primary"
                 />
               </div>
               <div>
@@ -157,7 +157,7 @@ export default function ProfilePage() {
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border rounded focus:ring-2 focus:ring-primary"
                 />
               </div>
             </div>
@@ -166,7 +166,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary disabled:opacity-50"
               >
                 {saving ? t('saving') : t('save_changes')}
               </button>

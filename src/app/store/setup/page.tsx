@@ -52,7 +52,7 @@ export default function StoreSetupPage() {
             required
             value={formData.store_name}
             onChange={(e) => setFormData({ ...formData, store_name: e.target.value })}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           />
         </div>
         <div className="mb-4">
@@ -61,7 +61,7 @@ export default function StoreSetupPage() {
             rows={3}
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           />
         </div>
         <div className="mb-4">
@@ -71,7 +71,7 @@ export default function StoreSetupPage() {
             required
             value={formData.address}
             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           />
         </div>
         <div className="mb-6">
@@ -81,13 +81,13 @@ export default function StoreSetupPage() {
             min="1"
             value={formData.delivery_radius_km}
             onChange={(e) => setFormData({ ...formData, delivery_radius_km: e.target.value })}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           />
         </div>
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary disabled:opacity-50"
         >
           {loading ? 'جاري الحفظ...' : 'حفظ وإكمال'}
         </button>

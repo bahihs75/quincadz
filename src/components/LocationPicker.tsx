@@ -95,7 +95,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation }: Pr
         <button
           onClick={getCurrentLocation}
           disabled={gettingLocation}
-          className="flex items-center gap-2 text-blue-600 hover:text-blue-800 disabled:opacity-50"
+          className="flex items-center gap-2 text-primary hover:text-blue-800 disabled:opacity-50"
         >
           <Locate size={18} />
           {gettingLocation ? 'جاري التحديد...' : 'تحديد موقعي الحالي'}
@@ -119,7 +119,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation }: Pr
               setSearchTerm('')
               setShowDropdown(false)
             }}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           >
             <option value="">اختر الولاية</option>
             {wilayas.map(w => (
@@ -140,7 +140,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation }: Pr
                 setShowDropdown(true)
               }}
               onFocus={() => setShowDropdown(true)}
-              className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
             />
             {showDropdown && filteredBaladiyas.length > 0 && (
               <div className="absolute z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-60 overflow-auto">

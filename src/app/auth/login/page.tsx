@@ -75,7 +75,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400">QuincaDZ</h1>
+          <h1 className="text-3xl font-bold text-primary dark:text-primary">QuincaDZ</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">تسجيل الدخول إلى حسابك</p>
         </div>
 
@@ -114,7 +114,7 @@ export default function LoginPage() {
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   placeholder="05XXXXXXXX"
                   dir="ltr"
                 />
@@ -122,7 +122,7 @@ export default function LoginPage() {
               <button
                 onClick={handleSendOtp}
                 disabled={loading || !phone}
-                className="bg-blue-600 dark:bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 disabled:opacity-50"
+                className="bg-primary dark:bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary dark:hover:bg-blue-800 disabled:opacity-50"
               >
                 إرسال الرمز
               </button>
@@ -136,7 +136,7 @@ export default function LoginPage() {
                 type="text"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                className="flex-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="flex-1 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="أدخل الرمز"
                 dir="ltr"
               />
@@ -170,7 +170,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="your@email.com"
                 required
               />
@@ -185,7 +185,7 @@ export default function LoginPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="••••••••"
                 required
               />
@@ -198,11 +198,11 @@ export default function LoginPage() {
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500"
+                className="rounded border-gray-300 dark:border-gray-600 text-primary focus:ring-primary"
               />
               <span className="text-sm text-gray-700 dark:text-gray-300">تذكرني</span>
             </label>
-            <Link href="/auth/forgot-password" className="text-sm text-blue-600 dark:text-blue-400 hover:underline">
+            <Link href="/auth/forgot-password" className="text-sm text-primary dark:text-primary hover:underline">
               نسيت كلمة المرور؟
             </Link>
           </div>
@@ -210,7 +210,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 dark:bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition flex items-center justify-center gap-2"
+            className="w-full bg-primary dark:bg-primary text-white py-2 rounded-lg hover:bg-primary dark:hover:bg-blue-800 transition flex items-center justify-center gap-2"
           >
             <LogIn size={18} />
             {loading ? 'جاري تسجيل الدخول...' : 'دخول'}
@@ -219,7 +219,7 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-gray-600 dark:text-gray-400 text-sm">
           ليس لديك حساب؟{' '}
-          <Link href="/auth/register" className="text-blue-600 dark:text-blue-400 font-medium hover:underline">
+          <Link href="/auth/register" className="text-primary dark:text-primary font-medium hover:underline">
             إنشاء حساب جديد
           </Link>
         </p>

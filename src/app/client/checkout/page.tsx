@@ -158,7 +158,7 @@ export default function CheckoutPage() {
                   required
                   value={formData.client_name}
                   onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
-                  className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border rounded focus:ring-2 focus:ring-primary"
                 />
               </div>
               <div>
@@ -168,7 +168,7 @@ export default function CheckoutPage() {
                   required
                   value={formData.client_phone}
                   onChange={(e) => setFormData({ ...formData, client_phone: e.target.value })}
-                  className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border rounded focus:ring-2 focus:ring-primary"
                 />
               </div>
             </div>
@@ -192,7 +192,7 @@ export default function CheckoutPage() {
                 rows={3}
                 value={formData.delivery_address}
                 onChange={(e) => setFormData({ ...formData, delivery_address: e.target.value })}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border rounded focus:ring-2 focus:ring-primary"
                 placeholder="الشارع، رقم المبنى، الطابق، ..."
               />
             </div>
@@ -203,7 +203,7 @@ export default function CheckoutPage() {
                 rows={2}
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                className="w-full p-2 border rounded focus:ring-2 focus:ring-primary"
                 placeholder="أي ملاحظات للتوصيل"
               />
             </div>
@@ -217,7 +217,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={loading || !user}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {loading && <Loader2 size={18} className="animate-spin" />}
               {loading ? 'جاري إنشاء الطلب...' : 'تأكيد الطلب'}
@@ -251,7 +251,7 @@ export default function CheckoutPage() {
             <div className="border-t pt-4 mt-4">
               <div className="flex justify-between font-bold text-lg">
                 <span>الإجمالي</span>
-                <span className="text-blue-600 dark:text-blue-400">{total.toLocaleString()} دج</span>
+                <span className="text-primary dark:text-primary">{total.toLocaleString()} دج</span>
               </div>
               <p className="text-sm text-gray-500 mt-2">سيتم حساب تكلفة التوصيل لاحقاً</p>
               <p className="text-sm text-gray-500 mt-1">طريقة الدفع: الدفع عند الاستلام</p>

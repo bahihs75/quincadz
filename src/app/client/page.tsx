@@ -120,7 +120,7 @@ export default function ClientHomePage() {
       <section>
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-black dark:text-white">{t('all_products')}</h2>
-          <Link href="/client/products" className="text-blue-600 dark:text-blue-400 dark:text-blue-400 hover:underline">
+          <Link href="/client/products" className="text-primary dark:text-primary dark:text-primary hover:underline">
             {t('view_all')}
           </Link>
         </div>
@@ -141,7 +141,7 @@ export default function ClientHomePage() {
                 <button
                   onClick={loadMore}
                   disabled={loadingMore}
-                  className="bg-blue-600 dark:bg-blue-700 text-white px-6 py-2 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 disabled:opacity-50"
+                  className="bg-primary dark:bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary dark:hover:bg-blue-800 disabled:opacity-50"
                 >
                   {loadingMore ? 'جاري التحميل...' : t('view_all')}
                 </button>

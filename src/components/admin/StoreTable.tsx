@@ -103,7 +103,7 @@ export default function StoreTable({ stores }: { stores: Store[] }) {
                   <div className="flex gap-2">
                     <button
                       onClick={() => router.push(`/admin/stores/${store.id}`)}
-                      className="p-1 text-blue-600 hover:bg-blue-50 rounded"
+                      className="p-1 text-primary hover:bg-blue-50 rounded"
                       title="عرض"
                     >
                       <Eye size={18} />

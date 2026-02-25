@@ -124,7 +124,7 @@ export default function StoreSettingsPage() {
             onClick={() => setLanguage('ar')}
             className={`px-4 py-2 rounded-lg border ${
               language === 'ar'
-                ? 'bg-blue-600 text-white border-blue-600'
+                ? 'bg-primary text-white border-primary'
                 : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
             }`}
           >
@@ -134,7 +134,7 @@ export default function StoreSettingsPage() {
             onClick={() => setLanguage('fr')}
             className={`px-4 py-2 rounded-lg border ${
               language === 'fr'
-                ? 'bg-blue-600 text-white border-blue-600'
+                ? 'bg-primary text-white border-primary'
                 : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
             }`}
           >
@@ -144,7 +144,7 @@ export default function StoreSettingsPage() {
             onClick={() => setLanguage('en')}
             className={`px-4 py-2 rounded-lg border ${
               language === 'en'
-                ? 'bg-blue-600 text-white border-blue-600'
+                ? 'bg-primary text-white border-primary'
                 : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
             }`}
           >
@@ -162,7 +162,7 @@ export default function StoreSettingsPage() {
               required
               value={formData.store_name}
               onChange={(e) => setFormData({ ...formData, store_name: e.target.value })}
-              className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
             />
           </div>
           <div className="mb-4">
@@ -171,7 +171,7 @@ export default function StoreSettingsPage() {
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+              className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
             />
           </div>
         </div>
@@ -182,7 +182,7 @@ export default function StoreSettingsPage() {
             rows={3}
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           />
         </div>
 
@@ -192,7 +192,7 @@ export default function StoreSettingsPage() {
             type="text"
             value={formData.address}
             onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           />
         </div>
 
@@ -211,7 +211,7 @@ export default function StoreSettingsPage() {
             min="1"
             value={formData.delivery_radius_km}
             onChange={(e) => setFormData({ ...formData, delivery_radius_km: e.target.value })}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           />
         </div>
 
@@ -225,7 +225,7 @@ export default function StoreSettingsPage() {
                 <select
                   value={openingHours[day.key]?.open || ''}
                   onChange={(e) => updateHour(day.key, 'open', e.target.value)}
-                  className="p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+                  className="p-2 border rounded focus:ring-2 focus:ring-primary text-black"
                 >
                   <option value="">--:--</option>
                   {hours.map(h => (
@@ -236,7 +236,7 @@ export default function StoreSettingsPage() {
                 <select
                   value={openingHours[day.key]?.close || ''}
                   onChange={(e) => updateHour(day.key, 'close', e.target.value)}
-                  className="p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+                  className="p-2 border rounded focus:ring-2 focus:ring-primary text-black"
                 >
                   <option value="">--:--</option>
                   {hours.map(h => (
@@ -256,7 +256,7 @@ export default function StoreSettingsPage() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary disabled:opacity-50"
           >
             {loading ? t('saving') : t('save_changes')}
           </button>

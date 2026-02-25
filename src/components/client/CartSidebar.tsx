@@ -31,7 +31,7 @@ export default function CartSidebar() {
             <ShoppingBag size={20} />
             سلة التسوق
             {getItemCount() > 0 && (
-              <span className="bg-blue-600 text-white text-sm px-2 py-0.5 rounded-full">
+              <span className="bg-primary text-white text-sm px-2 py-0.5 rounded-full">
                 {getItemCount()}
               </span>
             )}
@@ -47,7 +47,7 @@ export default function CartSidebar() {
             <p className="mb-4">سلة التسوق فارغة</p>
             <button
               onClick={closeCart}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg"
+              className="bg-primary text-white px-6 py-2 rounded-lg"
             >
               متابعة التسوق
             </button>
@@ -82,7 +82,7 @@ export default function CartSidebar() {
                         </button>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-blue-600">
+                        <span className="font-bold text-primary">
                           {(item.price * item.quantity).toLocaleString()} دج
                         </span>
                         <button
@@ -101,11 +101,11 @@ export default function CartSidebar() {
             <div className="p-4 border-t bg-gray-50">
               <div className="flex justify-between mb-4">
                 <span className="font-bold">المجموع</span>
-                <span className="font-bold text-blue-600">{getCartTotal().toLocaleString()} دج</span>
+                <span className="font-bold text-primary">{getCartTotal().toLocaleString()} دج</span>
               </div>
               <button
                 onClick={handleCheckout}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700"
+                className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary"
               >
                 إتمام الشراء
               </button>

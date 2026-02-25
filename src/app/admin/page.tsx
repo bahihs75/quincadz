@@ -20,7 +20,7 @@ export default async function AdminDashboard() {
   const revenue = revenueResult.data?.reduce((sum, order) => sum + order.total_amount, 0) || 0
 
   const stats = [
-    { title: 'إجمالي المتاجر', value: storesCount.count || 0, icon: Store, color: 'bg-blue-500' },
+    { title: 'إجمالي المتاجر', value: storesCount.count || 0, icon: Store, color: 'bg-primary' },
     { title: 'إجمالي المستخدمين', value: usersCount.count || 0, icon: Users, color: 'bg-green-500' },
     { title: 'إجمالي المنتجات', value: productsCount.count || 0, icon: Package, color: 'bg-purple-500' },
     { title: 'إجمالي الطلبات', value: ordersCount.count || 0, icon: ShoppingBag, color: 'bg-yellow-500' },

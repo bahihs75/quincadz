@@ -33,7 +33,7 @@ function OrdersContent() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'pending': return <Clock size={18} className="text-yellow-500" />
-      case 'accepted': return <Package size={18} className="text-blue-500" />
+      case 'accepted': return <Package size={18} className="text-primary" />
       case 'preparing': return <Package size={18} className="text-purple-500" />
       case 'ready': return <CheckCircle size={18} className="text-green-500" />
       case 'delivered': return <Truck size={18} className="text-green-600" />
@@ -74,7 +74,7 @@ function OrdersContent() {
           <p className="text-gray-600 mb-4">لا توجد طلبات بعد</p>
           <Link
             href="/client/products"
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg inline-block"
+            className="bg-primary text-white px-6 py-2 rounded-lg inline-block"
           >
             تصفح المنتجات
           </Link>
@@ -113,7 +113,7 @@ function OrdersContent() {
                   </div>
                   <div className="text-left">
                     <span className="text-sm text-gray-500">الإجمالي: </span>
-                    <span className="font-bold text-blue-600 dark:text-blue-400">
+                    <span className="font-bold text-primary dark:text-primary">
                       {order.total_amount.toLocaleString()} دج
                     </span>
                   </div>

@@ -58,7 +58,7 @@ export default function CartPage() {
         <p className="text-gray-600 mb-8">أضف بعض المنتجات إلى السلة للبدء</p>
         <Link
           href="/client/products"
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg inline-block hover:bg-blue-700"
+          className="bg-primary text-white px-6 py-3 rounded-lg inline-block hover:bg-primary"
         >
           تصفح المنتجات
         </Link>
@@ -92,12 +92,12 @@ export default function CartPage() {
                     <div className="flex-1">
                       <Link
                         href={`/client/product/${item.id}`}
-                        className="font-medium hover:text-blue-600 dark:text-blue-400"
+                        className="font-medium hover:text-primary dark:text-primary"
                       >
                         {item.name_ar}
                       </Link>
                       <p className="text-sm text-gray-500">{item.unit}</p>
-                      <p className="text-blue-600 dark:text-blue-400 font-bold mt-1">
+                      <p className="text-primary dark:text-primary font-bold mt-1">
                         {item.price.toLocaleString()} دج
                       </p>
                     </div>
@@ -133,7 +133,7 @@ export default function CartPage() {
               </div>
               <div className="bg-gray-50 px-6 py-3 text-left border-t">
                 <span className="font-medium">المجموع الجزئي: </span>
-                <span className="text-blue-600 dark:text-blue-400 font-bold">
+                <span className="text-primary dark:text-primary font-bold">
                   {store.subtotal.toLocaleString()} دج
                 </span>
               </div>
@@ -157,13 +157,13 @@ export default function CartPage() {
             <div className="border-t pt-4 mb-6">
               <div className="flex justify-between font-bold text-lg">
                 <span>الإجمالي</span>
-                <span className="text-blue-600 dark:text-blue-400">{getCartTotal().toLocaleString()} دج</span>
+                <span className="text-primary dark:text-primary">{getCartTotal().toLocaleString()} دج</span>
               </div>
             </div>
             <button
               onClick={handleCheckout}
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 disabled:opacity-50"
+              className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary disabled:opacity-50"
             >
               {loading ? 'جاري التحميل...' : 'إتمام الشراء'}
             </button>

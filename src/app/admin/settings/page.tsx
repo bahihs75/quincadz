@@ -56,7 +56,7 @@ export default function AdminSettingsPage() {
                 type="text"
                 value={setting.value}
                 onChange={(e) => updateSetting(setting.key, e.target.value)}
-                className="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                className="flex-1 p-2 border rounded focus:ring-2 focus:ring-primary"
               />
             </div>
           ))}
@@ -65,7 +65,7 @@ export default function AdminSettingsPage() {
           <button
             onClick={saveAll}
             disabled={saving}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2"
+            className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary disabled:opacity-50 flex items-center gap-2"
           >
             <Save size={18} />
             {saving ? 'جاري الحفظ...' : 'حفظ الكل'}

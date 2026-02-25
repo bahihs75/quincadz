@@ -55,7 +55,7 @@ export default function AdminProductTable({ products }: { products: Product[] })
                   <div className="flex gap-2">
                     <button
                       onClick={() => router.push(`/client/product/${product.id}`)}
-                      className="p-1 text-blue-600 hover:bg-blue-50 rounded"
+                      className="p-1 text-primary hover:bg-blue-50 rounded"
                       title="عرض"
                     >
                       <Eye size={18} />

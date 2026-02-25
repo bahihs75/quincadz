@@ -6,7 +6,7 @@ interface StatsCardsProps {
 
 export default function StatsCards({ products, orders, revenue }: StatsCardsProps) {
   const stats = [
-    { title: 'إجمالي المنتجات', value: products, icon: '📦', color: 'bg-blue-500' },
+    { title: 'إجمالي المنتجات', value: products, icon: '📦', color: 'bg-primary' },
     { title: 'إجمالي الطلبات', value: orders, icon: '🛒', color: 'bg-green-500' },
     { title: 'الإيرادات', value: `${revenue.toLocaleString()} دج`, icon: '💰', color: 'bg-purple-500' },
   ]

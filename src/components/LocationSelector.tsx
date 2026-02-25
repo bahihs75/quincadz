@@ -29,7 +29,7 @@ export default function LocationSelector({ onSelect, initialWilayaId, initialBal
             setSearchTerm('')
             setShowDropdown(false)
           }}
-          className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+          className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
         >
           <option value="">اختر الولاية</option>
           {wilayas.map(w => (
@@ -50,7 +50,7 @@ export default function LocationSelector({ onSelect, initialWilayaId, initialBal
               setShowDropdown(true)
             }}
             onFocus={() => setShowDropdown(true)}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           />
           {showDropdown && filteredBaladiyas.length > 0 && (
             <div className="absolute z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-60 overflow-auto">

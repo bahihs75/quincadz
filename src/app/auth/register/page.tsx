@@ -67,10 +67,10 @@ export default function RegisterPage() {
           />
         </div>
         {error && <p className="text-red-600 mb-4">{error}</p>}
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded">تسجيل</button>
+        <button type="submit" className="w-full bg-primary text-white py-2 rounded">تسجيل</button>
       </form>
       <p className="mt-4 text-center">
-        لديك حساب بالفعل؟ <Link href="/auth/login" className="text-blue-600">دخول</Link>
+        لديك حساب بالفعل؟ <Link href="/auth/login" className="text-primary">دخول</Link>
       </p>
     </div>
   )

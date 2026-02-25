@@ -17,7 +17,7 @@ function ErrorContent() {
           {error}
         </p>
       )}
-      <Link href="/auth/login" className="text-blue-600 underline">
+      <Link href="/auth/login" className="text-primary underline">
         العودة إلى تسجيل الدخول
       </Link>
     </div>

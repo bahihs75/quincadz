@@ -37,7 +37,7 @@ export default function UserTable({ users }: { users: User[] }) {
   const getRoleIcon = (role: string) => {
     switch (role) {
       case 'admin': return <Shield size={16} className="text-red-500" />
-      case 'store': return <Store size={16} className="text-blue-500" />
+      case 'store': return <Store size={16} className="text-primary" />
       default: return <User size={16} className="text-gray-500" />
     }
   }

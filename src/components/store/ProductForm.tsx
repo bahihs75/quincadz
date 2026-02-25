@@ -140,7 +140,7 @@ export default function ProductForm({ initialData, storeId }: ProductFormProps) 
             required
             value={formData.name_ar}
             onChange={(e) => setFormData({ ...formData, name_ar: e.target.value })}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           />
         </div>
         <div>
@@ -149,7 +149,7 @@ export default function ProductForm({ initialData, storeId }: ProductFormProps) 
             type="text"
             value={formData.name_fr}
             onChange={(e) => setFormData({ ...formData, name_fr: e.target.value })}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           />
         </div>
       </div>
@@ -160,7 +160,7 @@ export default function ProductForm({ initialData, storeId }: ProductFormProps) 
           required
           value={formData.category_id}
           onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
-          className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+          className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
         >
           <option value="">اختر التصنيف</option>
           {categories.map(cat => (
@@ -175,7 +175,7 @@ export default function ProductForm({ initialData, storeId }: ProductFormProps) 
           rows={3}
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+          className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
         />
       </div>
 
@@ -189,7 +189,7 @@ export default function ProductForm({ initialData, storeId }: ProductFormProps) 
             step="0.01"
             value={formData.price}
             onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           />
         </div>
         <div>
@@ -197,7 +197,7 @@ export default function ProductForm({ initialData, storeId }: ProductFormProps) 
           <select
             value={formData.unit}
             onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           >
             <option value="piece">قطعة</option>
             <option value="kg">كيلو</option>
@@ -213,7 +213,7 @@ export default function ProductForm({ initialData, storeId }: ProductFormProps) 
             min="0"
             value={formData.stock_quantity}
             onChange={(e) => setFormData({ ...formData, stock_quantity: e.target.value })}
-            className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
           />
         </div>
       </div>
@@ -225,7 +225,7 @@ export default function ProductForm({ initialData, storeId }: ProductFormProps) 
           min="1"
           value={formData.min_order_quantity}
           onChange={(e) => setFormData({ ...formData, min_order_quantity: e.target.value })}
-          className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-black"
+          className="w-full p-2 border rounded focus:ring-2 focus:ring-primary text-black"
         />
       </div>
 
@@ -259,7 +259,7 @@ export default function ProductForm({ initialData, storeId }: ProductFormProps) 
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+          className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary disabled:opacity-50"
         >
           {loading ? 'جاري الحفظ...' : initialData ? 'تحديث المنتج' : 'إضافة المنتج'}
         </button>

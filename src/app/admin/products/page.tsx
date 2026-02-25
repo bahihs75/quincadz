@@ -20,7 +20,7 @@ export default async function AdminProductsPage() {
         <h1 className="text-3xl font-bold text-black">إدارة المنتجات</h1>
         <Link
           href="/admin/products/new"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700"
+          className="bg-primary text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-primary"
         >
           <Plus size={20} />
           إضافة منتج

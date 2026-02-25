@@ -56,7 +56,7 @@ export default function ProductCard({ product }: { product: any }) {
 
       <div className="p-4">
         <Link href={`/client/product/${product.id}`}>
-          <h3 className="font-bold text-lg mb-1 hover:text-blue-600 line-clamp-2">
+          <h3 className="font-bold text-lg mb-1 hover:text-primary line-clamp-2">
             {product.name_ar}
           </h3>
         </Link>
@@ -73,7 +73,7 @@ export default function ProductCard({ product }: { product: any }) {
 
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-xl font-bold text-blue-600">
+            <span className="text-xl font-bold text-primary">
               {product.price.toLocaleString()} دج
             </span>
             <span className="text-sm text-gray-500 mr-1">/{product.unit}</span>
@@ -85,7 +85,7 @@ export default function ProductCard({ product }: { product: any }) {
             className={`p-2 rounded-full ${
               product.stock_quantity === 0
                 ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'bg-primary text-white hover:bg-primary'
             }`}
           >
             <ShoppingCart size={18} />
