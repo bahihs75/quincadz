@@ -28,3 +28,13 @@ body {
 body {
   color: black;
 }
+
+/* Dark mode support */
+body {
+  @apply bg-white text-black dark:bg-gray-900 dark:text-white;
+}
+
+/* Dark mode support */
+body {
+  @apply bg-white text-black dark:bg-gray-900 dark:text-white;
+}

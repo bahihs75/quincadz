@@ -32,7 +32,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     if (saved) {
       setLocation(JSON.parse(saved))
     } else {
-      // If no location saved, open picker automatically
       setShowLocationPicker(true)
     }
   }, [supabase])
@@ -41,7 +40,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     setLocation(loc)
     localStorage.setItem('quincadz_location', JSON.stringify(loc))
     setShowLocationPicker(false)
-    // Optionally refresh products based on new location
   }
 
   const handleLinkClick = () => {
@@ -58,10 +56,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <header className="bg-white shadow sticky top-0 z-40">
+      <header className="bg-white dark:bg-gray-900 shadow sticky top-0 z-40 border-b border-gray-200 dark:border-gray-800">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
-            <Link href="/client" onClick={handleLinkClick} className="text-2xl font-bold text-blue-600">
+            <Link href="/client" onClick={handleLinkClick} className="text-2xl font-bold text-blue-600 dark:text-blue-400">
               QuincaDZ
             </Link>
 
@@ -73,8 +71,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   onClick={handleLinkClick}
                   className={`px-3 py-2 rounded-md text-sm font-medium ${
                     pathname === item.href
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-blue-600 text-white dark:bg-blue-700'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                   }`}
                 >
                   {item.label}
@@ -83,32 +81,31 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </nav>
 
             <div className="flex items-center gap-4">
-              {/* Language selector */}
               <div className="relative group">
-                <button className="p-2 text-gray-600 hover:text-blue-600">
+                <button className="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
                   <Globe size={20} />
                 </button>
-                <div className="absolute left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg hidden group-hover:block">
+                <div className="absolute left-0 mt-2 w-40 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg hidden group-hover:block z-50">
                   <button
                     onClick={() => setLanguage('ar')}
-                    className={`block w-full text-right px-4 py-2 hover:bg-gray-100 ${
-                      language === 'ar' ? 'bg-blue-50 text-blue-600' : ''
+                    className={`block w-full text-right px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                      language === 'ar' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     العربية
                   </button>
                   <button
                     onClick={() => setLanguage('fr')}
-                    className={`block w-full text-right px-4 py-2 hover:bg-gray-100 ${
-                      language === 'fr' ? 'bg-blue-50 text-blue-600' : ''
+                    className={`block w-full text-right px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                      language === 'fr' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     Français
                   </button>
                   <button
                     onClick={() => setLanguage('en')}
-                    className={`block w-full text-right px-4 py-2 hover:bg-gray-100 ${
-                      language === 'en' ? 'bg-blue-50 text-blue-600' : ''
+                    className={`block w-full text-right px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                      language === 'en' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     English
@@ -116,13 +113,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 </div>
               </div>
 
-              {/* Location indicator with change button */}
               {location && (
-                <div className="hidden md:flex items-center text-sm text-gray-600">
+                <div className="hidden md:flex items-center text-sm text-gray-600 dark:text-gray-400">
                   <MapPin size={16} className="ml-1" />
                   <button
                     onClick={() => setShowLocationPicker(true)}
-                    className="hover:text-blue-600 underline"
+                    className="hover:text-blue-600 dark:hover:text-blue-400 underline"
                   >
                     {location.wilaya_name} - {location.baladiya_name}
                   </button>
@@ -131,7 +127,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
               <button
                 onClick={openCart}
-                className="relative p-2 text-gray-600 hover:text-blue-600"
+                className="relative p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
               >
                 <ShoppingCart size={20} />
                 {getItemCount() > 0 && (
@@ -142,14 +138,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </button>
 
               {user ? (
-                <Link href="/client/profile" onClick={handleLinkClick} className="p-2 text-gray-600 hover:text-blue-600">
+                <Link href="/client/profile" onClick={handleLinkClick} className="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
                   <User size={20} />
                 </Link>
               ) : (
                 <Link
                   href="/auth/login"
                   onClick={handleLinkClick}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
+                  className="bg-blue-600 dark:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 dark:hover:bg-blue-800"
                 >
                   {t('login')}
                 </Link>
@@ -157,20 +153,19 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 text-gray-600"
+                className="md:hidden p-2 text-gray-600 dark:text-gray-400"
               >
                 {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>
           </div>
 
-          {/* Mobile location (always visible) */}
           {location && (
-            <div className="md:hidden flex items-center justify-center py-2 text-sm text-gray-600 border-t">
+            <div className="md:hidden flex items-center justify-center py-2 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-200 dark:border-gray-800">
               <MapPin size={14} className="ml-1" />
               <button
                 onClick={() => setShowLocationPicker(true)}
-                className="hover:text-blue-600 underline"
+                className="hover:text-blue-600 dark:hover:text-blue-400 underline"
               >
                 {location.wilaya_name} - {location.baladiya_name}
               </button>
@@ -178,15 +173,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           )}
 
           {mobileMenuOpen && (
-            <nav className="md:hidden py-4 border-t">
+            <nav className="md:hidden py-4 border-t border-gray-200 dark:border-gray-800">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={`block px-3 py-2 rounded-md text-sm font-medium ${
                     pathname === item.href
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-blue-600 text-white dark:bg-blue-700'
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                   }`}
                   onClick={handleLinkClick}
                 >
@@ -198,13 +193,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         </div>
       </header>
 
-      {/* Location picker modal */}
       {showLocationPicker && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg max-w-md w-full">
-            <div className="p-4 border-b flex justify-between items-center">
-              <h3 className="text-lg font-bold">تحديد الموقع</h3>
-              <button onClick={() => setShowLocationPicker(false)} className="text-gray-500 hover:text-gray-700">
+        <div className="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-lg max-w-md w-full">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center">
+              <h3 className="text-lg font-bold text-black dark:text-white">تحديد الموقع</h3>
+              <button onClick={() => setShowLocationPicker(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
                 <X size={20} />
               </button>
             </div>
@@ -218,7 +212,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         </div>
       )}
 
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
         {children}
       </main>
 
