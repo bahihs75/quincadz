@@ -50,7 +50,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
         href={item.href}
         className={`flex items-center gap-3 rounded-lg px-4 py-3 transition ${
           isActive
-            ? 'bg-primary text-white dark:bg-primary'
+            ? 'bg-primary text-white dark:bg-secondary'
             : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
         }`}
         onClick={() => setMobileSidebarOpen(false)}
@@ -67,16 +67,19 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
         <button onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)} className="text-gray-700 dark:text-gray-300">
           {mobileSidebarOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-        <span className="font-bold text-primary dark:text-primary">QuincaDZ – {t('dashboard')}</span>
+        <div className="flex items-center gap-2">
+          <img src="/logo.png" alt="QuincaDZ" className="h-6 w-auto" />
+          <span className="font-bold text-primary dark:text-primary">QuincaDZ – {t('dashboard')}</span>
+        </div>
         <div className="flex items-center gap-2">
           <div className="relative group">
             <button className="p-2 text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary">
               <Globe size={20} />
             </button>
             <div className="absolute left-0 z-50 mt-2 hidden w-40 rounded-lg border border-gray-200 bg-white shadow-lg group-hover:block dark:border-gray-700 dark:bg-gray-800">
-              <button onClick={() => setLanguage('ar')} className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${language === 'ar' ? 'bg-blue-50 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'}`}>العربية</button>
-              <button onClick={() => setLanguage('fr')} className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${language === 'fr' ? 'bg-blue-50 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'}`}>Français</button>
-              <button onClick={() => setLanguage('en')} className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${language === 'en' ? 'bg-blue-50 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'}`}>English</button>
+              <button onClick={() => setLanguage('ar')} className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${language === 'ar' ? 'bg-primary/10 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'}`}>العربية</button>
+              <button onClick={() => setLanguage('fr')} className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${language === 'fr' ? 'bg-primary/10 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'}`}>Français</button>
+              <button onClick={() => setLanguage('en')} className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${language === 'en' ? 'bg-primary/10 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'}`}>English</button>
             </div>
           </div>
         </div>
@@ -92,18 +95,21 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
         }`}
       >
         <div className="flex items-center justify-between border-b border-gray-200 p-6 dark:border-gray-800">
-          <div>
-            <h2 className="text-xl font-bold text-primary dark:text-primary">QuincaDZ</h2>
-            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{storeName || t('dashboard')}</p>
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="QuincaDZ" className="h-6 w-auto" />
+            <div>
+              <h2 className="text-xl font-bold text-primary dark:text-primary">QuincaDZ</h2>
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{storeName || t('dashboard')}</p>
+            </div>
           </div>
           <div className="relative hidden group lg:block">
             <button className="p-2 text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary">
               <Globe size={20} />
             </button>
             <div className="absolute right-0 z-50 mt-2 hidden w-40 rounded-lg border border-gray-200 bg-white shadow-lg group-hover:block dark:border-gray-700 dark:bg-gray-800">
-              <button onClick={() => setLanguage('ar')} className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${language === 'ar' ? 'bg-blue-50 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'}`}>العربية</button>
-              <button onClick={() => setLanguage('fr')} className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${language === 'fr' ? 'bg-blue-50 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'}`}>Français</button>
-              <button onClick={() => setLanguage('en')} className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${language === 'en' ? 'bg-blue-50 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'}`}>English</button>
+              <button onClick={() => setLanguage('ar')} className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${language === 'ar' ? 'bg-primary/10 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'}`}>العربية</button>
+              <button onClick={() => setLanguage('fr')} className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${language === 'fr' ? 'bg-primary/10 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'}`}>Français</button>
+              <button onClick={() => setLanguage('en')} className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${language === 'en' ? 'bg-primary/10 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'}`}>English</button>
             </div>
           </div>
         </div>

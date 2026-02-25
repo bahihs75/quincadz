@@ -72,18 +72,20 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-yellow-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
+          <div className="flex justify-center mb-2">
+            <img src="/logo.png" alt="QuincaDZ" className="h-12 w-auto" />
+          </div>
           <h1 className="text-3xl font-bold text-primary dark:text-primary">QuincaDZ</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">تسجيل الدخول إلى حسابك</p>
         </div>
 
-        {/* Google Login Button - Only Social */}
         <button
           onClick={handleGoogleLogin}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition mb-6"
+          className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-3 px-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition mb-4"
         >
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path fill="#EA4335" d="M5.266 9.765A7.077 7.077 0 0 1 12 4.93c1.665 0 3.156.586 4.341 1.552l3.265-3.265C17.824 1.186 15.117 0 12 0 7.27 0 3.196 2.697 1.207 6.701l4.059 3.064z" />
@@ -103,7 +105,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Phone OTP Login */}
         {!otpSent ? (
           <div className="mb-6">
             <label className="block mb-1 text-gray-700 dark:text-gray-300 text-sm font-medium">رقم الهاتف</label>
@@ -122,7 +123,7 @@ export default function LoginPage() {
               <button
                 onClick={handleSendOtp}
                 disabled={loading || !phone}
-                className="bg-primary dark:bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary dark:hover:bg-blue-800 disabled:opacity-50"
+                className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary disabled:opacity-50"
               >
                 إرسال الرمز
               </button>
@@ -143,7 +144,7 @@ export default function LoginPage() {
               <button
                 onClick={handleVerifyOtp}
                 disabled={loading || !otp}
-                className="bg-green-600 dark:bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-700 dark:hover:bg-green-800 disabled:opacity-50"
+                className="bg-secondary text-white px-4 py-2 rounded-lg hover:bg-primary disabled:opacity-50"
               >
                 تحقق
               </button>
@@ -160,7 +161,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Email/Password Form */}
         <form onSubmit={handleEmailLogin}>
           <div className="mb-4">
             <label className="block mb-1 text-gray-700 dark:text-gray-300 text-sm font-medium">البريد الإلكتروني</label>
@@ -210,7 +210,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary dark:bg-primary text-white py-2 rounded-lg hover:bg-primary dark:hover:bg-blue-800 transition flex items-center justify-center gap-2"
+            className="w-full bg-primary text-white py-2 rounded-lg hover:bg-secondary transition flex items-center justify-center gap-2"
           >
             <LogIn size={18} />
             {loading ? 'جاري تسجيل الدخول...' : 'دخول'}

@@ -59,9 +59,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <header className="sticky top-0 z-40 bg-white shadow dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
-            <!-- Logo placeholder --><div class="flex items-center gap-2"><img src="/logo.png" alt="QuincaDZ" class="h-8 w-auto" /><!-- Logo placeholder --><div class="flex items-center gap-2"><img src="/logo.png" alt="QuincaDZ" class="h-8 w-auto" /><Link href="/client" onClick={handleLinkClick} className="text-2xl font-bold text-primary dark:text-primary">
-              QuincaDZ
-            </Link>
+            <div className="flex items-center gap-2">
+              <img src="/logo.png" alt="QuincaDZ" className="h-8 w-auto" />
+              <Link href="/client" onClick={handleLinkClick} className="text-2xl font-bold text-primary dark:text-primary">
+                QuincaDZ
+              </Link>
+            </div>
 
             <nav className="hidden space-x-6 space-x-reverse md:flex">
               {navItems.map((item) => (
@@ -71,7 +74,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   onClick={handleLinkClick}
                   className={`rounded-md px-3 py-2 text-sm font-medium ${
                     pathname === item.href
-                      ? 'bg-primary text-white dark:bg-primary'
+                      ? 'bg-primary text-white dark:bg-secondary'
                       : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
                   }`}
                 >
@@ -89,7 +92,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   <button
                     onClick={() => setLanguage('ar')}
                     className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                      language === 'ar' ? 'bg-blue-50 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'
+                      language === 'ar' ? 'bg-primary/10 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     العربية
@@ -97,7 +100,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   <button
                     onClick={() => setLanguage('fr')}
                     className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                      language === 'fr' ? 'bg-blue-50 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'
+                      language === 'fr' ? 'bg-primary/10 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     Français
@@ -105,7 +108,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   <button
                     onClick={() => setLanguage('en')}
                     className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                      language === 'en' ? 'bg-blue-50 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'
+                      language === 'en' ? 'bg-primary/10 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     English
@@ -131,7 +134,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               >
                 <ShoppingCart size={20} />
                 {getItemCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-white">
                     {getItemCount()}
                   </span>
                 )}
@@ -145,7 +148,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <Link
                   href="/auth/login"
                   onClick={handleLinkClick}
-                  className="rounded-lg bg-primary px-4 py-2 text-sm text-white hover:bg-primary dark:bg-primary dark:hover:bg-blue-800"
+                  className="rounded-lg bg-primary px-4 py-2 text-sm text-white hover:bg-secondary dark:bg-primary dark:hover:bg-secondary"
                 >
                   {t('login')}
                 </Link>
@@ -180,7 +183,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   href={item.href}
                   className={`block rounded-md px-3 py-2 text-sm font-medium ${
                     pathname === item.href
-                      ? 'bg-primary text-white dark:bg-primary'
+                      ? 'bg-primary text-white dark:bg-secondary'
                       : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
                   }`}
                   onClick={handleLinkClick}
