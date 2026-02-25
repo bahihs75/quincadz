@@ -1,9 +1,10 @@
 'use client'
 
-import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
+import { Suspense } from 'react'
 
-export default function AuthCodeErrorPage() {
+function ErrorContent() {
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
 
@@ -20,5 +21,13 @@ export default function AuthCodeErrorPage() {
         العودة إلى تسجيل الدخول
       </Link>
     </div>
+  )
+}
+
+export default function AuthCodeErrorPage() {
+  return (
+    <Suspense fallback={<div className="text-center py-12">جاري التحميل...</div>}>
+      <ErrorContent />
+    </Suspense>
   )
 }
