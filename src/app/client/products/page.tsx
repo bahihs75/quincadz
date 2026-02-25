@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import ProductCard from '@/components/client/ProductCard'
@@ -8,7 +8,8 @@ import { Filter, Search, X } from 'lucide-react'
 
 const PAGE_SIZE = 12
 
-export default function ProductsPage() {
+// This component uses useSearchParams and must be wrapped in Suspense
+function ProductsContent() {
   const searchParams = useSearchParams()
   const supabase = createClient()
   const [products, setProducts] = useState<any[]>([])
@@ -239,5 +240,14 @@ export default function ProductsPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+// Main page component with Suspense boundary
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div className="text-center py-12">جاري التحميل...</div>}>
+      <ProductsContent />
+    </Suspense>
   )
 }
