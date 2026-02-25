@@ -3,7 +3,10 @@
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
-const statusColors = {
+// Define the possible order statuses
+type OrderStatus = 'pending' | 'accepted' | 'preparing' | 'ready' | 'delivered' | 'cancelled'
+
+const statusColors: Record<OrderStatus, string> = {
   pending: 'bg-yellow-100 text-yellow-800',
   accepted: 'bg-blue-100 text-blue-800',
   preparing: 'bg-purple-100 text-purple-800',
@@ -12,7 +15,28 @@ const statusColors = {
   cancelled: 'bg-red-100 text-red-800',
 }
 
-export default function OrdersClient({ orders }: { orders: any[] }) {
+// Define the order item type (simplified)
+interface OrderItem {
+  id: string
+  products?: { name_ar: string }
+  quantity: number
+  total_price: number
+}
+
+// Define the order type
+interface Order {
+  id: string
+  order_number: string
+  client_name: string
+  client_phone: string
+  delivery_address: string
+  total_amount: number
+  order_status: OrderStatus
+  created_at: string
+  order_items?: OrderItem[]
+}
+
+export default function OrdersClient({ orders }: { orders: Order[] }) {
   const router = useRouter()
   const supabase = createClient()
 
@@ -63,7 +87,7 @@ export default function OrdersClient({ orders }: { orders: any[] }) {
               <td className="py-3 px-4">
                 <select
                   defaultValue={order.order_status}
-                  onChange={(e) => updateStatus(order.id, e.target.value)}
+                  onChange={(e) => updateStatus(order.id, e.target.value as OrderStatus)}
                   className="p-1 border rounded text-sm"
                 >
                   <option value="pending">قيد الانتظار</option>
