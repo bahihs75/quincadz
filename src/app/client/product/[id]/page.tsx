@@ -64,7 +64,7 @@ export default function ProductDetailPage() {
     )
   }
 
-  const images = product.images?.length ? product.images : ['/default-product.jpg']
+  const images: string[] = product.images?.length ? product.images : ['/default-product.jpg']
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -81,7 +81,7 @@ export default function ProductDetailPage() {
             </div>
             {images.length > 1 && (
               <div className="flex gap-2 overflow-x-auto">
-                {images.map((img, idx) => (
+                {images.map((img: string, idx: number) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
@@ -232,7 +232,7 @@ export default function ProductDetailPage() {
                         <span>
                           {typeof hours === 'string'
                             ? hours
-                            : `${hours.open} - ${hours.close}`}
+                            : `${(hours as any).open} - ${(hours as any).close}`}
                         </span>
                       </div>
                     ))}
