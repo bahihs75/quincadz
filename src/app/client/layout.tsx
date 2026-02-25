@@ -56,23 +56,23 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <header className=" shadow sticky top-0 z-40 border-b border-gray-200 dark:border-gray-800">
+      <header className="sticky top-0 z-40 bg-white shadow dark:bg-gray-900">
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/client" onClick={handleLinkClick} className="text-2xl font-bold text-blue-600 dark:text-blue-400 dark:text-blue-400">
+          <div className="flex h-16 items-center justify-between">
+            <Link href="/client" onClick={handleLinkClick} className="text-2xl font-bold text-blue-600 dark:text-blue-400">
               QuincaDZ
             </Link>
 
-            <nav className="hidden md:flex space-x-6 space-x-reverse">
+            <nav className="hidden space-x-6 space-x-reverse md:flex">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={handleLinkClick}
-                  className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  className={`rounded-md px-3 py-2 text-sm font-medium ${
                     pathname === item.href
-                      ? 'bg-blue-600 text-white 
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      ? 'bg-blue-600 text-white dark:bg-blue-700'
+                      : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
                   }`}
                 >
                   {item.label}
@@ -82,30 +82,30 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
             <div className="flex items-center gap-4">
               <div className="relative group">
-                <button className="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-400">
+                <button className="p-2 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">
                   <Globe size={20} />
                 </button>
-                <div className="absolute left-0 mt-2 w-40   border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg hidden group-hover:block z-50">
+                <div className="absolute left-0 z-50 mt-2 hidden w-40 rounded-lg border border-gray-200 bg-white shadow-lg group-hover:block dark:border-gray-700 dark:bg-gray-800">
                   <button
                     onClick={() => setLanguage('ar')}
-                    className={`block w-full text-right px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                      language === 'ar' ? 'bg-blue-50  text-blue-600 dark:text-blue-400 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
+                    className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                      language === 'ar' ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     العربية
                   </button>
                   <button
                     onClick={() => setLanguage('fr')}
-                    className={`block w-full text-right px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                      language === 'fr' ? 'bg-blue-50  text-blue-600 dark:text-blue-400 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
+                    className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                      language === 'fr' ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     Français
                   </button>
                   <button
                     onClick={() => setLanguage('en')}
-                    className={`block w-full text-right px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                      language === 'en' ? 'bg-blue-50  text-blue-600 dark:text-blue-400 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
+                    className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                      language === 'en' ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300'
                     }`}
                   >
                     English
@@ -114,11 +114,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </div>
 
               {location && (
-                <div className="hidden md:flex items-center text-sm text-gray-600 dark:text-gray-400">
+                <div className="hidden items-center text-sm text-gray-600 dark:text-gray-400 md:flex">
                   <MapPin size={16} className="ml-1" />
                   <button
                     onClick={() => setShowLocationPicker(true)}
-                    className="hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-400 underline"
+                    className="underline hover:text-blue-600 dark:hover:text-blue-400"
                   >
                     {location.wilaya_name} - {location.baladiya_name}
                   </button>
@@ -127,25 +127,25 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
               <button
                 onClick={openCart}
-                className="relative p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-400"
+                className="relative p-2 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400"
               >
                 <ShoppingCart size={20} />
                 {getItemCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
                     {getItemCount()}
                   </span>
                 )}
               </button>
 
               {user ? (
-                <Link href="/client/profile" onClick={handleLinkClick} className="p-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-400">
+                <Link href="/client/profile" onClick={handleLinkClick} className="p-2 text-gray-600 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400">
                   <User size={20} />
                 </Link>
               ) : (
                 <Link
                   href="/auth/login"
                   onClick={handleLinkClick}
-                  className="bg-blue-600  text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 dark:hover:bg-blue-800"
+                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
                 >
                   {t('login')}
                 </Link>
@@ -153,7 +153,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 text-gray-600 dark:text-gray-400"
+                className="p-2 text-gray-600 dark:text-gray-400 md:hidden"
               >
                 {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
@@ -161,11 +161,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
 
           {location && (
-            <div className="md:hidden flex items-center justify-center py-2 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-200 dark:border-gray-800">
+            <div className="flex items-center justify-center border-t border-gray-200 py-2 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400 md:hidden">
               <MapPin size={14} className="ml-1" />
               <button
                 onClick={() => setShowLocationPicker(true)}
-                className="hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-400 underline"
+                className="underline hover:text-blue-600 dark:hover:text-blue-400"
               >
                 {location.wilaya_name} - {location.baladiya_name}
               </button>
@@ -173,15 +173,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           )}
 
           {mobileMenuOpen && (
-            <nav className="md:hidden py-4 border-t border-gray-200 dark:border-gray-800">
+            <nav className="border-t border-gray-200 py-4 dark:border-gray-800 md:hidden">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`block px-3 py-2 rounded-md text-sm font-medium ${
+                  className={`block rounded-md px-3 py-2 text-sm font-medium ${
                     pathname === item.href
-                      ? 'bg-blue-600 text-white 
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      ? 'bg-blue-600 text-white dark:bg-blue-700'
+                      : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
                   }`}
                   onClick={handleLinkClick}
                 >
@@ -194,11 +194,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       </header>
 
       {showLocationPicker && (
-        <div className="fixed inset-0 bg-black bg-opacity-50  z-50 flex items-center justify-center p-4">
-          <div className=" rounded-lg max-w-md w-full">
-            <div className="p-4 border-b border-gray-200 dark:border-gray-800 flex justify-between items-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 dark:bg-opacity-70">
+          <div className="w-full max-w-md rounded-lg bg-white dark:bg-gray-900">
+            <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-800">
               <h3 className="text-lg font-bold text-black dark:text-white">تحديد الموقع</h3>
-              <button onClick={() => setShowLocationPicker(false)} className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+              <button onClick={() => setShowLocationPicker(false)} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
                 <X size={20} />
               </button>
             </div>
@@ -212,7 +212,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         </div>
       )}
 
-      <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+      <main className="min-h-screen">
         {children}
       </main>
 
