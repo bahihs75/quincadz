@@ -3,16 +3,34 @@
 import { useCart } from '@/contexts/CartContext'
 import { Trash2, Minus, Plus, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useState } from 'react'
+
+// Define a type for cart items to avoid implicit any
+interface CartItem {
+  id: string
+  name_ar: string
+  price: number
+  image: string
+  store_id: string
+  store_name: string
+  unit: string
+  max_quantity: number
+  quantity: number
+}
 
 export default function CartPage() {
   const { cartItems, updateQuantity, removeFromCart, getCartTotal, clearCart } = useCart()
   const [loading, setLoading] = useState(false)
 
-  // Group items by store
-  const storesMap = new Map()
-  cartItems.forEach(item => {
+  // Group items by store with proper typing
+  const storesMap = new Map<string, {
+    store_id: string
+    store_name: string
+    items: CartItem[]
+    subtotal: number
+  }>()
+
+  cartItems.forEach((item: CartItem) => {
     if (!storesMap.has(item.store_id)) {
       storesMap.set(item.store_id, {
         store_id: item.store_id,
@@ -21,7 +39,7 @@ export default function CartPage() {
         subtotal: 0,
       })
     }
-    const store = storesMap.get(item.store_id)
+    const store = storesMap.get(item.store_id)!
     store.items.push(item)
     store.subtotal += item.price * item.quantity
   })
@@ -29,7 +47,6 @@ export default function CartPage() {
 
   const handleCheckout = () => {
     setLoading(true)
-    // Redirect to checkout page
     window.location.href = '/client/checkout'
   }
 
@@ -62,9 +79,8 @@ export default function CartPage() {
                 <h2 className="font-bold text-lg">{store.store_name}</h2>
               </div>
               <div className="divide-y">
-                {store.items.map((item) => (
+                {store.items.map((item: CartItem) => (
                   <div key={item.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4">
-                    {/* Product image */}
                     <div className="w-20 h-20 bg-gray-100 rounded flex-shrink-0">
                       <img
                         src={item.image || '/default-product.jpg'}
@@ -73,7 +89,6 @@ export default function CartPage() {
                       />
                     </div>
 
-                    {/* Product details */}
                     <div className="flex-1">
                       <Link
                         href={`/client/product/${item.id}`}
@@ -87,7 +102,6 @@ export default function CartPage() {
                       </p>
                     </div>
 
-                    {/* Quantity controls */}
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -117,7 +131,6 @@ export default function CartPage() {
                   </div>
                 ))}
               </div>
-              {/* Store subtotal */}
               <div className="bg-gray-50 px-6 py-3 text-left border-t">
                 <span className="font-medium">المجموع الجزئي: </span>
                 <span className="text-blue-600 font-bold">
@@ -128,7 +141,6 @@ export default function CartPage() {
           ))}
         </div>
 
-        {/* Order summary */}
         <div className="lg:w-80">
           <div className="bg-white rounded-lg shadow p-6 sticky top-24">
             <h2 className="text-xl font-bold mb-4 text-black">ملخص الطلب</h2>
