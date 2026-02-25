@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
-// Define the possible order statuses
 type OrderStatus = 'pending' | 'accepted' | 'preparing' | 'ready' | 'delivered' | 'cancelled'
 
 const statusColors: Record<OrderStatus, string> = {
@@ -15,15 +14,6 @@ const statusColors: Record<OrderStatus, string> = {
   cancelled: 'bg-red-100 text-red-800',
 }
 
-// Define the order item type (simplified)
-interface OrderItem {
-  id: string
-  products?: { name_ar: string }
-  quantity: number
-  total_price: number
-}
-
-// Define the order type
 interface Order {
   id: string
   order_number: string
@@ -31,9 +21,8 @@ interface Order {
   client_phone: string
   delivery_address: string
   total_amount: number
-  order_status: OrderStatus
+  order_status: string // Keep as string, we'll cast later
   created_at: string
-  order_items?: OrderItem[]
 }
 
 export default function OrdersClient({ orders }: { orders: Order[] }) {
@@ -66,40 +55,44 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
           </tr>
         </thead>
         <tbody>
-          {orders.map((order) => (
-            <tr key={order.id} className="border-b hover:bg-gray-50">
-              <td className="py-3 px-4">{order.order_number}</td>
-              <td className="py-3 px-4">{order.client_name}</td>
-              <td className="py-3 px-4">{order.client_phone}</td>
-              <td className="py-3 px-4">{order.delivery_address}</td>
-              <td className="py-3 px-4">{order.total_amount.toLocaleString()} دج</td>
-              <td className="py-3 px-4">
-                <span className={`px-2 py-1 rounded text-sm ${statusColors[order.order_status] || 'bg-gray-100'}`}>
-                  {order.order_status === 'pending' && 'قيد الانتظار'}
-                  {order.order_status === 'accepted' && 'تم القبول'}
-                  {order.order_status === 'preparing' && 'قيد التحضير'}
-                  {order.order_status === 'ready' && 'جاهز للتسليم'}
-                  {order.order_status === 'delivered' && 'تم التوصيل'}
-                  {order.order_status === 'cancelled' && 'ملغي'}
-                </span>
-              </td>
-              <td className="py-3 px-4">{new Date(order.created_at).toLocaleDateString('ar-EG')}</td>
-              <td className="py-3 px-4">
-                <select
-                  defaultValue={order.order_status}
-                  onChange={(e) => updateStatus(order.id, e.target.value as OrderStatus)}
-                  className="p-1 border rounded text-sm"
-                >
-                  <option value="pending">قيد الانتظار</option>
-                  <option value="accepted">قبول</option>
-                  <option value="preparing">تجهيز</option>
-                  <option value="ready">جاهز</option>
-                  <option value="delivered">توصيل</option>
-                  <option value="cancelled">إلغاء</option>
-                </select>
-              </td>
-            </tr>
-          ))}
+          {orders.map((order) => {
+            // Cast the status to the correct type
+            const status = order.order_status as OrderStatus
+            return (
+              <tr key={order.id} className="border-b hover:bg-gray-50">
+                <td className="py-3 px-4">{order.order_number}</td>
+                <td className="py-3 px-4">{order.client_name}</td>
+                <td className="py-3 px-4">{order.client_phone}</td>
+                <td className="py-3 px-4">{order.delivery_address}</td>
+                <td className="py-3 px-4">{order.total_amount.toLocaleString()} دج</td>
+                <td className="py-3 px-4">
+                  <span className={`px-2 py-1 rounded text-sm ${statusColors[status] || 'bg-gray-100'}`}>
+                    {status === 'pending' && 'قيد الانتظار'}
+                    {status === 'accepted' && 'تم القبول'}
+                    {status === 'preparing' && 'قيد التحضير'}
+                    {status === 'ready' && 'جاهز للتسليم'}
+                    {status === 'delivered' && 'تم التوصيل'}
+                    {status === 'cancelled' && 'ملغي'}
+                  </span>
+                </td>
+                <td className="py-3 px-4">{new Date(order.created_at).toLocaleDateString('ar-EG')}</td>
+                <td className="py-3 px-4">
+                  <select
+                    defaultValue={order.order_status}
+                    onChange={(e) => updateStatus(order.id, e.target.value)}
+                    className="p-1 border rounded text-sm"
+                  >
+                    <option value="pending">قيد الانتظار</option>
+                    <option value="accepted">قبول</option>
+                    <option value="preparing">تجهيز</option>
+                    <option value="ready">جاهز</option>
+                    <option value="delivered">توصيل</option>
+                    <option value="cancelled">إلغاء</option>
+                  </select>
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>
