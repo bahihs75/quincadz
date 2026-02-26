@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function LocationPicker({ onLocationSelect, initialLocation }: Props) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [selectedWilaya, setSelectedWilaya] = useState<number | ''>(initialLocation?.wilaya_id || '')
   const [selectedBaladiya, setSelectedBaladiya] = useState<number | ''>(initialLocation?.baladiya_id || '')
   const [searchTerm, setSearchTerm] = useState('')
