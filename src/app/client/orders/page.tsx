@@ -56,7 +56,7 @@ function OrdersContent() {
   }
 
   if (loading) {
-    return <div className="text-center py-12 text-gray-600 dark:text-gray-400">{t('loading')}</div>
+    return <div className="text-center py-12 text-gray-600 dark:text-gray-400">"Loading..."</div>
   }
 
   return (
@@ -133,7 +133,7 @@ function OrdersContent() {
 
 export default function OrdersPage() {
   return (
-    <Suspense fallback={<div className="text-center py-12">{t('loading')}</div>}>
+    <Suspense fallback={<div className="text-center py-12">"Loading..."</div>}>
       <OrdersContent />
     </Suspense>
   )

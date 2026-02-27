@@ -37,3 +37,16 @@
 .dark select option {
   @apply bg-gray-800 text-white;
 }
+
+/* Dark mode form elements */
+@media (prefers-color-scheme: dark) {
+  input, select, textarea {
+    @apply bg-gray-800 border-gray-700 text-white;
+  }
+  input::placeholder, textarea::placeholder {
+    @apply text-gray-500;
+  }
+  select option {
+    @apply bg-gray-800 text-white;
+  }
+}
