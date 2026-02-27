@@ -3,7 +3,7 @@
 import { useCart } from '@/contexts/CartContext'
 import { useLanguage } from '@/contexts/LanguageContext'
 import Link from 'next/link'
-import { ShoppingCart } from 'lucide-react'
+import { ShoppingCart, Star } from 'lucide-react'
 import { useState } from 'react'
 
 export default function ProductCard({ product }: { product: any }) {
@@ -47,7 +47,7 @@ export default function ProductCard({ product }: { product: any }) {
           )}
           {product.stock_quantity <= 5 && product.stock_quantity > 0 && (
             <span className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
-              {t('last_items', { count: product.stock_quantity })}
+              {t('last_items').replace('{count}', product.stock_quantity.toString())}
             </span>
           )}
           {product.stock_quantity === 0 && (
