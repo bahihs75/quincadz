@@ -87,7 +87,8 @@ export default function WilayaMap({ onSelect, selectedWilayaId }: WilayaMapProps
               if (geojsonLayer) {
                 geojsonLayer.resetStyle()
               }
-              layer.setStyle({ fillColor: '#F53' })
+              // Cast layer to Path to access setStyle
+              (layer as L.Path).setStyle({ fillColor: '#F53' })
             },
             mouseover: () => {
               layer.bindTooltip(feature.properties.name).openTooltip()
