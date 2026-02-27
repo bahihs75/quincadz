@@ -3,7 +3,7 @@
 import React from 'react'
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps'
 
-const geoUrl = "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/algeria/algeria-regions.json"
+const geoUrl = "https://gist.githubusercontent.com/mohammed-elhaouari/1b8f5a6f6b5b5b5b5b5b/raw/algeria-wilayas.json"
 
 export default function WilayaMap({ onSelect }: { onSelect?: (wilayaId: string) => void }) {
   return (
