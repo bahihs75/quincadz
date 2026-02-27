@@ -44,7 +44,7 @@ export default function WilayaMap({ onSelect, selectedWilayaId }: WilayaMapProps
       zoomControl: true,
       fadeAnimation: true,
       zoomAnimation: true,
-      attributionControl: false, // We'll add custom attribution
+      attributionControl: false,
     })
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
@@ -53,9 +53,7 @@ export default function WilayaMap({ onSelect, selectedWilayaId }: WilayaMapProps
       maxZoom: 19,
     }).addTo(map)
 
-    // Add zoom control to top-right
     L.control.zoom({ position: 'topright' }).addTo(map)
-
     mapRef.current = map
 
     return () => {
@@ -75,18 +73,15 @@ export default function WilayaMap({ onSelect, selectedWilayaId }: WilayaMapProps
         if (!response.ok) throw new Error('Failed to load GeoJSON')
         const data = await response.json()
 
-        // Remove previous layer if exists
         if (geojsonLayer) {
           mapRef.current?.removeLayer(geojsonLayer)
         }
 
-        // Create a map of wilaya names to colors
         const colorMap = new Map()
         data.features.forEach((feature: any, index: number) => {
           colorMap.set(feature.id, colorPalette[index % colorPalette.length])
         })
 
-        // Style function
         const style = (feature: any) => {
           const isSelected = selectedWilayaId === feature.id
           return {
@@ -98,38 +93,38 @@ export default function WilayaMap({ onSelect, selectedWilayaId }: WilayaMapProps
           }
         }
 
-        // On each feature
         const onEachFeature = (feature: any, layer: L.Layer) => {
-          layer.on({
+          const pathLayer = layer as L.Path
+
+          pathLayer.on({
             click: () => {
               if (onSelect) {
                 onSelect(feature.id, feature.properties.name)
                 setSelectedWilayaName(feature.properties.name)
               }
-              // Highlight selected
               if (geojsonLayer) {
                 geojsonLayer.resetStyle()
               }
-              (layer as L.Path).setStyle({ fillColor: '#FF5F15', weight: 2 })
+              pathLayer.setStyle({ fillColor: '#FF5F15', weight: 2 })
             },
             mouseover: () => {
-              layer.bindTooltip(`
+              pathLayer.bindTooltip(`
                 <div style="font-weight: bold; color: #333;">
                   ${feature.properties.name}
                 </div>
               `, { permanent: false, direction: 'top' }).openTooltip()
-              (layer as L.Path).setStyle({ fillOpacity: 0.9, weight: 2 })
+              pathLayer.setStyle({ fillOpacity: 0.9, weight: 2 })
             },
             mouseout: () => {
-              layer.closeTooltip()
+              pathLayer.closeTooltip()
               if (selectedWilayaId !== feature.id) {
-                (layer as L.Path).setStyle({ 
+                pathLayer.setStyle({
                   fillColor: colorMap.get(feature.id) || '#D6D6DA',
                   fillOpacity: 0.7,
                   weight: 1
                 })
               } else {
-                (layer as L.Path).setStyle({ fillColor: '#FF5F15', weight: 2 })
+                pathLayer.setStyle({ fillColor: '#FF5F15', weight: 2 })
               }
             },
           })
@@ -137,8 +132,6 @@ export default function WilayaMap({ onSelect, selectedWilayaId }: WilayaMapProps
 
         const layer = L.geoJSON(data, { style, onEachFeature }).addTo(mapRef.current!)
         setGeojsonLayer(layer)
-
-        // Fit bounds to Algeria
         mapRef.current?.fitBounds(layer.getBounds())
       } catch (err) {
         console.error('Map error:', err)
