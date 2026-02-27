@@ -14,7 +14,7 @@ export default function ClientHomePage() {
   const router = useRouter()
   const supabase = createClient()
   const { t } = useLanguage()
-  const [location, setLocation] = useState<any>(null)
+  const [userLocation, setUserLocation] = useState<any>(null)
   const [products, setProducts] = useState<any[]>([])
   const [categories, setCategories] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -25,7 +25,7 @@ export default function ClientHomePage() {
   useEffect(() => {
     const saved = localStorage.getItem('quincadz_location')
     if (saved) {
-      setLocation(JSON.parse(saved))
+      setUserLocation(JSON.parse(saved))
     }
   }, [])
 
@@ -83,13 +83,13 @@ export default function ClientHomePage() {
   }
 
   const handleLocationSelect = (loc: any) => {
-    setLocation(loc)
+    setUserLocation(loc)
     localStorage.setItem('quincadz_location', JSON.stringify(loc))
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {!location && (
+      {!userLocation !userLocation location &&location &&!userLocation location &&location && (
         <div className="mb-8">
           <LocationPicker onLocationSelect={handleLocationSelect} />
         </div>

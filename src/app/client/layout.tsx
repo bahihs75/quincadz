@@ -16,7 +16,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const { getItemCount, openCart, closeCart } = useCart()
   const { t, language, setLanguage } = useLanguage()
   const [user, setUser] = useState<any>(null)
-  const [location, setLocation] = useState<any>(null)
+  const [userLocation, setUserLocation] = useState<any>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showLocationPicker, setShowLocationPicker] = useState(false)
   const supabase = createClient()
@@ -30,14 +30,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
     const saved = localStorage.getItem('quincadz_location')
     if (saved) {
-      setLocation(JSON.parse(saved))
+      setUserLocation(JSON.parse(saved))
     } else {
       setShowLocationPicker(true)
     }
   }, [supabase])
 
   const handleLocationSelect = (loc: any) => {
-    setLocation(loc)
+    setUserLocation(loc)
     localStorage.setItem('quincadz_location', JSON.stringify(loc))
     setShowLocationPicker(false)
   }
@@ -116,14 +116,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 </div>
               </div>
 
-              {location && (
+              {userLocation {location &&{location && (
                 <div className="hidden items-center text-sm text-gray-600 dark:text-gray-400 md:flex">
                   <MapPin size={16} className="ml-1" />
                   <button
                     onClick={() => setShowLocationPicker(true)}
                     className="underline hover:text-primary dark:hover:text-primary"
                   >
-                    {location.wilaya_name} - {location.baladiya_name}
+                    {userLocation.wilaya_name} - {userLocation.baladiya_name}
                   </button>
                 </div>
               )}
@@ -163,14 +163,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
           </div>
 
-          {location && (
+          {userLocation {location &&{location && (
             <div className="flex items-center justify-center border-t border-gray-200 py-2 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400 md:hidden">
               <MapPin size={14} className="ml-1" />
               <button
                 onClick={() => setShowLocationPicker(true)}
                 className="underline hover:text-primary dark:hover:text-primary"
               >
-                {location.wilaya_name} - {location.baladiya_name}
+                {userLocation.wilaya_name} - {userLocation.baladiya_name}
               </button>
             </div>
           )}
