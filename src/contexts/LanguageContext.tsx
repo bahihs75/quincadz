@@ -7,7 +7,7 @@ type Language = 'ar' | 'fr' | 'en'
 interface LanguageContextType {
   language: Language
   setLanguage: (lang: Language) => void
-  t: (key: string) => string
+  t: (key: string, params?: Record<string, string | number>) => string
 }
 
 const translations: Record<Language, Record<string, string>> = {
@@ -65,6 +65,25 @@ const translations: Record<Language, Record<string, string>> = {
     last_items: 'آخر {count} قطع',
     in_cart: 'في السلة',
     added_to_cart: 'تمت الإضافة إلى السلة',
+    remember_me: 'تذكرني',
+    forgot_password: 'نسيت كلمة المرور؟',
+    create_account: 'إنشاء حساب جديد',
+    choose_location: 'تحديد الموقع',
+    detect_my_location: 'تحديد موقعي الحالي',
+    wilaya: 'الولاية',
+    baladiya: 'البلدية',
+    search_baladiya: 'ابحث عن البلدية',
+    password: 'كلمة المرور',
+    select_wilaya: 'اختر الولاية',
+    detecting: 'جاري التحديد...',
+    geolocation_not_supported: 'المتصفح لا يدعم تحديد الموقع',
+    location_wilaya_not_found: 'لم نتمكن من تحديد الولاية',
+    location_baladiya_not_found: 'تم تحديد الولاية، الرجاء اختيار البلدية يدوياً',
+    location_error: 'حدث خطأ أثناء تحديد الموقع',
+    location_failed: 'فشل تحديد الموقع',
+    location_permission_denied: 'الرجاء السماح بالوصول إلى الموقع',
+    location_unavailable: 'خدمة الموقع غير متوفرة',
+    location_timeout: 'انتهت مهلة تحديد الموقع',
   },
   fr: {
     home: 'Accueil',
@@ -120,6 +139,25 @@ const translations: Record<Language, Record<string, string>> = {
     last_items: 'Derniers {count} articles',
     in_cart: 'dans le panier',
     added_to_cart: 'Ajouté au panier',
+    remember_me: 'Se souvenir de moi',
+    forgot_password: 'Mot de passe oublié ?',
+    create_account: 'Créer un compte',
+    choose_location: 'Choisir votre emplacement',
+    detect_my_location: 'Détecter ma position',
+    wilaya: 'Wilaya',
+    baladiya: 'Baladiya',
+    search_baladiya: 'Rechercher une baladiya',
+    password: 'Mot de passe',
+    select_wilaya: 'Choisir wilaya',
+    detecting: 'Détection...',
+    geolocation_not_supported: 'La géolocalisation n\'est pas supportée',
+    location_wilaya_not_found: 'Wilaya non trouvée',
+    location_baladiya_not_found: 'Wilaya trouvée, veuillez choisir la baladiya',
+    location_error: 'Erreur de localisation',
+    location_failed: 'Échec de la localisation',
+    location_permission_denied: 'Veuillez autoriser l\'accès à la localisation',
+    location_unavailable: 'Service de localisation indisponible',
+    location_timeout: 'Délai de localisation dépassé',
   },
   en: {
     home: 'Home',
@@ -175,6 +213,25 @@ const translations: Record<Language, Record<string, string>> = {
     last_items: 'Last {count} items',
     in_cart: 'in cart',
     added_to_cart: 'Added to cart',
+    remember_me: 'Remember me',
+    forgot_password: 'Forgot password?',
+    create_account: 'Create account',
+    choose_location: 'Choose your location',
+    detect_my_location: 'Detect my location',
+    wilaya: 'Wilaya',
+    baladiya: 'Baladiya',
+    search_baladiya: 'Search baladiya',
+    password: 'Password',
+    select_wilaya: 'Select wilaya',
+    detecting: 'Detecting...',
+    geolocation_not_supported: 'Geolocation not supported',
+    location_wilaya_not_found: 'Wilaya not found',
+    location_baladiya_not_found: 'Wilaya found, please select baladiya',
+    location_error: 'Location error',
+    location_failed: 'Location failed',
+    location_permission_denied: 'Please allow location access',
+    location_unavailable: 'Location service unavailable',
+    location_timeout: 'Location timeout',
   },
 }
 
@@ -202,8 +259,14 @@ export const LanguageProvider = ({ children }: { children: React.ReactNode }) =>
     localStorage.setItem('quincadz_language', language)
   }, [language])
 
-  const t = (key: string): string => {
-    return translations[language][key] || key
+  const t = (key: string, params?: Record<string, string | number>): string => {
+    let text = translations[language][key] || key
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        text = text.replace(`{${k}}`, String(v))
+      })
+    }
+    return text
   }
 
   return (
