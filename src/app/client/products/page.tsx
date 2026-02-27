@@ -245,7 +245,7 @@ function ProductsContent() {
 
 export default function ProductsPage() {
   return (
-    <Suspense fallback={<div className="text-center py-12">{t('loading')}</div>}>
+    <Suspense fallback={<div className="text-center py-12">Chargement...</div>}>
       <ProductsContent />
     </Suspense>
   )
