@@ -5,13 +5,14 @@ import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import ProductCard from '@/components/client/ProductCard'
 import { Filter, Search, X } from 'lucide-react'
+import { useLanguage } from '@/contexts/LanguageContext'
 
 const PAGE_SIZE = 12
 
-// This component uses useSearchParams and must be wrapped in Suspense
 function ProductsContent() {
   const searchParams = useSearchParams()
   const supabase = createClient()
+  const { t } = useLanguage()
   const [products, setProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
@@ -35,7 +36,6 @@ function ProductsContent() {
     fetchCategories()
   }, [supabase])
 
-  // Reset and fetch on filter change
   useEffect(() => {
     setProducts([])
     setOffset(0)
@@ -117,51 +117,51 @@ function ProductsContent() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-black">المنتجات</h1>
+      <h1 className="text-3xl font-bold mb-6 text-black dark:text-white">{t('products')}</h1>
 
       <button
         onClick={() => setShowFilters(!showFilters)}
         className="md:hidden flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg mb-4"
       >
         <Filter size={18} />
-        فلتر
+        {t('filter')}
       </button>
 
       <div className="flex flex-col md:flex-row gap-6">
         <div
           className={`${
             showFilters ? 'block' : 'hidden'
-          } md:block w-full md:w-64 bg-white p-4 rounded-lg shadow h-fit`}
+          } md:block w-full md:w-64 bg-white dark:bg-gray-900 p-4 rounded-lg shadow h-fit border border-gray-200 dark:border-gray-800`}
         >
           <div className="flex justify-between items-center mb-4">
-            <h2 className="font-bold text-lg">تصفية</h2>
-            <button onClick={clearFilters} className="text-sm text-primary dark:text-primary">
-              مسح الكل
+            <h2 className="font-bold text-lg text-black dark:text-white">{t('filter')}</h2>
+            <button onClick={clearFilters} className="text-sm text-primary">
+              {t('clear_all')}
             </button>
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">بحث</label>
+            <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">{t('search')}</label>
             <div className="relative">
               <input
                 type="text"
                 value={filters.search}
                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                placeholder="اسم المنتج..."
-                className="w-full p-2 pr-8 border rounded"
+                placeholder={t('search_placeholder')}
+                className="w-full p-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
               />
-              <Search size={16} className="absolute left-2 top-3 text-gray-400" />
+              <Search size={16} className="absolute left-2 top-3 text-gray-400 dark:text-gray-500" />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">الفئة</label>
+            <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">{t('category')}</label>
             <select
               value={filters.category}
               onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
             >
-              <option value="">الكل</option>
+              <option value="">{t('all')}</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name_ar}
@@ -171,50 +171,50 @@ function ProductsContent() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">السعر (دج)</label>
+            <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">{t('price')}</label>
             <div className="flex gap-2">
               <input
                 type="number"
-                placeholder="من"
+                placeholder={t('min')}
                 value={filters.minPrice}
                 onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
-                className="w-1/2 p-2 border rounded"
+                className="w-1/2 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
               />
               <input
                 type="number"
-                placeholder="إلى"
+                placeholder={t('max')}
                 value={filters.maxPrice}
                 onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
-                className="w-1/2 p-2 border rounded"
+                className="w-1/2 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
               />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1">ترتيب حسب</label>
+            <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">{t('sort_by')}</label>
             <select
               value={filters.sort}
               onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
             >
-              <option value="newest">الأحدث</option>
-              <option value="price_asc">السعر: من الأقل إلى الأعلى</option>
-              <option value="price_desc">السعر: من الأعلى إلى الأقل</option>
+              <option value="newest">{t('newest')}</option>
+              <option value="price_asc">{t('price_low_to_high')}</option>
+              <option value="price_desc">{t('price_high_to_low')}</option>
             </select>
           </div>
         </div>
 
         <div className="flex-1">
           {loading ? (
-            <div className="text-center py-12">جاري التحميل...</div>
+            <div className="text-center py-12 text-gray-600 dark:text-gray-400">{t('loading')}</div>
           ) : products.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 mb-4">لا توجد منتجات تطابق معايير البحث</p>
+              <p className="text-gray-500 dark:text-gray-400 mb-4">{t('no_products_found')}</p>
               <button
                 onClick={clearFilters}
-                className="bg-primary text-white px-6 py-2 rounded-lg"
+                className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary"
               >
-                مسح الفلاتر
+                {t('clear_filters')}
               </button>
             </div>
           ) : (
@@ -229,9 +229,9 @@ function ProductsContent() {
                   <button
                     onClick={loadMore}
                     disabled={loadingMore}
-                    className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary disabled:opacity-50"
+                    className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary disabled:opacity-50"
                   >
-                    {loadingMore ? 'جاري التحميل...' : 'تحميل المزيد'}
+                    {loadingMore ? t('loading') : t('load_more')}
                   </button>
                 </div>
               )}
@@ -243,10 +243,9 @@ function ProductsContent() {
   )
 }
 
-// Main page component with Suspense boundary
 export default function ProductsPage() {
   return (
-    <Suspense fallback={<div className="text-center py-12">جاري التحميل...</div>}>
+    <Suspense fallback={<div className="text-center py-12">{t('loading')}</div>}>
       <ProductsContent />
     </Suspense>
   )

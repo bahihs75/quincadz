@@ -20,3 +20,20 @@
 .card {
   @apply bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800;
 }
+
+/* Dark mode form elements */
+.dark input,
+.dark select,
+.dark textarea {
+  @apply bg-gray-800 border-gray-700 text-white;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  @apply text-gray-500;
+}
+
+/* Dark mode dropdowns */
+.dark select option {
+  @apply bg-gray-800 text-white;
+}
