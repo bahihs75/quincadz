@@ -116,7 +116,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 </div>
               </div>
 
-              {userLocation {location &&{location && (
+              {userLocation {userLocation &&{userLocation && (
                 <div className="hidden items-center text-sm text-gray-600 dark:text-gray-400 md:flex">
                   <MapPin size={16} className="ml-1" />
                   <button
@@ -163,7 +163,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
           </div>
 
-          {userLocation {location &&{location && (
+          {userLocation {userLocation &&{userLocation && (
             <div className="flex items-center justify-center border-t border-gray-200 py-2 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400 md:hidden">
               <MapPin size={14} className="ml-1" />
               <button
