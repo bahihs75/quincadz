@@ -56,7 +56,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white shadow dark:bg-gray-900">
+      <header className="sticky top-0 z-40 bg-white dark:bg-gray-900 shadow border-b border-gray-200 dark:border-gray-800">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-2">
