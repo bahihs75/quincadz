@@ -15,6 +15,13 @@ L.Icon.Default.mergeOptions({
 // GeoJSON URL for Algeria wilayas (from a reliable source)
 const GEOJSON_URL = 'https://raw.githubusercontent.com/oussamabouchikhi/algeria-geojson/master/wilayas.geojson'
 
+// Color palette for wilayas (cycling through colors)
+const colorPalette = [
+  '#FF6B35', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#D4A5A5',
+  '#9B59B6', '#3498DB', '#E67E22', '#2ECC71', '#E74C3C', '#1ABC9C',
+  '#F39C12', '#8E44AD', '#27AE60', '#D35400', '#C0392B', '#16A085'
+]
+
 interface WilayaMapProps {
   onSelect?: (wilayaId: string, wilayaName: string) => void
   selectedWilayaId?: string | null
@@ -25,6 +32,7 @@ export default function WilayaMap({ onSelect, selectedWilayaId }: WilayaMapProps
   const [geojsonLayer, setGeojsonLayer] = useState<L.GeoJSON | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [selectedWilayaName, setSelectedWilayaName] = useState<string | null>(null)
 
   // Initialize map
   useEffect(() => {
@@ -36,12 +44,17 @@ export default function WilayaMap({ onSelect, selectedWilayaId }: WilayaMapProps
       zoomControl: true,
       fadeAnimation: true,
       zoomAnimation: true,
+      attributionControl: false, // We'll add custom attribution
     })
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 18,
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; CartoDB',
+      subdomains: 'abcd',
+      maxZoom: 19,
     }).addTo(map)
+
+    // Add zoom control to top-right
+    L.control.zoom({ position: 'topright' }).addTo(map)
 
     mapRef.current = map
 
@@ -67,14 +80,23 @@ export default function WilayaMap({ onSelect, selectedWilayaId }: WilayaMapProps
           mapRef.current?.removeLayer(geojsonLayer)
         }
 
-        // Style function
-        const style = (feature: any) => ({
-          fillColor: selectedWilayaId === feature.id ? '#F53' : '#D6D6DA',
-          weight: 1,
-          opacity: 1,
-          color: '#FFFFFF',
-          fillOpacity: 0.7,
+        // Create a map of wilaya names to colors
+        const colorMap = new Map()
+        data.features.forEach((feature: any, index: number) => {
+          colorMap.set(feature.id, colorPalette[index % colorPalette.length])
         })
+
+        // Style function
+        const style = (feature: any) => {
+          const isSelected = selectedWilayaId === feature.id
+          return {
+            fillColor: isSelected ? '#FF5F15' : (colorMap.get(feature.id) || '#D6D6DA'),
+            weight: isSelected ? 2 : 1,
+            opacity: 1,
+            color: '#FFFFFF',
+            fillOpacity: 0.7,
+          }
+        }
 
         // On each feature
         const onEachFeature = (feature: any, layer: L.Layer) => {
@@ -82,19 +104,33 @@ export default function WilayaMap({ onSelect, selectedWilayaId }: WilayaMapProps
             click: () => {
               if (onSelect) {
                 onSelect(feature.id, feature.properties.name)
+                setSelectedWilayaName(feature.properties.name)
               }
               // Highlight selected
               if (geojsonLayer) {
                 geojsonLayer.resetStyle()
               }
-              // Cast layer to Path to access setStyle
-              (layer as L.Path).setStyle({ fillColor: '#F53' })
+              (layer as L.Path).setStyle({ fillColor: '#FF5F15', weight: 2 })
             },
             mouseover: () => {
-              layer.bindTooltip(feature.properties.name).openTooltip()
+              layer.bindTooltip(`
+                <div style="font-weight: bold; color: #333;">
+                  ${feature.properties.name}
+                </div>
+              `, { permanent: false, direction: 'top' }).openTooltip()
+              (layer as L.Path).setStyle({ fillOpacity: 0.9, weight: 2 })
             },
             mouseout: () => {
               layer.closeTooltip()
+              if (selectedWilayaId !== feature.id) {
+                (layer as L.Path).setStyle({ 
+                  fillColor: colorMap.get(feature.id) || '#D6D6DA',
+                  fillOpacity: 0.7,
+                  weight: 1
+                })
+              } else {
+                (layer as L.Path).setStyle({ fillColor: '#FF5F15', weight: 2 })
+              }
             },
           })
         }
@@ -116,18 +152,27 @@ export default function WilayaMap({ onSelect, selectedWilayaId }: WilayaMapProps
   }, [selectedWilayaId, onSelect])
 
   return (
-    <div className="relative w-full h-96 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+    <div className="relative w-full h-96 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg">
       {loading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 z-10">
-          <p className="text-gray-600 dark:text-gray-400">Chargement de la carte...</p>
+        <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 z-10 backdrop-blur-sm">
+          <div className="text-center">
+            <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+            <p className="text-gray-600 dark:text-gray-400">Chargement de la carte...</p>
+          </div>
         </div>
       )}
       {error && (
         <div className="absolute inset-0 flex items-center justify-center bg-yellow-50 dark:bg-yellow-900/30 z-10">
-          <p className="text-yellow-800 dark:text-yellow-400 text-center">{error}</p>
+          <p className="text-yellow-800 dark:text-yellow-400 text-center px-4">{error}</p>
         </div>
       )}
       <div id="map" className="w-full h-full" />
+      {selectedWilayaName && (
+        <div className="absolute bottom-4 left-4 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
+          <span className="text-sm text-gray-600 dark:text-gray-400">Wilaya sélectionnée: </span>
+          <span className="font-bold text-primary">{selectedWilayaName}</span>
+        </div>
+      )}
     </div>
   )
 }
