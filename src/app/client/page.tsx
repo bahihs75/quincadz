@@ -46,7 +46,7 @@ export default function ClientHomePage() {
     setOffset(0)
     setHasMore(true)
     fetchProducts(0)
-  }, [location])
+  }, [userLocation])
 
   const fetchProducts = async (currentOffset: number) => {
     const loadMore = currentOffset > 0
@@ -89,13 +89,12 @@ export default function ClientHomePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {!userLocation !userLocation location &&location &&!userLocation location &&location && (
+      {!userLocation && (
         <div className="mb-8">
           <LocationPicker onLocationSelect={handleLocationSelect} />
         </div>
       )}
 
-      {/* Dynamic Categories */}
       {categories.length > 0 && (
         <section className="mb-12">
           <div className="flex justify-between items-center mb-6">
@@ -116,19 +115,18 @@ export default function ClientHomePage() {
         </section>
       )}
 
-      {/* Products */}
       <section>
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-black dark:text-white">{t('all_products')}</h2>
-          <Link href="/client/products" className="text-primary dark:text-primary dark:text-primary hover:underline">
+          <Link href="/client/products" className="text-primary dark:text-primary hover:underline">
             {t('view_all')}
           </Link>
         </div>
 
         {loading ? (
-          <div className="text-center py-12 text-gray-600 dark:text-gray-400">جاري التحميل...</div>
+          <div className="text-center py-12 text-gray-600 dark:text-gray-400">{t('loading')}</div>
         ) : products.length === 0 ? (
-          <div className="text-center py-12 text-gray-500 dark:text-gray-500">لا توجد منتجات حالياً</div>
+          <div className="text-center py-12 text-gray-500 dark:text-gray-500">{t('no_products')}</div>
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -141,9 +139,9 @@ export default function ClientHomePage() {
                 <button
                   onClick={loadMore}
                   disabled={loadingMore}
-                  className="bg-primary dark:bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary dark:hover:bg-blue-800 disabled:opacity-50"
+                  className="bg-primary dark:bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary dark:hover:bg-secondary disabled:opacity-50"
                 >
-                  {loadingMore ? 'جاري التحميل...' : t('view_all')}
+                  {loadingMore ? t('loading') : t('view_all')}
                 </button>
               </div>
             )}

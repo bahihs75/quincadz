@@ -116,7 +116,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 </div>
               </div>
 
-              {userLocation {userLocation &&{userLocation && (
+              {userLocation && (
                 <div className="hidden items-center text-sm text-gray-600 dark:text-gray-400 md:flex">
                   <MapPin size={16} className="ml-1" />
                   <button
@@ -163,7 +163,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             </div>
           </div>
 
-          {userLocation {userLocation &&{userLocation && (
+          {userLocation && (
             <div className="flex items-center justify-center border-t border-gray-200 py-2 text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400 md:hidden">
               <MapPin size={14} className="ml-1" />
               <button
@@ -200,7 +200,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4 dark:bg-opacity-70">
           <div className="w-full max-w-md rounded-lg bg-white dark:bg-gray-900">
             <div className="flex items-center justify-between border-b border-gray-200 p-4 dark:border-gray-800">
-              <h3 className="text-lg font-bold text-black dark:text-white">تحديد الموقع</h3>
+              <h3 className="text-lg font-bold text-black dark:text-white">{t('choose_location')}</h3>
               <button onClick={() => setShowLocationPicker(false)} className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
                 <X size={20} />
               </button>
@@ -208,7 +208,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             <div className="p-4">
               <LocationPicker
                 onLocationSelect={handleLocationSelect}
-                initialLocation={location}
+                initialLocation={userLocation}
               />
             </div>
           </div>
