@@ -84,6 +84,8 @@ const translations: Record<Language, Record<string, string>> = {
     location_permission_denied: 'الرجاء السماح بالوصول إلى الموقع',
     location_unavailable: 'خدمة الموقع غير متوفرة',
     location_timeout: 'انتهت مهلة تحديد الموقع',
+    show_map: "عرض الخريطة",
+    hide_map: "إخفاء الخريطة",
   },
   fr: {
     home: 'Accueil',
@@ -158,6 +160,8 @@ const translations: Record<Language, Record<string, string>> = {
     location_permission_denied: 'Veuillez autoriser l\'accès à la localisation',
     location_unavailable: 'Service de localisation indisponible',
     location_timeout: 'Délai de localisation dépassé',
+    show_map: "Afficher la carte",
+    hide_map: "Cacher la carte",
   },
   en: {
     home: 'Home',
@@ -232,6 +236,8 @@ const translations: Record<Language, Record<string, string>> = {
     location_permission_denied: 'Please allow location access',
     location_unavailable: 'Location service unavailable',
     location_timeout: 'Location timeout',
+    show_map: "Show map",
+    hide_map: "Hide map",
   },
 }
 

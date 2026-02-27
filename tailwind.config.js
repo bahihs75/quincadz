@@ -8,10 +8,14 @@ module.exports = {
   darkMode: 'media',
   theme: {
     extend: {
-      colors: {
+        orange: "#FF5F15",      colors: {
         primary: '#EAB308',      // mustard yellow
-        secondary: '#B45309',     // lighter warm brown
+        secondary: '#B45309',     // warm brown
         accent: '#FEF3C7',        // cream
+        // Surface layers for dark mode
+        background: '#09090b',    // layer 1
+        surface: '#18181b',       // layer 2 (cards)
+        popup: '#27272a',         // layer 3 (popups)
       },
     },
   },

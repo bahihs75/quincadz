@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import { wilayas, baladiyas } from '@/lib/algeriaData'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { MapPin, Locate, AlertCircle } from 'lucide-react'
+import { MapPin, Locate, AlertCircle, Map } from 'lucide-react'
+import WilayaMap from '@/components/WilayaMap'
 
 interface Props {
   onLocationSelect: (location: {
@@ -26,6 +27,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation }: Pr
   const [gettingLocation, setGettingLocation] = useState(false)
   const [locationError, setLocationError] = useState('')
   const [isClient, setIsClient] = useState(false)
+  const [showMap, setShowMap] = useState(false)
 
   useEffect(() => {
     setIsClient(true)
@@ -109,24 +111,50 @@ export default function LocationPicker({ onLocationSelect, initialLocation }: Pr
     )
   }
 
+  const handleMapSelect = (wilayaId: string) => {
+    const id = parseInt(wilayaId)
+    const wilaya = wilayas.find(w => w.id === id)
+    if (wilaya) {
+      setSelectedWilaya(id)
+      setSelectedBaladiya('')
+      setSearchTerm('')
+      setShowMap(false)
+    }
+  }
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-black dark:text-white">{t('choose_location')}</h2>
-        <button
-          onClick={getCurrentLocation}
-          disabled={gettingLocation}
-          className="flex items-center gap-2 text-primary hover:text-secondary disabled:opacity-50"
-        >
-          <Locate size={18} />
-          {gettingLocation ? t('detecting') : t('detect_my_location')}
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={getCurrentLocation}
+            disabled={gettingLocation}
+            className="flex items-center gap-2 text-primary hover:text-secondary disabled:opacity-50"
+          >
+            <Locate size={18} />
+            {gettingLocation ? t('detecting') : t('detect_my_location')}
+          </button>
+          <button
+            onClick={() => setShowMap(!showMap)}
+            className="flex items-center gap-2 text-primary hover:text-secondary"
+          >
+            <Map size={18} />
+            {showMap ? t('hide_map') : t('show_map')}
+          </button>
+        </div>
       </div>
 
       {locationError && (
         <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 rounded-lg text-sm flex items-start gap-2">
           <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
           <span>{locationError}</span>
+        </div>
+      )}
+
+      {showMap && (
+        <div className="mb-4 p-2 border border-gray-200 dark:border-gray-700 rounded-lg">
+          <WilayaMap onSelect={handleMapSelect} />
         </div>
       )}
 

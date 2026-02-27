@@ -31,7 +31,7 @@ export default function ProductCard({ product }: { product: any }) {
   const quantityInCart = getItemQuantity(product.id)
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden hover:shadow-lg transition">
+    <div className="card hover:shadow-lg transition">
       <Link href={`/client/product/${product.id}`}>
         <div className="relative h-48 bg-gray-200 dark:bg-gray-700">
           {product.images && product.images[0] ? (
@@ -89,7 +89,7 @@ export default function ProductCard({ product }: { product: any }) {
             className={`p-2 rounded-full ${
               product.stock_quantity === 0
                 ? 'bg-gray-200 text-gray-400 dark:bg-gray-700 dark:text-gray-500 cursor-not-allowed'
-                : 'bg-primary text-white hover:bg-secondary'
+                : 'bg-primary text-white hover:bg-orange'
             }`}
           >
             <ShoppingCart size={18} />

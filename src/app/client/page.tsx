@@ -6,6 +6,7 @@ import LocationPicker from '@/components/LocationPicker'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/contexts/LanguageContext'
 import ProductCard from '@/components/client/ProductCard'
+import { Marquee } from "@/components/Marquee"
 import Link from 'next/link'
 
 const PAGE_SIZE = 8
@@ -113,6 +114,12 @@ export default function ClientHomePage() {
             ))}
           </div>
         </section>
+      <Marquee className="py-4 bg-gray-100 dark:bg-gray-800 my-8">
+        <span className="mx-4 text-sm text-gray-700 dark:text-gray-300">✅ 50+ متجر موثوق</span>
+        <span className="mx-4 text-sm text-gray-700 dark:text-gray-300">🚚 توصيل إلى جميع الولايات</span>
+        <span className="mx-4 text-sm text-gray-700 dark:text-gray-300">⭐ أكثر من 1000 طلب مكتمل</span>
+        <span className="mx-4 text-sm text-gray-700 dark:text-gray-300">🛠️ مواد بناء أصلية</span>
+      </Marquee>
       )}
 
       <section>
@@ -148,6 +155,12 @@ export default function ClientHomePage() {
           </>
         )}
       </section>
+      <Marquee className="py-4 bg-gray-100 dark:bg-gray-800 my-8">
+        <span className="mx-4 text-sm text-gray-700 dark:text-gray-300">✅ 50+ متجر موثوق</span>
+        <span className="mx-4 text-sm text-gray-700 dark:text-gray-300">🚚 توصيل إلى جميع الولايات</span>
+        <span className="mx-4 text-sm text-gray-700 dark:text-gray-300">⭐ أكثر من 1000 طلب مكتمل</span>
+        <span className="mx-4 text-sm text-gray-700 dark:text-gray-300">🛠️ مواد بناء أصلية</span>
+      </Marquee>
     </div>
   )
 }
