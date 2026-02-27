@@ -1,168 +1,132 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
-import { ComposableMap, Geographies, Geography } from 'react-simple-maps'
+import { useEffect, useRef, useState } from 'react'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 
-// Use a different reliable GeoJSON source
-const geoUrl = "https://gist.githubusercontent.com/mohammed-elhaouari/1b8f5a6f6b5b5b5b5b5b/raw/algeria-wilayas.json"
+// Fix for default marker icons in Leaflet with Next.js
+delete (L.Icon.Default.prototype as any)._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+})
 
-// Fallback list of wilayas in case the map fails
-const fallbackWilayas = [
-  { id: 1, name: "Adrar" },
-  { id: 2, name: "Chlef" },
-  { id: 3, name: "Laghouat" },
-  { id: 4, name: "Oum El Bouaghi" },
-  { id: 5, name: "Batna" },
-  { id: 6, name: "Béjaïa" },
-  { id: 7, name: "Biskra" },
-  { id: 8, name: "Béchar" },
-  { id: 9, name: "Blida" },
-  { id: 10, name: "Bouira" },
-  { id: 11, name: "Tamanrasset" },
-  { id: 12, name: "Tébessa" },
-  { id: 13, name: "Tlemcen" },
-  { id: 14, name: "Tiaret" },
-  { id: 15, name: "Tizi Ouzou" },
-  { id: 16, name: "Alger" },
-  { id: 17, name: "Djelfa" },
-  { id: 18, name: "Jijel" },
-  { id: 19, name: "Sétif" },
-  { id: 20, name: "Saïda" },
-  { id: 21, name: "Skikda" },
-  { id: 22, name: "Sidi Bel Abbès" },
-  { id: 23, name: "Annaba" },
-  { id: 24, name: "Guelma" },
-  { id: 25, name: "Constantine" },
-  { id: 26, name: "Médéa" },
-  { id: 27, name: "Mostaganem" },
-  { id: 28, name: "M'Sila" },
-  { id: 29, name: "Mascara" },
-  { id: 30, name: "Ouargla" },
-  { id: 31, name: "Oran" },
-  { id: 32, name: "El Bayadh" },
-  { id: 33, name: "Illizi" },
-  { id: 34, name: "Bordj Bou Arréridj" },
-  { id: 35, name: "Boumerdès" },
-  { id: 36, name: "El Tarf" },
-  { id: 37, name: "Tindouf" },
-  { id: 38, name: "Tissemsilt" },
-  { id: 39, name: "El Oued" },
-  { id: 40, name: "Khenchela" },
-  { id: 41, name: "Souk Ahras" },
-  { id: 42, name: "Tipaza" },
-  { id: 43, name: "Mila" },
-  { id: 44, name: "Aïn Defla" },
-  { id: 45, name: "Naâma" },
-  { id: 46, name: "Aïn Témouchent" },
-  { id: 47, name: "Ghardaïa" },
-  { id: 48, name: "Relizane" },
-  { id: 49, name: "El M'ghair" },
-  { id: 50, name: "El Menia" },
-  { id: 51, name: "Ouled Djellal" },
-  { id: 52, name: "Béni Abbès" },
-  { id: 53, name: "In Salah" },
-  { id: 54, name: "In Guezzam" },
-  { id: 55, name: "Touggourt" },
-  { id: 56, name: "Djanet" },
-  { id: 57, name: "El Meghaier" },
-  { id: 58, name: "El Meniaa" },
-]
+// GeoJSON URL for Algeria wilayas (from a reliable source)
+const GEOJSON_URL = 'https://raw.githubusercontent.com/oussamabouchikhi/algeria-geojson/master/wilayas.geojson'
 
-export default function WilayaMap({ onSelect }: { onSelect?: (wilayaId: string) => void }) {
-  const [tooltip, setTooltip] = useState('')
-  const [hasError, setHasError] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [useFallback, setUseFallback] = useState(false)
+interface WilayaMapProps {
+  onSelect?: (wilayaId: string, wilayaName: string) => void
+  selectedWilayaId?: string | null
+}
 
+export default function WilayaMap({ onSelect, selectedWilayaId }: WilayaMapProps) {
+  const mapRef = useRef<L.Map | null>(null)
+  const [geojsonLayer, setGeojsonLayer] = useState<L.GeoJSON | null>(null)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  // Initialize map
   useEffect(() => {
-    // Check if the GeoJSON is accessible
-    fetch(geoUrl)
-      .then(res => {
-        if (!res.ok) {
-          setHasError(true)
-          setUseFallback(true)
-        }
-        setIsLoading(false)
-      })
-      .catch(() => {
-        setHasError(true)
-        setUseFallback(true)
-        setIsLoading(false)
-      })
+    if (mapRef.current) return
+
+    const map = L.map('map', {
+      center: [28.0, 2.5], // Algeria center
+      zoom: 6,
+      zoomControl: true,
+      fadeAnimation: true,
+      zoomAnimation: true,
+    })
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 18,
+    }).addTo(map)
+
+    mapRef.current = map
+
+    return () => {
+      map.remove()
+      mapRef.current = null
+    }
   }, [])
 
-  if (isLoading) {
-    return (
-      <div className="h-96 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded-lg">
-        <p className="text-gray-600 dark:text-gray-400">Chargement de la carte...</p>
-      </div>
-    )
-  }
+  // Load GeoJSON and add to map
+  useEffect(() => {
+    if (!mapRef.current) return
 
-  if (useFallback) {
-    return (
-      <div className="h-96 overflow-y-auto bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-        <h3 className="font-bold mb-2 text-gray-700 dark:text-gray-300">Sélectionnez une wilaya:</h3>
-        <div className="grid grid-cols-2 gap-2">
-          {fallbackWilayas.map((w) => (
-            <button
-              key={w.id}
-              onClick={() => onSelect?.(w.id.toString())}
-              className="p-2 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-primary/10 dark:hover:bg-primary/20 rounded text-right"
-            >
-              {w.name}
-            </button>
-          ))}
-        </div>
-      </div>
-    )
-  }
+    const loadGeoJSON = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch(GEOJSON_URL)
+        if (!response.ok) throw new Error('Failed to load GeoJSON')
+        const data = await response.json()
+
+        // Remove previous layer if exists
+        if (geojsonLayer) {
+          mapRef.current?.removeLayer(geojsonLayer)
+        }
+
+        // Style function
+        const style = (feature: any) => ({
+          fillColor: selectedWilayaId === feature.id ? '#F53' : '#D6D6DA',
+          weight: 1,
+          opacity: 1,
+          color: '#FFFFFF',
+          fillOpacity: 0.7,
+        })
+
+        // On each feature
+        const onEachFeature = (feature: any, layer: L.Layer) => {
+          layer.on({
+            click: () => {
+              if (onSelect) {
+                onSelect(feature.id, feature.properties.name)
+              }
+              // Highlight selected
+              if (geojsonLayer) {
+                geojsonLayer.resetStyle()
+              }
+              layer.setStyle({ fillColor: '#F53' })
+            },
+            mouseover: () => {
+              layer.bindTooltip(feature.properties.name).openTooltip()
+            },
+            mouseout: () => {
+              layer.closeTooltip()
+            },
+          })
+        }
+
+        const layer = L.geoJSON(data, { style, onEachFeature }).addTo(mapRef.current!)
+        setGeojsonLayer(layer)
+
+        // Fit bounds to Algeria
+        mapRef.current?.fitBounds(layer.getBounds())
+      } catch (err) {
+        console.error('Map error:', err)
+        setError('Impossible de charger la carte. Veuillez utiliser la liste déroulante.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadGeoJSON()
+  }, [selectedWilayaId, onSelect])
 
   return (
-    <div className="relative w-full h-96 bg-gray-50 dark:bg-gray-900 rounded-lg overflow-hidden">
-      <ComposableMap
-        projection="geoMercator"
-        projectionConfig={{ scale: 2000, center: [2.5, 28] }}
-        style={{ width: '100%', height: '100%' }}
-      >
-        <Geographies geography={geoUrl}>
-          {({ geographies }) =>
-            geographies.map((geo) => (
-              <Geography
-                key={geo.rsmKey}
-                geography={geo}
-                onClick={() => onSelect?.(geo.id)}
-                onMouseEnter={() => setTooltip(geo.properties.name || '')}
-                onMouseLeave={() => setTooltip('')}
-                style={{
-                  default: {
-                    fill: "#D6D6DA",
-                    stroke: "#FFFFFF",
-                    strokeWidth: 0.5,
-                    outline: "none",
-                  },
-                  hover: {
-                    fill: "#F53",
-                    stroke: "#FFFFFF",
-                    strokeWidth: 0.5,
-                    outline: "none",
-                    cursor: "pointer",
-                  },
-                  pressed: {
-                    fill: "#E42",
-                    outline: "none",
-                  },
-                }}
-              />
-            ))
-          }
-        </Geographies>
-      </ComposableMap>
-      {tooltip && (
-        <div className="absolute bottom-4 left-4 bg-black/70 text-white px-3 py-1 rounded text-sm">
-          {tooltip}
+    <div className="relative w-full h-96 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-gray-900/80 z-10">
+          <p className="text-gray-600 dark:text-gray-400">Chargement de la carte...</p>
         </div>
       )}
+      {error && (
+        <div className="absolute inset-0 flex items-center justify-center bg-yellow-50 dark:bg-yellow-900/30 z-10">
+          <p className="text-yellow-800 dark:text-yellow-400 text-center">{error}</p>
+        </div>
+      )}
+      <div id="map" className="w-full h-full" />
     </div>
   )
 }

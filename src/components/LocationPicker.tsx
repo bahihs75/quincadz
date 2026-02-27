@@ -111,7 +111,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation }: Pr
     )
   }
 
-  const handleMapSelect = (wilayaId: string) => {
+  const handleMapSelect = (wilayaId: string, wilayaName: string) => {
     const id = parseInt(wilayaId)
     const wilaya = wilayas.find(w => w.id === id)
     if (wilaya) {
@@ -153,8 +153,8 @@ export default function LocationPicker({ onLocationSelect, initialLocation }: Pr
       )}
 
       {showMap && (
-        <div className="mb-4 p-2 border border-gray-200 dark:border-gray-700 rounded-lg">
-          <WilayaMap onSelect={handleMapSelect} />
+        <div className="mb-4 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+          <WilayaMap onSelect={handleMapSelect} selectedWilayaId={selectedWilaya?.toString()} />
         </div>
       )}
 
