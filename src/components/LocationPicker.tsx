@@ -4,7 +4,10 @@ import { useState, useEffect } from 'react'
 import { wilayas, baladiyas } from '@/lib/algeriaData'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { MapPin, Locate, AlertCircle, Map } from 'lucide-react'
-import WilayaMap from '@/components/WilayaMap'
+import dynamic from 'next/dynamic'
+
+// Dynamically import the map component with no SSR
+const WilayaMap = dynamic(() => import('@/components/WilayaMap'), { ssr: false })
 
 interface Props {
   onLocationSelect: (location: {
