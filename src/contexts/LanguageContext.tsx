@@ -86,6 +86,7 @@ const translations: Record<Language, Record<string, string>> = {
     location_timeout: 'انتهت مهلة تحديد الموقع',
     show_map: "عرض الخريطة",
     hide_map: "إخفاء الخريطة",
+    member_since: "عضو منذ",
   },
   fr: {
     home: 'Accueil',
@@ -162,6 +163,7 @@ const translations: Record<Language, Record<string, string>> = {
     location_timeout: 'Délai de localisation dépassé',
     show_map: "Afficher la carte",
     hide_map: "Cacher la carte",
+    member_since: "Membre depuis",
   },
   en: {
     home: 'Home',
@@ -238,6 +240,7 @@ const translations: Record<Language, Record<string, string>> = {
     location_timeout: 'Location timeout',
     show_map: "Show map",
     hide_map: "Hide map",
+    member_since: "Member since",
   },
 }
 
