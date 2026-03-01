@@ -89,8 +89,6 @@ const translations: Record<Language, Record<string, string>> = {
     member_since: "عضو منذ",
     details: "التفاصيل",
     logout_success: "تم تسجيل الخروج بنجاح",
-    logout_success: "تم تسجيل الخروج بنجاح",
-    logout_success: "تم تسجيل الخروج بنجاح",
   },
   fr: {
     home: 'Accueil',
