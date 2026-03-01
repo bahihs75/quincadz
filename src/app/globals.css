@@ -39,10 +39,10 @@
     }
 
     /* Buttons */
-    button.bg-primary, .bg-primary {
-      background-color: #3b82f6 !important; /* Keep primary blue for CTAs */
+    .bg-primary, button.bg-primary {
+      background-color: #3b82f6 !important;
     }
-    button.bg-primary:hover {
+    .bg-primary:hover, button.bg-primary:hover {
       background-color: #2563eb !important;
     }
   }
