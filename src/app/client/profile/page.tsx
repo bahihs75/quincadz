@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { User, Mail, Phone, LogOut, Globe } from 'lucide-react'
+import { User, Mail, Phone, Globe } from 'lucide-react'
 import toast from 'react-hot-toast'
+import LogoutButton from '@/components/ui/LogoutButton'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -163,7 +164,7 @@ export default function ProfilePage() {
               />
             </div>
 
-            <div className="flex gap-4">
+            <div className="flex items-center gap-4">
               <button
                 type="submit"
                 disabled={saving}
@@ -171,14 +172,7 @@ export default function ProfilePage() {
               >
                 {saving ? t('saving') : t('save_changes')}
               </button>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 flex items-center gap-2"
-              >
-                <LogOut size={18} />
-                {t('logout')}
-              </button>
+              <LogoutButton onClick={handleLogout} />
             </div>
           </form>
         </div>

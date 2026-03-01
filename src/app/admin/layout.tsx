@@ -11,12 +11,12 @@ import {
   Users, 
   Tag, 
   Settings, 
-  LogOut,
   Menu,
   X,
   Globe,
   Package
 } from 'lucide-react'
+import LogoutButton from '@/components/ui/LogoutButton'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -134,13 +134,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </li>
             ))}
             <li className="mt-4 border-t border-gray-200 pt-4 dark:border-gray-800">
-              <button
-                onClick={handleLogout}
-                className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-              >
-                <LogOut size={20} />
-                <span>{t('logout')}</span>
-              </button>
+              <LogoutButton onClick={handleLogout} />
             </li>
           </ul>
         </nav>
