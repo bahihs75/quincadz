@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { useTheme } from '@/contexts/ThemeContext'
 import { User, Mail, Phone, LogOut, Globe } from 'lucide-react'
 import toast from 'react-hot-toast'
 
@@ -12,7 +11,6 @@ export default function ProfilePage() {
   const router = useRouter()
   const supabase = createClient()
   const { t, language, setLanguage } = useLanguage()
-  const { mode, darkVariant, setMode, setDarkVariant, toggleMode } = useTheme()
   const [user, setUser] = useState<any>(null)
   const [profile, setProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
