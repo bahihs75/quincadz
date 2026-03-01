@@ -107,3 +107,128 @@
   inset: 5px;
   border-radius: 15px;
 }
+
+/* Product card from Uiverse */
+.product-card {
+  width: 100%;
+  max-width: 190px;
+  height: 254px;
+  border-radius: 20px;
+  background: #f5f5f5;
+  position: relative;
+  padding: 1.8rem;
+  border: 2px solid #c3c6ce;
+  transition: 0.5s ease-out;
+  overflow: visible;
+  margin: 0 auto;
+}
+
+.dark .product-card {
+  background: #1f2937;
+  border-color: #4b5563;
+}
+
+.product-card .card-details {
+  color: black;
+  height: 100%;
+  gap: 0.5em;
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+
+.dark .product-card .card-details {
+  color: white;
+}
+
+.product-card .card-button {
+  transform: translate(-50%, 125%);
+  width: 60%;
+  border-radius: 1rem;
+  border: none;
+  background-color: #008bf8;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  opacity: 0;
+  transition: 0.3s ease-out;
+}
+
+.product-card .card-button:hover {
+  background-color: #0056b3;
+}
+
+.product-card .card-button.secondary {
+  background-color: #6c757d;
+  bottom: 50px; /* position above the primary button */
+}
+
+.product-card .card-button.secondary:hover {
+  background-color: #5a6268;
+}
+
+.product-card .text-body {
+  color: rgb(134, 134, 134);
+  font-size: 0.9rem;
+}
+
+.dark .product-card .text-body {
+  color: #9ca3af;
+}
+
+.product-card .text-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+/* Hover effect */
+.product-card:hover {
+  border-color: #008bf8;
+  box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
+}
+
+.product-card:hover .card-button {
+  transform: translate(-50%, 50%);
+  opacity: 1;
+}
+
+/* Container for two buttons */
+.product-card .button-group {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 100%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.product-card:hover .button-group .card-button {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  position: relative;
+  left: auto;
+  margin: 0 auto;
+}
+
+.product-card .button-group .card-button {
+  position: relative;
+  left: auto;
+  transform: translate(-50%, 125%);
+  margin: 0 auto;
+}
+
+.product-card .button-group .card-button:first-child {
+  bottom: 0;
+}
+
+.product-card .button-group .card-button:last-child {
+  bottom: 0;
+}
