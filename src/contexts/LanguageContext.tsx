@@ -90,6 +90,7 @@ const translations: Record<Language, Record<string, string>> = {
     details: "التفاصيل",
     logout_success: "تم تسجيل الخروج بنجاح",
     logout_success: "تم تسجيل الخروج بنجاح",
+    logout_success: "تم تسجيل الخروج بنجاح",
   },
   fr: {
     home: 'Accueil',
@@ -170,6 +171,7 @@ const translations: Record<Language, Record<string, string>> = {
     details: "Détails",
     logout_success: "Déconnexion réussie",
     logout_success: "Déconnexion réussie",
+    logout_success: "Déconnexion réussie",
   },
   en: {
     home: 'Home',
@@ -248,6 +250,7 @@ const translations: Record<Language, Record<string, string>> = {
     hide_map: "Hide map",
     member_since: "Member since",
     details: "Details",
+    logout_success: "Logout successful",
     logout_success: "Logout successful",
     logout_success: "Logout successful",
   },
