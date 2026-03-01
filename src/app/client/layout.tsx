@@ -8,13 +8,15 @@ import { useCart } from '@/contexts/CartContext'
 import { useLanguage } from '@/contexts/LanguageContext'
 import CartSidebar from '@/components/client/CartSidebar'
 import LocationPicker from '@/components/LocationPicker'
-import { ShoppingCart, Menu, X, User, MapPin, Globe } from 'lucide-react'
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
+import { ShoppingCart, Menu, X, User, MapPin } from 'lucide-react'
+import toast from 'react-hot-toast'
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
   const { getItemCount, openCart, closeCart } = useCart()
-  const { t, language, setLanguage } = useLanguage()
+  const { t } = useLanguage()
   const [user, setUser] = useState<any>(null)
   const [userLocation, setUserLocation] = useState<any>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -45,6 +47,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const handleLinkClick = () => {
     closeCart()
     setMobileMenuOpen(false)
+  }
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    toast.success(t('logout_success'))
+    router.push('/')
   }
 
   const navItems = [
@@ -83,38 +91,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               ))}
             </nav>
 
-            <div className="flex items-center gap-4">
-              <div className="relative group">
-                <button className="p-2 text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary">
-                  <Globe size={20} />
-                </button>
-                <div className="absolute left-0 z-50 mt-2 hidden w-40 rounded-lg border border-gray-200 bg-white shadow-lg group-hover:block dark:border-gray-700 dark:bg-gray-800">
-                  <button
-                    onClick={() => setLanguage('ar')}
-                    className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                      language === 'ar' ? 'bg-primary/10 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'
-                    }`}
-                  >
-                    العربية
-                  </button>
-                  <button
-                    onClick={() => setLanguage('fr')}
-                    className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                      language === 'fr' ? 'bg-primary/10 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'
-                    }`}
-                  >
-                    Français
-                  </button>
-                  <button
-                    onClick={() => setLanguage('en')}
-                    className={`block w-full px-4 py-2 text-right hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                      language === 'en' ? 'bg-primary/10 text-primary dark:bg-secondary/30 dark:text-primary' : 'text-gray-700 dark:text-gray-300'
-                    }`}
-                  >
-                    English
-                  </button>
-                </div>
-              </div>
+            <div className="flex items-center gap-3">
+              <LanguageSwitcher />
 
               {userLocation && (
                 <div className="hidden items-center text-sm text-gray-600 dark:text-gray-400 md:flex">
@@ -141,9 +119,18 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </button>
 
               {user ? (
-                <Link href="/client/profile" onClick={handleLinkClick} className="p-2 text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary">
-                  <User size={20} />
-                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="Btn group"
+                  aria-label="Logout"
+                >
+                  <div className="sign">
+                    <svg viewBox="0 0 512 512">
+                      <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
+                    </svg>
+                  </div>
+                  <div className="text">Logout</div>
+                </button>
               ) : (
                 <Link
                   href="/auth/login"

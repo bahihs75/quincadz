@@ -88,6 +88,8 @@ const translations: Record<Language, Record<string, string>> = {
     hide_map: "إخفاء الخريطة",
     member_since: "عضو منذ",
     details: "التفاصيل",
+    logout_success: "تم تسجيل الخروج بنجاح",
+    logout_success: "تم تسجيل الخروج بنجاح",
   },
   fr: {
     home: 'Accueil',
@@ -166,6 +168,8 @@ const translations: Record<Language, Record<string, string>> = {
     hide_map: "Cacher la carte",
     member_since: "Membre depuis",
     details: "Détails",
+    logout_success: "Déconnexion réussie",
+    logout_success: "Déconnexion réussie",
   },
   en: {
     home: 'Home',
@@ -244,6 +248,8 @@ const translations: Record<Language, Record<string, string>> = {
     hide_map: "Hide map",
     member_since: "Member since",
     details: "Details",
+    logout_success: "Logout successful",
+    logout_success: "Logout successful",
   },
 }
 
