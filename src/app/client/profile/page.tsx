@@ -80,7 +80,7 @@ export default function ProfilePage() {
 
       <div className="flex flex-col items-center gap-8">
         {/* Animated profile card */}
-        <div className="profile-card">
+        <div className="gradient-card">
           <div className="z-10 text-center p-4">
             <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <User size={40} className="text-white" />
