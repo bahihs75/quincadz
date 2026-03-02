@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { wilayas, baladiyas } from '@/lib/algeriaData'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { MapPin, AlertCircle, X, Search } from 'lucide-react'
-import usePlacesAutocomplete, { geocodeByAddress, getLatLng } from 'use-places-autocomplete'
 
 interface Props {
   onLocationSelect: (location: {
@@ -28,21 +27,6 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
   const [gettingLocation, setGettingLocation] = useState(false)
   const [locationError, setLocationError] = useState('')
   const [isClient, setIsClient] = useState(false)
-  const [mapSearch, setMapSearch] = useState('')
-  const [mapSuggestions, setMapSuggestions] = useState<any[]>([])
-
-  const {
-    ready,
-    value,
-    suggestions: { data, loading: suggestionsLoading },
-    setValue,
-    clearSuggestions,
-  } = usePlacesAutocomplete({
-    debounce: 300,
-    requestOptions: {
-      componentRestrictions: { country: 'dz' }, // Restrict to Algeria
-    },
-  })
 
   useEffect(() => {
     setIsClient(true)
@@ -127,27 +111,6 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
     )
   }
 
-  const handleMapSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMapSearch(e.target.value)
-    setValue(e.target.value)
-  }
-
-  const handleSelectSuggestion = async (suggestion: any) => {
-    setMapSearch(suggestion.description)
-    clearSuggestions()
-    try {
-      const results = await geocodeByAddress(suggestion.description)
-      const latLng = await getLatLng(results[0])
-      // Here you would reverse‑geocode to match our wilaya/baladiya data
-      // For now, just log and close
-      console.log('Selected place:', suggestion.description, latLng)
-      // Optionally, you can try to match the address components to our wilayas list
-      // This is a simplified version – you might need to parse the address_components
-    } catch (error) {
-      console.error('Error geocoding:', error)
-    }
-  }
-
   return (
     <div className="relative">
       {onClose && (
@@ -168,7 +131,6 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
         </div>
 
         <div className="space-y-4">
-          {/* GPS button */}
           <button
             onClick={getCurrentLocation}
             disabled={gettingLocation}
@@ -186,35 +148,6 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
               </>
             )}
           </button>
-
-          {/* Google Maps search */}
-          {ready && (
-            <div className="relative">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  value={mapSearch}
-                  onChange={handleMapSearch}
-                  placeholder="Rechercher une ville ou wilaya..."
-                  className="w-full rounded-xl border border-gray-300 bg-white py-3 pl-10 pr-4 text-gray-900 focus:border-transparent focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:ring-primary"
-                />
-              </div>
-              {data.length > 0 && (
-                <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
-                  {data.map((suggestion) => (
-                    <button
-                      key={suggestion.place_id}
-                      onClick={() => handleSelectSuggestion(suggestion)}
-                      className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-                    >
-                      {suggestion.description}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
