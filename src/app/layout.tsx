@@ -4,7 +4,7 @@ import './globals.css'
 import { CartProvider } from '@/contexts/CartContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { Toaster } from 'react-hot-toast'
-import Script from 'next/script'
+import ClientGuard from '@/components/ClientGuard'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,16 +21,14 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body className={inter.className}>
-        <LanguageProvider>
-          <CartProvider>
-            {children}
-            <Toaster position="top-center" reverseOrder={false} />
-          </CartProvider>
-        </LanguageProvider>
-        <Script
-          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-          strategy="beforeInteractive"
-        />
+        <ClientGuard>
+          <LanguageProvider>
+            <CartProvider>
+              {children}
+              <Toaster position="top-center" reverseOrder={false} />
+            </CartProvider>
+          </LanguageProvider>
+        </ClientGuard>
       </body>
     </html>
   )
