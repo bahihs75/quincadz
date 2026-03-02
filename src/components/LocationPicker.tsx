@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react'
 import { wilayas, baladiyas } from '@/lib/algeriaData'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { MapPin, AlertCircle, X } from 'lucide-react'
+import { MapPin, AlertCircle, X, Search } from 'lucide-react'
+import usePlacesAutocomplete from 'use-places-autocomplete'
+import { geocodeByAddress, getLatLng } from 'react-google-maps'
 
 interface Props {
   onLocationSelect: (location: {
@@ -27,6 +29,18 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
   const [gettingLocation, setGettingLocation] = useState(false)
   const [locationError, setLocationError] = useState('')
   const [isClient, setIsClient] = useState(false)
+  const [useGoogle, setUseGoogle] = useState(false)
+
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: { componentRestrictions: { country: 'dz' } }, // Restrict to Algeria
+    debounce: 300,
+  })
 
   useEffect(() => {
     setIsClient(true)
@@ -111,9 +125,67 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
     )
   }
 
+  const handleGoogleSelect = async (description: string) => {
+    setValue(description, false)
+    clearSuggestions()
+    try {
+      const results = await geocodeByAddress(description)
+      const latLng = await getLatLng(results[0])
+      const addressComponents = results[0].address_components
+      
+      // Extract wilaya and baladiya from address components
+      // This depends on Google's address format; we may need to map.
+      // For now, we'll just use the coordinates and reverse geocode via Nominatim as fallback.
+      // A simpler approach: use the coordinates and then use Nominatim as we already have.
+      // But to fully integrate, we'd need to map Google's address components to our wilayas.
+      
+      // Fallback: use Nominatim with the coordinates
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latLng.lat}&lon=${latLng.lng}&accept-language=fr`
+      )
+      const data = await response.json()
+      const address = data.address
+      const wilayaName = address.state || address.region || ''
+      const baladiyaName = address.city || address.town || address.village || ''
+
+      const matchedWilaya = wilayas.find(w => 
+        wilayaName.includes(w.name_ar) || w.name_ar.includes(wilayaName) ||
+        wilayaName.includes(w.name_fr) || w.name_fr.includes(wilayaName)
+      )
+      if (!matchedWilaya) {
+        setLocationError('Wilaya not found')
+        return
+      }
+
+      const matchedBaladiya = baladiyas.find(b => 
+        b.wilaya_id === matchedWilaya.id && 
+        (baladiyaName.includes(b.name_ar) || b.name_ar.includes(baladiyaName) ||
+         baladiyaName.includes(b.name_fr) || b.name_fr.includes(baladiyaName))
+      )
+
+      if (matchedWilaya && matchedBaladiya) {
+        setSelectedWilaya(matchedWilaya.id)
+        setSelectedBaladiya(matchedBaladiya.id)
+        onLocationSelect({
+          wilaya_id: matchedWilaya.id,
+          wilaya_name: matchedWilaya.name_ar,
+          baladiya_id: matchedBaladiya.id,
+          baladiya_name: matchedBaladiya.name_ar,
+          latitude: latLng.lat,
+          longitude: latLng.lng
+        })
+        onClose?.()
+      } else {
+        setLocationError('Could not determine baladiya')
+      }
+    } catch (error) {
+      console.error('Google Places error:', error)
+      setLocationError('Error selecting location')
+    }
+  }
+
   return (
     <div className="relative">
-      {/* Close button */}
       {onClose && (
         <button
           onClick={onClose}
@@ -132,7 +204,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center gap-3">
+          <div className="flex gap-2">
             <button
               onClick={getCurrentLocation}
               disabled={gettingLocation}
@@ -150,7 +222,45 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
                 </>
               )}
             </button>
+            <button
+              onClick={() => setUseGoogle(!useGoogle)}
+              className={`px-4 py-3 rounded-xl border transition ${
+                useGoogle ? 'bg-primary text-white border-primary' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300'
+              }`}
+              title="Search with Google"
+            >
+              <Search size={20} />
+            </button>
           </div>
+
+          {useGoogle && (
+            <div className="mb-4">
+              <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                Rechercher une adresse
+              </label>
+              <input
+                type="text"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                disabled={!ready}
+                placeholder="Entrez une adresse..."
+                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+              {status === 'OK' && (
+                <ul className="mt-2 max-h-60 overflow-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-lg">
+                  {data.map((suggestion) => (
+                    <li
+                      key={suggestion.place_id}
+                      onClick={() => handleGoogleSelect(suggestion.description)}
+                      className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-900 dark:text-white"
+                    >
+                      {suggestion.description}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">

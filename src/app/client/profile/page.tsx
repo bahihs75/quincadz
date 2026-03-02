@@ -4,9 +4,8 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { User, Mail, Phone, Globe } from 'lucide-react'
+import { User, Mail, Phone, LogOut, Globe } from 'lucide-react'
 import toast from 'react-hot-toast'
-import LogoutButton from '@/components/ui/LogoutButton'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -47,6 +46,7 @@ export default function ProfilePage() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
+    toast.success(t('logout_success'))
     router.push('/')
   }
 
@@ -78,101 +78,113 @@ export default function ProfilePage() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 text-black dark:text-white">{t('profile')}</h1>
 
-      <div className="flex flex-col items-center gap-8">
-        {/* Animated profile card */}
-        <div className="gradient-card">
-          <div className="z-10 text-center p-4">
-            <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-              <User size={40} className="text-white" />
+      <div className="gradient-card w-full max-w-2xl p-6">
+        <div className="z-10 relative">
+          {/* Header with avatar */}
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+              <User size={32} className="text-white" />
             </div>
-            <h2>{profile?.full_name || t('user')}</h2>
-            <p>{profile?.email}</p>
-            <p className="text-sm opacity-80">{t('member_since')} {new Date(profile?.created_at).toLocaleDateString()}</p>
+            <div>
+              <h2 className="text-2xl font-bold text-white">{profile?.full_name || t('user')}</h2>
+              <p className="text-white/80">{profile?.email}</p>
+            </div>
           </div>
-        </div>
 
-        {/* Language selection */}
-        <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-            <Globe size={20} />
-            {t('language')}
-          </h3>
-          <div className="flex gap-4">
-            <button
-              onClick={() => setLanguage('ar')}
-              className={`px-4 py-2 rounded-lg border ${
-                language === 'ar'
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
-              }`}
-            >
-              {t('arabic')}
-            </button>
-            <button
-              onClick={() => setLanguage('fr')}
-              className={`px-4 py-2 rounded-lg border ${
-                language === 'fr'
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
-              }`}
-            >
-              {t('french')}
-            </button>
-            <button
-              onClick={() => setLanguage('en')}
-              className={`px-4 py-2 rounded-lg border ${
-                language === 'en'
-                  ? 'bg-primary text-white border-primary'
-                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600'
-              }`}
-            >
-              {t('english')}
-            </button>
+          {/* Member since */}
+          <div className="mb-6 p-3 bg-white/10 rounded-lg">
+            <p className="text-white text-sm">
+              {t('member_since')} {new Date(profile?.created_at).toLocaleDateString()}
+            </p>
           </div>
-        </div>
 
-        {/* Edit profile form */}
-        <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h3 className="text-lg font-bold mb-4">تعديل الملف الشخصي</h3>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">{t('full_name')}</label>
+          {/* Language selection */}
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+              <Globe size={20} />
+              {t('language')}
+            </h3>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setLanguage('ar')}
+                className={`px-4 py-2 rounded-lg border-2 transition ${
+                  language === 'ar'
+                    ? 'bg-white text-primary border-white'
+                    : 'bg-transparent text-white border-white/30 hover:bg-white/20'
+                }`}
+              >
+                العربية
+              </button>
+              <button
+                onClick={() => setLanguage('fr')}
+                className={`px-4 py-2 rounded-lg border-2 transition ${
+                  language === 'fr'
+                    ? 'bg-white text-primary border-white'
+                    : 'bg-transparent text-white border-white/30 hover:bg-white/20'
+                }`}
+              >
+                Français
+              </button>
+              <button
+                onClick={() => setLanguage('en')}
+                className={`px-4 py-2 rounded-lg border-2 transition ${
+                  language === 'en'
+                    ? 'bg-white text-primary border-white'
+                    : 'bg-transparent text-white border-white/30 hover:bg-white/20'
+                }`}
+              >
+                English
+              </button>
+            </div>
+          </div>
+
+          {/* Edit profile form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block mb-1 text-white/90 text-sm font-medium">{t('full_name')}</label>
               <input
                 type="text"
                 value={formData.full_name}
                 onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white"
               />
             </div>
-            <div className="mb-4">
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">{t('email')}</label>
+            <div>
+              <label className="block mb-1 text-white/90 text-sm font-medium">{t('email')}</label>
               <input
                 type="email"
                 value={user?.email}
                 disabled
-                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white/70 cursor-not-allowed"
               />
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{t('email_cannot_change')}</p>
+              <p className="text-xs text-white/50 mt-1">{t('email_cannot_change')}</p>
             </div>
-            <div className="mb-6">
-              <label className="block mb-1 text-gray-700 dark:text-gray-300">{t('phone')}</label>
+            <div>
+              <label className="block mb-1 text-white/90 text-sm font-medium">{t('phone')}</label>
               <input
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white"
               />
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex gap-4 pt-4">
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary disabled:opacity-50"
+                className="flex-1 bg-white text-primary font-bold py-3 px-4 rounded-lg hover:bg-white/90 transition disabled:opacity-50"
               >
                 {saving ? t('saving') : t('save_changes')}
               </button>
-              <LogoutButton onClick={handleLogout} />
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex-1 bg-red-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-red-600 transition flex items-center justify-center gap-2"
+              >
+                <LogOut size={18} />
+                {t('logout')}
+              </button>
             </div>
           </form>
         </div>

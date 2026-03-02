@@ -5,13 +5,13 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/contexts/LanguageContext'
-import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
 import { 
   LayoutDashboard, 
   Store, 
   Users, 
   Tag, 
   Settings, 
+  LogOut,
   Menu,
   X,
   Package
@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
-  const { t } = useLanguage()
+  const { language, setLanguage, t } = useLanguage()
   const [userName, setUserName] = useState('')
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
@@ -82,7 +82,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {mobileSidebarOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
         <span className="font-bold text-primary dark:text-primary">QuincaDZ – {t('admin_dashboard')}</span>
-        <LanguageSwitcher />
+        <select
+          value={language}
+          onChange={(e) => setLanguage(e.target.value as 'ar'|'fr'|'en')}
+          className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white text-sm rounded-lg p-1"
+        >
+          <option value="ar">AR</option>
+          <option value="fr">FR</option>
+          <option value="en">EN</option>
+        </select>
       </div>
 
       {mobileSidebarOpen && (
@@ -103,7 +111,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </div>
           </div>
           <div className="hidden lg:block">
-            <LanguageSwitcher />
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value as 'ar'|'fr'|'en')}
+              className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white text-sm rounded-lg p-1"
+            >
+              <option value="ar">AR</option>
+              <option value="fr">FR</option>
+              <option value="en">EN</option>
+            </select>
           </div>
         </div>
         <nav className="p-4">
@@ -116,14 +132,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <li className="mt-4 border-t border-gray-200 pt-4 dark:border-gray-800">
               <button
                 onClick={handleLogout}
-                className="Btn w-full flex items-center gap-3 rounded-lg px-4 py-3 text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-gray-700 transition hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
               >
-                <div className="sign">
-                  <svg viewBox="0 0 512 512">
-                    <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
-                  </svg>
-                </div>
-                <span className="text">{t('logout')}</span>
+                <LogOut size={20} />
+                <span>{t('logout')}</span>
               </button>
             </li>
           </ul>
