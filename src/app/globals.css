@@ -425,3 +425,34 @@
   margin-left: 8px;
   width: auto;
 }
+
+/* Loader animation for location detection */
+.location-loader {
+  width: 44.8px;
+  height: 44.8px;
+  position: relative;
+  transform: rotate(45deg);
+  display: inline-block;
+}
+
+.location-loader:before,
+.location-loader:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50% 50% 0 50%;
+  background: #0000;
+  background-image: radial-gradient(circle 11.2px at 50% 50%, #0000 94%, #ff4747);
+}
+
+.location-loader:after {
+  animation: pulse-location 1s infinite;
+  transform: perspective(336px) translateZ(0px);
+}
+
+@keyframes pulse-location {
+  to {
+    transform: perspective(336px) translateZ(168px);
+    opacity: 0;
+  }
+}

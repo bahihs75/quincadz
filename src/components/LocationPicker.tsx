@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { wilayas, baladiyas } from '@/lib/algeriaData'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { MapPin, Locate, AlertCircle } from 'lucide-react'
+import { MapPin, AlertCircle, X } from 'lucide-react'
 
 interface Props {
   onLocationSelect: (location: {
@@ -15,9 +15,10 @@ interface Props {
     longitude?: number
   }) => void
   initialLocation?: any
+  onClose?: () => void
 }
 
-export default function LocationPicker({ onLocationSelect, initialLocation }: Props) {
+export default function LocationPicker({ onLocationSelect, initialLocation, onClose }: Props) {
   const { t, language } = useLanguage()
   const [selectedWilaya, setSelectedWilaya] = useState<number | ''>(initialLocation?.wilaya_id || '')
   const [selectedBaladiya, setSelectedBaladiya] = useState<number | ''>(initialLocation?.baladiya_id || '')
@@ -84,6 +85,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation }: Pr
               latitude,
               longitude
             })
+            onClose?.()
           } else {
             setSelectedWilaya(matchedWilaya.id)
             setSearchTerm('')
@@ -110,88 +112,125 @@ export default function LocationPicker({ onLocationSelect, initialLocation }: Pr
   }
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-black dark:text-white">{t('choose_location')}</h2>
+    <div className="relative">
+      {/* Close button */}
+      {onClose && (
         <button
-          onClick={getCurrentLocation}
-          disabled={gettingLocation}
-          className="flex items-center gap-2 text-primary hover:text-secondary disabled:opacity-50"
+          onClick={onClose}
+          className="absolute -top-2 -right-2 w-8 h-8 bg-white dark:bg-gray-800 rounded-full shadow-md flex items-center justify-center text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 z-10"
         >
-          <Locate size={18} />
-          {gettingLocation ? t('detecting') : t('detect_my_location')}
+          <X size={16} />
         </button>
-      </div>
-
-      {locationError && (
-        <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 rounded-lg text-sm flex items-start gap-2">
-          <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
-          <span>{locationError}</span>
-        </div>
       )}
 
-      <div className="space-y-4">
-        <div>
-          <label className="block mb-1 text-gray-700 dark:text-gray-300">{t('wilaya')}</label>
-          <select
-            value={selectedWilaya}
-            onChange={(e) => {
-              setSelectedWilaya(Number(e.target.value) || '')
-              setSelectedBaladiya('')
-              setSearchTerm('')
-              setShowDropdown(false)
-            }}
-            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-black dark:text-white"
-          >
-            <option value="">{t('select_wilaya')}</option>
-            {wilayas.map(w => (
-              <option key={w.id} value={w.id}>{language === 'fr' ? w.name_fr : w.name_ar}</option>
-            ))}
-          </select>
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-xl">
+            <MapPin className="w-6 h-6 text-primary dark:text-primary" />
+          </div>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('choose_location')}</h2>
         </div>
 
-        {selectedWilaya && (
-          <div className="relative">
-            <label className="block mb-1 text-gray-700 dark:text-gray-300">{t('baladiya')}</label>
-            <input
-              type="text"
-              placeholder={t('search_baladiya')}
-              value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value)
-                setShowDropdown(true)
-              }}
-              onFocus={() => setShowDropdown(true)}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-700 text-black dark:text-white"
-            />
-            {showDropdown && filteredBaladiyas.length > 0 && (
-              <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg max-h-60 overflow-auto">
-                {filteredBaladiyas.map(b => (
-                  <div
-                    key={b.id}
-                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-black dark:text-white"
-                    onClick={() => {
-                      setSearchTerm(b.name_ar)
-                      setShowDropdown(false)
-                      setSelectedBaladiya(b.id)
-                      const wilaya = wilayas.find(w => w.id === selectedWilaya)
-                      if (wilaya) {
-                        onLocationSelect({
-                          wilaya_id: wilaya.id,
-                          wilaya_name: wilaya.name_ar,
-                          baladiya_id: b.id,
-                          baladiya_name: b.name_ar
-                        })
-                      }
-                    }}
-                  >
-                    {language === 'fr' && b.name_fr ? b.name_fr : b.name_ar}
-                  </div>
-                ))}
-              </div>
-            )}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={getCurrentLocation}
+              disabled={gettingLocation}
+              className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-secondary text-white font-medium py-3 px-4 rounded-xl transition disabled:opacity-50"
+            >
+              {gettingLocation ? (
+                <>
+                  <span className="location-loader" />
+                  <span>{t('detecting')}</span>
+                </>
+              ) : (
+                <>
+                  <MapPin size={18} />
+                  <span>{t('detect_my_location')}</span>
+                </>
+              )}
+            </button>
           </div>
-        )}
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-3 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">أو</span>
+            </div>
+          </div>
+
+          {locationError && (
+            <div className="p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 rounded-xl text-sm flex items-start gap-2">
+              <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
+              <span>{locationError}</span>
+            </div>
+          )}
+
+          <div>
+            <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">{t('wilaya')}</label>
+            <select
+              value={selectedWilaya}
+              onChange={(e) => {
+                setSelectedWilaya(Number(e.target.value) || '')
+                setSelectedBaladiya('')
+                setSearchTerm('')
+                setShowDropdown(false)
+              }}
+              className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+            >
+              <option value="">{t('select_wilaya')}</option>
+              {wilayas.map(w => (
+                <option key={w.id} value={w.id}>{language === 'fr' ? w.name_fr : w.name_ar}</option>
+              ))}
+            </select>
+          </div>
+
+          {selectedWilaya && (
+            <div className="relative">
+              <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">{t('baladiya')}</label>
+              <input
+                type="text"
+                placeholder={t('search_baladiya')}
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value)
+                  setShowDropdown(true)
+                }}
+                onFocus={() => setShowDropdown(true)}
+                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+              />
+              {showDropdown && filteredBaladiyas.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 max-h-60 overflow-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl shadow-lg">
+                  {filteredBaladiyas.map(b => (
+                    <div
+                      key={b.id}
+                      className="p-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-gray-900 dark:text-white"
+                      onClick={() => {
+                        setSearchTerm(b.name_ar)
+                        setShowDropdown(false)
+                        setSelectedBaladiya(b.id)
+                        const wilaya = wilayas.find(w => w.id === selectedWilaya)
+                        if (wilaya) {
+                          onLocationSelect({
+                            wilaya_id: wilaya.id,
+                            wilaya_name: wilaya.name_ar,
+                            baladiya_id: b.id,
+                            baladiya_name: b.name_ar
+                          })
+                          onClose?.()
+                        }
+                      }}
+                    >
+                      {language === 'fr' && b.name_fr ? b.name_fr : b.name_ar}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
