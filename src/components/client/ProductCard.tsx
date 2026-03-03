@@ -32,28 +32,28 @@ export default function ProductCard({ product }: { product: any }) {
   }
 
   return (
-    <div className="group card card-hover">
+    <div className="group card-hover bg-white rounded-lg shadow-sm overflow-hidden">
       <Link href={`/client/product/${product.id}`} className="block relative">
         <div className="aspect-square overflow-hidden">
           {product.images && product.images[0] ? (
             <img
               src={product.images[0]}
               alt={displayName}
-              className="w-full h-full object-cover product-image-zoom"
+              className="w-full h-full object-cover image-zoom"
             />
           ) : (
-            <div className="w-full h-full bg-neutral-200 flex items-center justify-center text-neutral-500">
+            <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-500">
               {t('no_image')}
             </div>
           )}
         </div>
         {product.stock_quantity <= 5 && product.stock_quantity > 0 && (
-          <span className="badge badge-warning absolute top-2 right-2">
+          <span className="badge badge-instock">
             {t('last_items', { count: product.stock_quantity })}
           </span>
         )}
         {product.stock_quantity === 0 && (
-          <span className="badge badge-neutral absolute top-2 right-2">
+          <span className="badge bg-slate-500 text-white">
             {t('out_of_stock')}
           </span>
         )}
@@ -61,16 +61,16 @@ export default function ProductCard({ product }: { product: any }) {
 
       <div className="p-4">
         <Link href={`/client/product/${product.id}`}>
-          <h3 className="font-bold text-h3 text-neutral-900 line-clamp-2 hover:text-primary-500 transition-colors">
+          <h3 className="font-bold text-lg text-slate-800 line-clamp-2 hover:text-primary transition-colors">
             {displayName}
           </h3>
         </Link>
-        <p className="text-small text-neutral-500 mt-1">{product.stores?.store_name}</p>
+        <p className="text-sm text-slate-500 mt-1">{product.stores?.store_name}</p>
         <div className="flex items-center justify-between mt-2">
-          <span className="text-h3 font-bold text-primary-500">
+          <span className="text-lg font-bold text-primary">
             {product.price.toLocaleString()} DA
           </span>
-          <span className="text-small text-neutral-400">/{product.unit}</span>
+          <span className="text-sm text-slate-400">/{product.unit}</span>
         </div>
         <button
           onClick={handleAddToCart}
@@ -81,12 +81,12 @@ export default function ProductCard({ product }: { product: any }) {
           {t('add_to_cart')}
         </button>
         {quantityInCart > 0 && (
-          <div className="text-small text-green-600 mt-2">
+          <div className="text-sm text-green-600 mt-2">
             {quantityInCart} {t('in_cart')}
           </div>
         )}
         {added && (
-          <div className="text-small text-green-600 animate-pulse mt-1">
+          <div className="text-sm text-green-600 animate-pulse mt-1">
             {t('added_to_cart')} ✓
           </div>
         )}
