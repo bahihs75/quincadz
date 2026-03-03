@@ -9,27 +9,22 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold text-slate-800;
   }
-  /* RTL adjustments for arrows */
   [dir="rtl"] .ltr-icon {
     transform: scaleX(-1);
   }
 }
 
 @layer components {
-  /* Primary button */
   .btn-primary {
     @apply bg-primary text-white h-11 rounded-md px-8 text-lg font-semibold
            hover:bg-secondary transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   }
-  /* Card hover effect (used on product and category cards) */
   .card-hover {
     @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
   }
-  /* Image zoom on hover (for category cards) */
   .image-zoom {
     @apply transition-transform duration-500 group-hover:scale-110;
   }
-  /* Product status badge */
   .badge {
     @apply rounded-full px-2.5 py-0.5 text-xs font-semibold absolute top-2 right-2;
   }
@@ -38,12 +33,5 @@
   }
   .badge-featured {
     @apply bg-primary text-white;
-  }
-}
-
-/* Dark mode overrides (optional, can be extended later) */
-@media (prefers-color-scheme: dark) {
-  body {
-    @apply bg-slate-900 text-slate-300;
   }
 }
