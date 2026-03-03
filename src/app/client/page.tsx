@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/contexts/LanguageContext'
 import ProductCard from '@/components/client/ProductCard'
 import Link from 'next/link'
+import { Marquee } from "@/components/Marquee"
 
 const PAGE_SIZE = 8
 
@@ -88,66 +89,74 @@ export default function ClientHomePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {!userLocation && (
-        <div className="mb-8">
-          <LocationPicker onLocationSelect={handleLocationSelect} />
-        </div>
-      )}
-
-      {categories.length > 0 && (
-        <section className="mb-12">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-black dark:text-white">{t('browse_categories')}</h2>
+    <div className="section-white">
+      <div className="container mx-auto px-4 section-padding">
+        {!userLocation && (
+          <div className="mb-8">
+            <LocationPicker onLocationSelect={handleLocationSelect} />
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {categories.map((cat) => (
-              <Link
-                key={cat.id}
-                href={`/client/products?category=${cat.id}`}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 text-center hover:shadow-md transition border border-gray-200 dark:border-gray-700"
-              >
-                <div className="text-3xl mb-2">{cat.icon || '📦'}</div>
-                <span className="text-gray-700 dark:text-gray-300">{cat.name_ar}</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      <section>
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-black dark:text-white">{t('all_products')}</h2>
-          <Link href="/client/products" className="text-primary dark:text-primary hover:underline">
-            {t('view_all')}
-          </Link>
-        </div>
-
-        {loading ? (
-          <div className="text-center py-12 text-gray-600 dark:text-gray-400">{t('loading')}</div>
-        ) : products.length === 0 ? (
-          <div className="text-center py-12 text-gray-500 dark:text-gray-500">{t('no_products')}</div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-            {hasMore && (
-              <div className="text-center mt-8">
-                <button
-                  onClick={loadMore}
-                  disabled={loadingMore}
-                  className="bg-primary dark:bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary dark:hover:bg-secondary disabled:opacity-50"
-                >
-                  {loadingMore ? t('loading') : t('view_all')}
-                </button>
-              </div>
-            )}
-          </>
         )}
-      </section>
+
+        {categories.length > 0 && (
+          <section className="section-gray py-12 rounded-card mb-12">
+            <div className="container mx-auto px-4">
+              <h2 className="text-h2 font-bold text-neutral-900 mb-6">{t('browse_categories')}</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {categories.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={`/client/products?category=${cat.id}`}
+                    className="group card card-hover p-4 text-center"
+                  >
+                    <div className="text-3xl mb-2">{cat.icon || '📦'}</div>
+                    <span className="text-neutral-700 dark:text-neutral-300">{cat.name_ar}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        <section>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-h2 font-bold text-neutral-900">{t('all_products')}</h2>
+            <Link href="/client/products" className="text-primary-500 hover:text-primary-600 font-semibold transition-colors">
+              {t('view_all')}
+            </Link>
+          </div>
+
+          {loading ? (
+            <div className="text-center py-12 text-neutral-500">{t('loading')}</div>
+          ) : products.length === 0 ? (
+            <div className="text-center py-12 text-neutral-500">{t('no_products')}</div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+              {hasMore && (
+                <div className="text-center mt-8">
+                  <button
+                    onClick={loadMore}
+                    disabled={loadingMore}
+                    className="btn-primary"
+                  >
+                    {loadingMore ? t('loading') : t('view_all')}
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </section>
+
+        <Marquee className="py-4 bg-neutral-100 my-8">
+          <span className="mx-4 text-small text-neutral-700">✅ 50+ متجر موثوق</span>
+          <span className="mx-4 text-small text-neutral-700">🚚 توصيل إلى جميع الولايات</span>
+          <span className="mx-4 text-small text-neutral-700">⭐ أكثر من 1000 طلب مكتمل</span>
+        </Marquee>
+      </div>
     </div>
   )
 }
