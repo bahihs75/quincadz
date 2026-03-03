@@ -57,7 +57,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white dark:bg-gray-900 shadow border-b border-gray-200 dark:border-gray-800">
+      <header className="sticky top-0 z-40 bg-white dark:bg-slate-800
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-2">
@@ -76,7 +76,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   className={`rounded-md px-3 py-2 text-sm font-medium ${
                     pathname === item.href
                       ? 'bg-primary text-white dark:bg-secondary'
-                      : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                      : 'text-gray-700 hover:bg-slate-800
                   }`}
                 >
                   {item.label}
@@ -89,7 +89,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               <select
                 value={language}
                 onChange={(e) => setLanguage(e.target.value as 'ar'|'fr'|'en')}
-                className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-primary focus:border-primary p-2"
+                className="bg-slate-800
               >
                 <option value="ar">AR</option>
                 <option value="fr">FR</option>
@@ -168,7 +168,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   className={`block rounded-md px-3 py-2 text-sm font-medium ${
                     pathname === item.href
                       ? 'bg-primary text-white dark:bg-secondary'
-                      : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                      : 'text-gray-700 hover:bg-slate-800
                   }`}
                   onClick={handleLinkClick}
                 >

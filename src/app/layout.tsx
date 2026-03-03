@@ -1,12 +1,16 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Cairo } from 'next/font/google'
 import './globals.css'
 import { CartProvider } from '@/contexts/CartContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { Toaster } from 'react-hot-toast'
 import ClientGuard from '@/components/ClientGuard'
 
-const inter = Inter({ subsets: ['latin'] })
+const cairo = Cairo({
+  subsets: ['arabic', 'latin'],
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-cairo',
+})
 
 export const metadata: Metadata = {
   title: 'QuincaDZ',
@@ -19,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ar" dir="rtl">
-      <body className={inter.className}>
+    <html lang="ar" dir="rtl" className={cairo.className}>
+      <body>
         <ClientGuard>
           <LanguageProvider>
             <CartProvider>
