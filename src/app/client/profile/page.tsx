@@ -46,7 +46,6 @@ export default function ProfilePage() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
-    toast.success(t('logout_success'))
     router.push('/')
   }
 
@@ -71,122 +70,122 @@ export default function ProfilePage() {
   }
 
   if (loading) {
-    return <div className="container mx-auto px-4 py-12 text-center">{t('loading')}</div>
+    return <div className="container mx-auto px-4 py-12 text-center text-slate-600">{t('loading')}</div>
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-black ">{t('profile')}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-slate-800">{t('profile')}</h1>
 
-      <div className="gradient-card w-full max-w-2xl p-6">
-        <div className="z-10 relative">
-          {/* Header with avatar */}
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-              <User size={32} className="text-white" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-white">{profile?.full_name || t('user')}</h2>
-              <p className="text-white/80">{profile?.email}</p>
+      <div className="flex flex-col items-center gap-8">
+        {/* Profile card */}
+        <div className="w-full max-w-md bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+          <div className="p-6 border-b border-slate-100 bg-slate-50">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                <User size={32} className="text-primary" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-slate-800">{profile?.full_name || t('user')}</h2>
+                <p className="text-slate-500 text-sm">{profile?.email}</p>
+                <p className="text-xs text-slate-400 mt-1">{t('member_since')} {new Date(profile?.created_at).toLocaleDateString()}</p>
+              </div>
             </div>
           </div>
 
-          {/* Member since */}
-          <div className="mb-6 p-3 bg-white/10 rounded-lg">
-            <p className="text-white text-sm">
-              {t('member_since')} {new Date(profile?.created_at).toLocaleDateString()}
-            </p>
+          <div className="p-6 space-y-6">
+            {/* Language selection */}
+            <div>
+              <h3 className="text-lg font-bold mb-3 flex items-center gap-2 text-slate-800">
+                <Globe size={18} />
+                {t('language')}
+              </h3>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setLanguage('ar')}
+                  className={`px-4 py-2 rounded-lg border text-sm font-medium transition ${
+                    language === 'ar'
+                      ? 'bg-primary text-white border-primary'
+                      : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                  }`}
+                >
+                  {t('arabic')}
+                </button>
+                <button
+                  onClick={() => setLanguage('fr')}
+                  className={`px-4 py-2 rounded-lg border text-sm font-medium transition ${
+                    language === 'fr'
+                      ? 'bg-primary text-white border-primary'
+                      : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                  }`}
+                >
+                  {t('french')}
+                </button>
+                <button
+                  onClick={() => setLanguage('en')}
+                  className={`px-4 py-2 rounded-lg border text-sm font-medium transition ${
+                    language === 'en'
+                      ? 'bg-primary text-white border-primary'
+                      : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
+                  }`}
+                >
+                  {t('english')}
+                </button>
+              </div>
+            </div>
+
+            {/* Edit profile form */}
+            <div>
+              <h3 className="text-lg font-bold mb-3 text-slate-800">{t('edit_profile')}</h3>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">{t('full_name')}</label>
+                  <input
+                    type="text"
+                    value={formData.full_name}
+                    onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-slate-800"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">{t('email')}</label>
+                  <input
+                    type="email"
+                    value={user?.email}
+                    disabled
+                    className="w-full px-4 py-2 border border-slate-200 rounded-lg bg-slate-50 text-slate-500 cursor-not-allowed"
+                  />
+                  <p className="text-xs text-slate-400 mt-1">{t('email_cannot_change')}</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">{t('phone')}</label>
+                  <input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-slate-800"
+                  />
+                </div>
+                <div className="flex gap-4 pt-2">
+                  <button
+                    type="submit"
+                    disabled={saving}
+                    className="btn-primary"
+                  >
+                    {saving ? t('saving') : t('save_changes')}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="px-6 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
+                  >
+                    <LogOut size={16} className="inline ml-1" />
+                    {t('logout')}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-
-          {/* Language selection */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-              <Globe size={20} />
-              {t('language')}
-            </h3>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setLanguage('ar')}
-                className={`px-4 py-2 rounded-lg border-2 transition ${
-                  language === 'ar'
-                    ? 'bg-white text-primary border-white'
-                    : 'bg-transparent text-white border-white/30 hover:bg-white/20'
-                }`}
-              >
-                العربية
-              </button>
-              <button
-                onClick={() => setLanguage('fr')}
-                className={`px-4 py-2 rounded-lg border-2 transition ${
-                  language === 'fr'
-                    ? 'bg-white text-primary border-white'
-                    : 'bg-transparent text-white border-white/30 hover:bg-white/20'
-                }`}
-              >
-                Français
-              </button>
-              <button
-                onClick={() => setLanguage('en')}
-                className={`px-4 py-2 rounded-lg border-2 transition ${
-                  language === 'en'
-                    ? 'bg-white text-primary border-white'
-                    : 'bg-transparent text-white border-white/30 hover:bg-white/20'
-                }`}
-              >
-                English
-              </button>
-            </div>
-          </div>
-
-          {/* Edit profile form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block mb-1 text-white/90 text-sm font-medium">{t('full_name')}</label>
-              <input
-                type="text"
-                value={formData.full_name}
-                onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 text-white/90 text-sm font-medium">{t('email')}</label>
-              <input
-                type="email"
-                value={user?.email}
-                disabled
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white/70 cursor-not-allowed"
-              />
-              <p className="text-xs text-white/50 mt-1">{t('email_cannot_change')}</p>
-            </div>
-            <div>
-              <label className="block mb-1 text-white/90 text-sm font-medium">{t('phone')}</label>
-              <input
-                type="tel"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white"
-              />
-            </div>
-
-            <div className="flex gap-4 pt-4">
-              <button
-                type="submit"
-                disabled={saving}
-                className="flex-1 bg-white text-primary font-bold py-3 px-4 rounded-lg hover:bg-white/90 transition disabled:opacity-50"
-              >
-                {saving ? t('saving') : t('save_changes')}
-              </button>
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="flex-1 bg-red-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-red-600 transition flex items-center justify-center gap-2"
-              >
-                <LogOut size={18} />
-                {t('logout')}
-              </button>
-            </div>
-          </form>
         </div>
       </div>
     </div>
