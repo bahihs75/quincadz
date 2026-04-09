@@ -216,7 +216,7 @@ export default function AdminCategoriesPage() {
 
       {/* Categories List */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table class="data-table" className="w-full">
+        <table className="w-full data-table">
           <thead className="bg-slate-50">
             <tr>
               <th className="text-right py-3 px-4">الترتيب</th>
