@@ -19,7 +19,7 @@ export default function StatsCards({ products, orders, revenue }: StatsCardsProp
             {stat.icon}
           </div>
           <div>
-            <p className="text-gray-600 text-sm">{stat.title}</p>
+            <p className="text-slate-600 text-sm">{stat.title}</p>
             <p className="text-2xl font-bold">{stat.value}</p>
           </div>
         </div>

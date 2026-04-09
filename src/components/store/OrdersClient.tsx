@@ -42,7 +42,7 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
-        <thead className="bg-gray-50">
+        <thead className="bg-slate-50">
           <tr>
             <th className="text-right py-3 px-4">رقم الطلب</th>
             <th className="text-right py-3 px-4">العميل</th>
@@ -59,14 +59,14 @@ export default function OrdersClient({ orders }: { orders: Order[] }) {
             // Cast the status to the correct type
             const status = order.order_status as OrderStatus
             return (
-              <tr key={order.id} className="border-b hover:bg-gray-50">
+              <tr key={order.id} className="border-b hover:bg-slate-50">
                 <td className="py-3 px-4">{order.order_number}</td>
                 <td className="py-3 px-4">{order.client_name}</td>
                 <td className="py-3 px-4">{order.client_phone}</td>
                 <td className="py-3 px-4">{order.delivery_address}</td>
                 <td className="py-3 px-4">{order.total_amount.toLocaleString()} دج</td>
                 <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded text-sm ${statusColors[status] || 'bg-gray-100'}`}>
+                  <span className={`px-2 py-1 rounded text-sm ${statusColors[status] || 'bg-slate-100'}`}>
                     {status === 'pending' && 'قيد الانتظار'}
                     {status === 'accepted' && 'تم القبول'}
                     {status === 'preparing' && 'قيد التحضير'}

@@ -47,7 +47,7 @@ export default function StoreTable({ stores }: { stores: Store[] }) {
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-slate-50">
             <tr>
               <th className="text-right py-3 px-4">المتجر</th>
               <th className="text-right py-3 px-4">المالك</th>
@@ -60,11 +60,11 @@ export default function StoreTable({ stores }: { stores: Store[] }) {
           </thead>
           <tbody>
             {stores.map((store) => (
-              <tr key={store.id} className="border-b hover:bg-gray-50">
+              <tr key={store.id} className="border-b hover:bg-slate-50">
                 <td className="py-3 px-4">{store.store_name}</td>
                 <td className="py-3 px-4">
                   {store.users?.full_name}<br />
-                  <span className="text-xs text-gray-500">{store.users?.email}</span>
+                  <span className="text-xs text-slate-500">{store.users?.email}</span>
                 </td>
                 <td className="py-3 px-4">
                   {store.wilayas?.name_ar} - {store.baladiyas?.name_ar}

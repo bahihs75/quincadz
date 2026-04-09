@@ -76,7 +76,7 @@ export default function ProfilePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-black dark:text-white">{t('profile')}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-black ">{t('profile')}</h1>
 
       <div className="gradient-card w-full max-w-2xl p-6">
         <div className="z-10 relative">

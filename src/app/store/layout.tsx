@@ -52,8 +52,8 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
         href={item.href}
         className={`flex items-center gap-3 rounded-lg px-4 py-3 transition ${
           isActive
-            ? 'bg-primary text-white dark:bg-secondary'
-            : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+            ? 'bg-primary text-white '
+            : 'text-slate-700 hover:bg-slate-100  dark:hover:bg-gray-800'
         }`}
         onClick={() => setMobileSidebarOpen(false)}
       >
@@ -64,16 +64,16 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-950">
-      <div className="lg:hidden bg-white dark:bg-gray-900 shadow p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-800">
-        <button onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)} className="text-gray-700 dark:text-gray-300">
+    <div className="min-h-screen bg-slate-100 ">
+      <div className="lg:hidden bg-white  shadow p-4 flex items-center justify-between border-b border-slate-200 dark:border-gray-800">
+        <button onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)} className="text-slate-700 ">
           {mobileSidebarOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-        <span className="font-bold text-primary dark:text-primary">QuincaDZ – {t('dashboard')}</span>
+        <span className="font-bold text-primary ">QuincaDZ – {t('dashboard')}</span>
         <select
           value={language}
           onChange={(e) => setLanguage(e.target.value as 'ar'|'fr'|'en')}
-          className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white text-sm rounded-lg p-1"
+          className="bg-slate-100  border border-slate-300 dark:border-gray-700 text-slate-900  text-sm rounded-lg p-1"
         >
           <option value="ar">AR</option>
           <option value="fr">FR</option>
@@ -86,23 +86,23 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
       )}
 
       <aside
-        className={`fixed top-0 right-0 z-50 h-full w-64 transform border-l border-gray-200 bg-white shadow-lg transition-transform lg:relative lg:translate-x-0 dark:border-gray-800 dark:bg-gray-900 ${
+        className={`fixed top-0 right-0 z-50 h-full w-64 transform border-l border-slate-200 bg-white shadow-lg transition-transform lg:relative lg:translate-x-0 dark:border-gray-800  ${
           mobileSidebarOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex items-center justify-between border-b border-gray-200 p-6 dark:border-gray-800">
+        <div className="flex items-center justify-between border-b border-slate-200 p-6 dark:border-gray-800">
           <div className="flex items-center gap-2">
             <img src="/logo.png" alt="QuincaDZ" className="h-6 w-auto" />
             <div>
-              <h2 className="text-xl font-bold text-primary dark:text-primary">QuincaDZ</h2>
-              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{storeName || t('dashboard')}</p>
+              <h2 className="text-xl font-bold text-primary ">QuincaDZ</h2>
+              <p className="mt-1 text-sm text-slate-600 ">{storeName || t('dashboard')}</p>
             </div>
           </div>
           <div className="hidden lg:block">
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value as 'ar'|'fr'|'en')}
-              className="bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white text-sm rounded-lg p-1"
+              className="bg-slate-100  border border-slate-300 dark:border-gray-700 text-slate-900  text-sm rounded-lg p-1"
             >
               <option value="ar">AR</option>
               <option value="fr">FR</option>

@@ -40,7 +40,7 @@ export default function ProductTable({ products }: { products: Product[] }) {
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-slate-50">
             <tr>
               <th className="text-right py-3 px-4">المنتج</th>
               <th className="text-right py-3 px-4">السعر</th>
@@ -51,7 +51,7 @@ export default function ProductTable({ products }: { products: Product[] }) {
           </thead>
           <tbody>
             {products.map((product) => (
-              <tr key={product.id} className="border-b hover:bg-gray-50">
+              <tr key={product.id} className="border-b hover:bg-slate-50">
                 <td className="py-3 px-4">{product.name_ar}</td>
                 <td className="py-3 px-4">{product.price.toLocaleString()} دج / {product.unit}</td>
                 <td className="py-3 px-4">{product.stock_quantity}</td>

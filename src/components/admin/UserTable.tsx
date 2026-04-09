@@ -38,7 +38,7 @@ export default function UserTable({ users }: { users: User[] }) {
     switch (role) {
       case 'admin': return <Shield size={16} className="text-red-500" />
       case 'store': return <Store size={16} className="text-primary" />
-      default: return <User size={16} className="text-gray-500" />
+      default: return <User size={16} className="text-slate-500" />
     }
   }
 
@@ -46,7 +46,7 @@ export default function UserTable({ users }: { users: User[] }) {
     <div className="bg-white rounded-lg shadow overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-slate-50">
             <tr>
               <th className="text-right py-3 px-4">الاسم</th>
               <th className="text-right py-3 px-4">البريد الإلكتروني</th>
@@ -58,7 +58,7 @@ export default function UserTable({ users }: { users: User[] }) {
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr key={user.id} className="border-b hover:bg-gray-50">
+              <tr key={user.id} className="border-b hover:bg-slate-50">
                 <td className="py-3 px-4">{user.full_name}</td>
                 <td className="py-3 px-4">{user.email}</td>
                 <td className="py-3 px-4">{user.phone || '-'}</td>

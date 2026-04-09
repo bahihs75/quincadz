@@ -117,7 +117,7 @@ function ProductsContent() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-black dark:text-white">{t('products')}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-black ">{t('products')}</h1>
 
       <button
         onClick={() => setShowFilters(!showFilters)}
@@ -131,35 +131,35 @@ function ProductsContent() {
         <div
           className={`${
             showFilters ? 'block' : 'hidden'
-          } md:block w-full md:w-64 bg-white dark:bg-gray-900 p-4 rounded-lg shadow h-fit border border-gray-200 dark:border-gray-800`}
+          } md:block w-full md:w-64 bg-white  p-4 rounded-lg shadow h-fit border border-slate-200 dark:border-gray-800`}
         >
           <div className="flex justify-between items-center mb-4">
-            <h2 className="font-bold text-lg text-black dark:text-white">{t('filter')}</h2>
+            <h2 className="font-bold text-lg text-black ">{t('filter')}</h2>
             <button onClick={clearFilters} className="text-sm text-primary">
               {t('clear_all')}
             </button>
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">{t('search')}</label>
+            <label className="block text-sm font-medium mb-1 text-slate-700 ">{t('search')}</label>
             <div className="relative">
               <input
                 type="text"
                 value={filters.search}
                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                 placeholder={t('search_placeholder')}
-                className="w-full p-2 pr-8 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-full p-2 pr-8 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
               />
-              <Search size={16} className="absolute left-2 top-3 text-gray-400 dark:text-gray-500" />
+              <Search size={16} className="absolute left-2 top-3 text-gray-400 " />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">{t('category')}</label>
+            <label className="block text-sm font-medium mb-1 text-slate-700 ">{t('category')}</label>
             <select
               value={filters.category}
               onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              className="w-full p-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
             >
               <option value="">{t('all')}</option>
               {categories.map((cat) => (
@@ -171,31 +171,31 @@ function ProductsContent() {
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">{t('price')}</label>
+            <label className="block text-sm font-medium mb-1 text-slate-700 ">{t('price')}</label>
             <div className="flex gap-2">
               <input
                 type="number"
                 placeholder={t('min')}
                 value={filters.minPrice}
                 onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
-                className="w-1/2 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-1/2 p-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
               />
               <input
                 type="number"
                 placeholder={t('max')}
                 value={filters.maxPrice}
                 onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
-                className="w-1/2 p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-1/2 p-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
               />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">{t('sort_by')}</label>
+            <label className="block text-sm font-medium mb-1 text-slate-700 ">{t('sort_by')}</label>
             <select
               value={filters.sort}
               onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              className="w-full p-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
             >
               <option value="newest">{t('newest')}</option>
               <option value="price_asc">{t('price_low_to_high')}</option>
@@ -206,10 +206,10 @@ function ProductsContent() {
 
         <div className="flex-1">
           {loading ? (
-            <div className="text-center py-12 text-gray-600 dark:text-gray-400">{t('loading')}</div>
+            <div className="text-center py-12 text-slate-600 ">{t('loading')}</div>
           ) : products.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 dark:text-gray-400 mb-4">{t('no_products_found')}</p>
+              <p className="text-slate-500  mb-4">{t('no_products_found')}</p>
               <button
                 onClick={clearFilters}
                 className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary"

@@ -116,18 +116,18 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
       {onClose && (
         <button
           onClick={onClose}
-          className="absolute -top-2 -right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md dark:bg-gray-800"
+          className="absolute -top-2 -right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md "
         >
           <X size={16} />
         </button>
       )}
 
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-2xl dark:border-gray-700 dark:bg-gray-800">
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-gray-700 ">
         <div className="mb-6 flex items-center gap-3">
-          <div className="rounded-xl bg-blue-100 p-3 dark:bg-blue-900/30">
-            <MapPin className="h-6 w-6 text-primary dark:text-primary" />
+          <div className="rounded-xl bg-blue-100 p-3 /30">
+            <MapPin className="h-6 w-6 text-primary " />
           </div>
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('choose_location')}</h2>
+          <h2 className="text-xl font-bold text-slate-900 ">{t('choose_location')}</h2>
         </div>
 
         <div className="space-y-4">
@@ -151,22 +151,22 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
+              <div className="w-full border-t border-slate-200 dark:border-gray-700"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-3 text-gray-500 dark:bg-gray-800 dark:text-gray-400">أو</span>
+              <span className="bg-white px-3 text-slate-500  ">أو</span>
             </div>
           </div>
 
           {locationError && (
-            <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600 dark:border-red-800 dark:bg-red-900/30 dark:text-red-400">
+            <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600 dark:border-red-800 /30 ">
               <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
               <span>{locationError}</span>
             </div>
           )}
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">{t('wilaya')}</label>
+            <label className="mb-2 block text-sm font-medium text-slate-700 ">{t('wilaya')}</label>
             <select
               value={selectedWilaya}
               onChange={(e) => {
@@ -175,7 +175,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
                 setSearchTerm('')
                 setShowDropdown(false)
               }}
-              className="w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-900 focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+              className="w-full rounded-xl border border-slate-300 bg-white p-3 text-slate-900 focus:ring-2 focus:ring-primary dark:border-gray-600  "
             >
               <option value="">{t('select_wilaya')}</option>
               {wilayas.map((w) => (
@@ -188,7 +188,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
 
           {selectedWilaya && (
             <div className="relative">
-              <label className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">{t('baladiya')}</label>
+              <label className="mb-2 block text-sm font-medium text-slate-700 ">{t('baladiya')}</label>
               <input
                 type="text"
                 placeholder={t('search_baladiya')}
@@ -198,14 +198,14 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
                   setShowDropdown(true)
                 }}
                 onFocus={() => setShowDropdown(true)}
-                className="w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-900 focus:ring-2 focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className="w-full rounded-xl border border-slate-300 bg-white p-3 text-slate-900 focus:ring-2 focus:ring-primary dark:border-gray-600  "
               />
               {showDropdown && filteredBaladiyas.length > 0 && (
-                <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-gray-300 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
+                <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-slate-300 bg-white shadow-lg dark:border-gray-700 ">
                   {filteredBaladiyas.map((b) => (
                     <div
                       key={b.id}
-                      className="cursor-pointer p-3 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="cursor-pointer p-3 hover:bg-slate-100 dark:hover:bg-gray-700"
                       onClick={() => {
                         setSearchTerm(b.name_ar)
                         setShowDropdown(false)

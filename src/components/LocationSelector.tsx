@@ -21,7 +21,7 @@ export default function LocationSelector({ onSelect, initialWilayaId, initialBal
   return (
     <div className="space-y-4">
       <div>
-        <label className="block mb-1 text-gray-700">الولاية</label>
+        <label className="block mb-1 text-slate-700">الولاية</label>
         <select
           value={selectedWilaya}
           onChange={(e) => {
@@ -40,7 +40,7 @@ export default function LocationSelector({ onSelect, initialWilayaId, initialBal
 
       {selectedWilaya && (
         <div className="relative">
-          <label className="block mb-1 text-gray-700">البلدية</label>
+          <label className="block mb-1 text-slate-700">البلدية</label>
           <input
             type="text"
             placeholder="ابحث عن البلدية..."
@@ -57,7 +57,7 @@ export default function LocationSelector({ onSelect, initialWilayaId, initialBal
               {filteredBaladiyas.map(b => (
                 <div
                   key={b.id}
-                  className="p-2 hover:bg-gray-100 cursor-pointer text-black"
+                  className="p-2 hover:bg-slate-100 cursor-pointer text-black"
                   onClick={() => {
                     setSearchTerm(b.name_ar)
                     setShowDropdown(false)

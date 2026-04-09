@@ -33,14 +33,14 @@ export default async function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-gray-50">
+    <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-slate-50">
       <h1 className="text-5xl font-bold mb-4 text-primary">QuincaDZ</h1>
-      <p className="text-xl mb-8 text-gray-700">أول سوق إلكتروني لمواد البناء في الجزائر</p>
+      <p className="text-xl mb-8 text-slate-700">أول سوق إلكتروني لمواد البناء في الجزائر</p>
       <div className="flex gap-4">
         <Link href="/auth/login" className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary transition">
           دخول
         </Link>
-        <Link href="/auth/register" className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition">
+        <Link href="/auth/register" className="bg-slate-200 text-slate-800 px-6 py-3 rounded-lg hover:bg-slate-300 transition">
           تسجيل
         </Link>
       </div>

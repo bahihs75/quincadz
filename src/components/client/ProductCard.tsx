@@ -32,28 +32,28 @@ export default function ProductCard({ product }: { product: any }) {
   }
 
   return (
-    <div className="group card-hover bg-white rounded-lg shadow-sm overflow-hidden">
+    <div className="group bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-1">
       <Link href={`/client/product/${product.id}`} className="block relative">
         <div className="aspect-square overflow-hidden">
           {product.images && product.images[0] ? (
             <img
               src={product.images[0]}
               alt={displayName}
-              className="w-full h-full object-cover image-zoom"
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            <div className="w-full h-full bg-slate-200 flex items-center justify-center text-slate-500">
+            <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400">
               {t('no_image')}
             </div>
           )}
         </div>
         {product.stock_quantity <= 5 && product.stock_quantity > 0 && (
-          <span className="badge badge-instock">
+          <span className="absolute top-2 right-2 badge badge-success">
             {t('last_items', { count: product.stock_quantity })}
           </span>
         )}
         {product.stock_quantity === 0 && (
-          <span className="badge bg-slate-500 text-white">
+          <span className="absolute top-2 right-2 badge bg-slate-200 text-slate-700">
             {t('out_of_stock')}
           </span>
         )}
@@ -81,12 +81,12 @@ export default function ProductCard({ product }: { product: any }) {
           {t('add_to_cart')}
         </button>
         {quantityInCart > 0 && (
-          <div className="text-sm text-green-600 mt-2">
+          <div className="text-sm text-emerald-600 mt-2">
             {quantityInCart} {t('in_cart')}
           </div>
         )}
         {added && (
-          <div className="text-sm text-green-600 animate-pulse mt-1">
+          <div className="text-sm text-emerald-600 animate-pulse mt-1">
             {t('added_to_cart')} ✓
           </div>
         )}

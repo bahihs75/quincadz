@@ -36,7 +36,7 @@ export default async function StoreDashboard() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8 text-black dark:text-white">لوحة التحكم</h1>
+      <h1 className="text-3xl font-bold mb-8 text-black ">لوحة التحكم</h1>
       <BentoGrid>
         <BentoItem
           title="إجمالي المنتجات"

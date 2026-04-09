@@ -33,12 +33,12 @@ export default async function RecentOrders({ storeId }: { storeId: string }) {
           </thead>
           <tbody>
             {orders?.map((order) => (
-              <tr key={order.id} className="border-b hover:bg-gray-50">
+              <tr key={order.id} className="border-b hover:bg-slate-50">
                 <td className="py-3">{order.order_number}</td>
                 <td className="py-3">{order.client_name}</td>
                 <td className="py-3">{order.total_amount.toLocaleString()} دج</td>
                 <td className="py-3">
-                  <span className={`px-2 py-1 rounded text-sm ${statusColors[order.order_status as keyof typeof statusColors] || 'bg-gray-100'}`}>
+                  <span className={`px-2 py-1 rounded text-sm ${statusColors[order.order_status as keyof typeof statusColors] || 'bg-slate-100'}`}>
                     {order.order_status === 'pending' && 'قيد الانتظار'}
                     {order.order_status === 'accepted' && 'تم القبول'}
                     {order.order_status === 'preparing' && 'قيد التحضير'}

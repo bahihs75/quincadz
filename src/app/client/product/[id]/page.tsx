@@ -57,7 +57,7 @@ export default function ProductDetailPage() {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
         <h1 className="text-2xl mb-4">المنتج غير موجود</h1>
-        <Link href="/client/products" className="text-primary dark:text-primary">
+        <Link href="/client/products" className="text-primary ">
           العودة إلى المنتجات
         </Link>
       </div>
@@ -72,7 +72,7 @@ export default function ProductDetailPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-6">
           {/* Images */}
           <div>
-            <div className="relative h-96 bg-gray-100 rounded-lg overflow-hidden mb-4">
+            <div className="relative h-96 bg-slate-100 rounded-lg overflow-hidden mb-4">
               <img
                 src={images[selectedImage]}
                 alt={product.name_ar}
@@ -86,7 +86,7 @@ export default function ProductDetailPage() {
                     key={idx}
                     onClick={() => setSelectedImage(idx)}
                     className={`w-20 h-20 flex-shrink-0 border-2 rounded ${
-                      selectedImage === idx ? 'border-primary' : 'border-gray-200'
+                      selectedImage === idx ? 'border-primary' : 'border-slate-200'
                     }`}
                   >
                     <img src={img} alt="" className="w-full h-full object-cover" />
@@ -100,7 +100,7 @@ export default function ProductDetailPage() {
           <div>
             <h1 className="text-3xl font-bold mb-2 text-black">{product.name_ar}</h1>
             {product.name_fr && (
-              <p className="text-gray-500 mb-4">{product.name_fr}</p>
+              <p className="text-slate-500 mb-4">{product.name_fr}</p>
             )}
 
             <div className="flex items-center gap-4 mb-4">
@@ -109,18 +109,18 @@ export default function ProductDetailPage() {
                   <Star key={i} size={20} fill="currentColor" />
                 ))}
               </div>
-              <span className="text-gray-600">(0 تقييم)</span>
+              <span className="text-slate-600">(0 تقييم)</span>
             </div>
 
             <div className="mb-6">
-              <span className="text-3xl font-bold text-primary dark:text-primary">
+              <span className="text-3xl font-bold text-primary ">
                 {product.price.toLocaleString()} دج
               </span>
-              <span className="text-gray-500 mr-2">/{product.unit}</span>
+              <span className="text-slate-500 mr-2">/{product.unit}</span>
             </div>
 
             <div className="mb-6">
-              <p className="text-gray-700">{product.description}</p>
+              <p className="text-slate-700">{product.description}</p>
             </div>
 
             {/* Stock status */}
@@ -134,7 +134,7 @@ export default function ProductDetailPage() {
                   <span className="text-green-600 font-semibold">متوفر</span>
                 )
               ) : (
-                <span className="text-gray-500 font-semibold">نفذ من المخزون</span>
+                <span className="text-slate-500 font-semibold">نفذ من المخزون</span>
               )}
             </div>
 
@@ -167,7 +167,7 @@ export default function ProductDetailPage() {
               disabled={product.stock_quantity === 0}
               className={`w-full md:w-auto px-8 py-3 rounded-lg flex items-center justify-center gap-2 ${
                 product.stock_quantity === 0
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
                   : 'bg-primary text-white hover:bg-primary'
               }`}
             >
@@ -191,14 +191,14 @@ export default function ProductDetailPage() {
 
         {/* Store info */}
         {product.stores && (
-          <div className="border-t p-6 bg-gray-50">
+          <div className="border-t p-6 bg-slate-50">
             <h2 className="text-xl font-bold mb-4 text-black">معلومات المتجر</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <p className="font-medium">{product.stores.store_name}</p>
-                <p className="text-gray-600 mt-1">{product.stores.description}</p>
+                <p className="text-slate-600 mt-1">{product.stores.description}</p>
                 {product.stores.address && (
-                  <p className="flex items-center gap-1 mt-2 text-sm text-gray-600">
+                  <p className="flex items-center gap-1 mt-2 text-sm text-slate-600">
                     <MapPin size={16} />
                     {product.stores.address}
                     {product.stores.wilayas?.name_ar &&
@@ -208,7 +208,7 @@ export default function ProductDetailPage() {
                   </p>
                 )}
                 {product.stores.phone && (
-                  <p className="flex items-center gap-1 mt-1 text-sm text-gray-600">
+                  <p className="flex items-center gap-1 mt-1 text-sm text-slate-600">
                     <Phone size={16} />
                     {product.stores.phone}
                   </p>
@@ -217,7 +217,7 @@ export default function ProductDetailPage() {
               <div>
                 <p className="font-medium mb-2">ساعات العمل</p>
                 {product.stores.opening_hours ? (
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-slate-600">
                     {Object.entries(product.stores.opening_hours).map(([day, hours]) => (
                       <div key={day} className="flex justify-between">
                         <span>
@@ -238,9 +238,9 @@ export default function ProductDetailPage() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-gray-500">غير محدد</p>
+                  <p className="text-sm text-slate-500">غير محدد</p>
                 )}
-                <p className="mt-2 text-sm text-gray-600">
+                <p className="mt-2 text-sm text-slate-600">
                   نطاق التوصيل: {product.stores.delivery_radius_km} كم
                 </p>
               </div>

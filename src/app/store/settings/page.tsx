@@ -114,7 +114,7 @@ export default function StoreSettingsPage() {
       <h1 className="text-2xl font-bold mb-6 text-black">{t('store_settings')}</h1>
 
       {/* Language selector */}
-      <div className="mb-8 p-4 bg-gray-50 rounded-lg">
+      <div className="mb-8 p-4 bg-slate-50 rounded-lg">
         <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
           <Globe size={20} />
           {t('language')}
@@ -125,7 +125,7 @@ export default function StoreSettingsPage() {
             className={`px-4 py-2 rounded-lg border ${
               language === 'ar'
                 ? 'bg-primary text-white border-primary'
-                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
             }`}
           >
             {t('arabic')}
@@ -135,7 +135,7 @@ export default function StoreSettingsPage() {
             className={`px-4 py-2 rounded-lg border ${
               language === 'fr'
                 ? 'bg-primary text-white border-primary'
-                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
             }`}
           >
             {t('french')}
@@ -145,7 +145,7 @@ export default function StoreSettingsPage() {
             className={`px-4 py-2 rounded-lg border ${
               language === 'en'
                 ? 'bg-primary text-white border-primary'
-                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50'
             }`}
           >
             {t('english')}
@@ -156,7 +156,7 @@ export default function StoreSettingsPage() {
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="mb-4">
-            <label className="block mb-1 text-gray-700">{t('store_name')} *</label>
+            <label className="block mb-1 text-slate-700">{t('store_name')} *</label>
             <input
               type="text"
               required
@@ -166,7 +166,7 @@ export default function StoreSettingsPage() {
             />
           </div>
           <div className="mb-4">
-            <label className="block mb-1 text-gray-700">{t('phone')}</label>
+            <label className="block mb-1 text-slate-700">{t('phone')}</label>
             <input
               type="tel"
               value={formData.phone}
@@ -177,7 +177,7 @@ export default function StoreSettingsPage() {
         </div>
 
         <div className="mb-4">
-          <label className="block mb-1 text-gray-700">{t('description')}</label>
+          <label className="block mb-1 text-slate-700">{t('description')}</label>
           <textarea
             rows={3}
             value={formData.description}
@@ -187,7 +187,7 @@ export default function StoreSettingsPage() {
         </div>
 
         <div className="mb-4">
-          <label className="block mb-1 text-gray-700">{t('address')}</label>
+          <label className="block mb-1 text-slate-700">{t('address')}</label>
           <input
             type="text"
             value={formData.address}
@@ -205,7 +205,7 @@ export default function StoreSettingsPage() {
         />
 
         <div className="mb-6">
-          <label className="block mb-1 text-gray-700">{t('delivery_radius')}</label>
+          <label className="block mb-1 text-slate-700">{t('delivery_radius')}</label>
           <input
             type="number"
             min="1"
@@ -217,11 +217,11 @@ export default function StoreSettingsPage() {
 
         {/* Opening Hours */}
         <div className="mb-6">
-          <label className="block mb-3 text-gray-700 font-bold">{t('opening_hours')}</label>
+          <label className="block mb-3 text-slate-700 font-bold">{t('opening_hours')}</label>
           <div className="space-y-4">
             {days.map(day => (
               <div key={day.key} className="flex items-center gap-4">
-                <span className="w-20 text-gray-600">{day.label}</span>
+                <span className="w-20 text-slate-600">{day.label}</span>
                 <select
                   value={openingHours[day.key]?.open || ''}
                   onChange={(e) => updateHour(day.key, 'open', e.target.value)}
@@ -249,7 +249,7 @@ export default function StoreSettingsPage() {
               </div>
             ))}
           </div>
-          <p className="text-xs text-gray-500 mt-2">{t('hours_help')}</p>
+          <p className="text-xs text-slate-500 mt-2">{t('hours_help')}</p>
         </div>
 
         <div className="flex gap-4">

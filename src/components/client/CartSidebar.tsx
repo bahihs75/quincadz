@@ -26,7 +26,7 @@ export default function CartSidebar() {
 
       {/* Sidebar */}
       <div className="fixed top-0 left-0 h-full w-full sm:w-96 bg-white shadow-xl z-50 overflow-y-auto transition-transform">
-        <div className="p-4 border-b flex items-center justify-between bg-gray-50">
+        <div className="p-4 border-b flex items-center justify-between bg-slate-50">
           <h2 className="text-xl font-bold flex items-center gap-2">
             <ShoppingBag size={20} />
             سلة التسوق
@@ -36,13 +36,13 @@ export default function CartSidebar() {
               </span>
             )}
           </h2>
-          <button onClick={closeCart} className="p-1 hover:bg-gray-200 rounded">
+          <button onClick={closeCart} className="p-1 hover:bg-slate-200 rounded">
             <X size={20} />
           </button>
         </div>
 
         {cartItems.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">
+          <div className="p-8 text-center text-slate-500">
             <ShoppingBag size={48} className="mx-auto mb-4 text-gray-300" />
             <p className="mb-4">سلة التسوق فارغة</p>
             <button
@@ -64,7 +64,7 @@ export default function CartSidebar() {
                   />
                   <div className="flex-1">
                     <h3 className="font-medium">{item.name_ar}</h3>
-                    <p className="text-sm text-gray-500">{item.store_name}</p>
+                    <p className="text-sm text-slate-500">{item.store_name}</p>
                     <div className="flex items-center justify-between mt-2">
                       <div className="flex items-center gap-1">
                         <button
@@ -98,7 +98,7 @@ export default function CartSidebar() {
               ))}
             </div>
 
-            <div className="p-4 border-t bg-gray-50">
+            <div className="p-4 border-t bg-slate-50">
               <div className="flex justify-between mb-4">
                 <span className="font-bold">المجموع</span>
                 <span className="font-bold text-primary">{getCartTotal().toLocaleString()} دج</span>

@@ -13,7 +13,7 @@ function ErrorContent() {
       <h1 className="text-2xl font-bold mb-4 text-red-600">خطأ في المصادقة</h1>
       <p className="mb-4">عذراً، حدث خطأ أثناء محاولة تسجيل الدخول.</p>
       {error && (
-        <p className="mb-4 text-sm text-gray-600 bg-gray-100 p-2 rounded">
+        <p className="mb-4 text-sm text-slate-600 bg-slate-100 p-2 rounded">
           {error}
         </p>
       )}

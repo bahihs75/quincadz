@@ -134,7 +134,7 @@ export default function AdminCategoriesPage() {
         <h2 className="text-xl font-bold mb-4">{editingId ? 'تعديل تصنيف' : 'إضافة تصنيف جديد'}</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block mb-1 text-gray-700">الاسم (عربي) *</label>
+            <label className="block mb-1 text-slate-700">الاسم (عربي) *</label>
             <input
               type="text"
               required
@@ -144,7 +144,7 @@ export default function AdminCategoriesPage() {
             />
           </div>
           <div>
-            <label className="block mb-1 text-gray-700">الاسم (فرنسي)</label>
+            <label className="block mb-1 text-slate-700">الاسم (فرنسي)</label>
             <input
               type="text"
               value={formData.name_fr}
@@ -153,7 +153,7 @@ export default function AdminCategoriesPage() {
             />
           </div>
           <div>
-            <label className="block mb-1 text-gray-700">الأيقونة</label>
+            <label className="block mb-1 text-slate-700">الأيقونة</label>
             <input
               type="text"
               value={formData.icon}
@@ -163,7 +163,7 @@ export default function AdminCategoriesPage() {
             />
           </div>
           <div>
-            <label className="block mb-1 text-gray-700">التصنيف الأب</label>
+            <label className="block mb-1 text-slate-700">التصنيف الأب</label>
             <select
               value={formData.parent_id}
               onChange={(e) => setFormData({ ...formData, parent_id: e.target.value })}
@@ -176,7 +176,7 @@ export default function AdminCategoriesPage() {
             </select>
           </div>
           <div>
-            <label className="block mb-1 text-gray-700">الترتيب</label>
+            <label className="block mb-1 text-slate-700">الترتيب</label>
             <input
               type="number"
               value={formData.sort_order}
@@ -205,7 +205,7 @@ export default function AdminCategoriesPage() {
                   setEditingId(null)
                   setFormData({ name_ar: '', name_fr: '', icon: '', parent_id: '', sort_order: 0, is_active: true })
                 }}
-                className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600"
+                className="bg-slate-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600"
               >
                 إلغاء
               </button>
@@ -216,8 +216,8 @@ export default function AdminCategoriesPage() {
 
       {/* Categories List */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gray-50">
+        <table class="data-table" className="w-full">
+          <thead className="bg-slate-50">
             <tr>
               <th className="text-right py-3 px-4">الترتيب</th>
               <th className="text-right py-3 px-4">الأيقونة</th>
@@ -230,14 +230,14 @@ export default function AdminCategoriesPage() {
           </thead>
           <tbody>
             {categories.map((cat) => (
-              <tr key={cat.id} className="border-b hover:bg-gray-50">
+              <tr key={cat.id} className="border-b hover:bg-slate-50">
                 <td className="py-3 px-4">
                   <div className="flex items-center gap-1">
                     <span>{cat.sort_order}</span>
-                    <button onClick={() => moveUp(cat)} className="text-gray-500 hover:text-primary dark:text-primary">
+                    <button onClick={() => moveUp(cat)} className="text-slate-500 hover:text-primary ">
                       <ChevronUp size={16} />
                     </button>
-                    <button onClick={() => moveDown(cat)} className="text-gray-500 hover:text-primary dark:text-primary">
+                    <button onClick={() => moveDown(cat)} className="text-slate-500 hover:text-primary ">
                       <ChevronDown size={16} />
                     </button>
                   </div>
@@ -255,7 +255,7 @@ export default function AdminCategoriesPage() {
                 </td>
                 <td className="py-3 px-4">
                   <div className="flex gap-2">
-                    <button onClick={() => editCategory(cat)} className="p-1 text-primary dark:text-primary hover:bg-blue-50 rounded">
+                    <button onClick={() => editCategory(cat)} className="p-1 text-primary  hover:bg-blue-50 rounded">
                       <Edit size={18} />
                     </button>
                     <button onClick={() => deleteCategory(cat.id)} className="p-1 text-red-600 hover:bg-red-50 rounded">

@@ -43,10 +43,10 @@ export default function StoreSetupPage() {
   return (
     <div className="max-w-2xl mx-auto mt-10 bg-white rounded-lg shadow p-6">
       <h1 className="text-2xl font-bold mb-6 text-black">إعداد المتجر</h1>
-      <p className="mb-4 text-gray-600">يرجى إكمال معلومات متجرك للمتابعة</p>
+      <p className="mb-4 text-slate-600">يرجى إكمال معلومات متجرك للمتابعة</p>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block mb-1 text-gray-700">اسم المتجر *</label>
+          <label className="block mb-1 text-slate-700">اسم المتجر *</label>
           <input
             type="text"
             required
@@ -56,7 +56,7 @@ export default function StoreSetupPage() {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-1 text-gray-700">الوصف</label>
+          <label className="block mb-1 text-slate-700">الوصف</label>
           <textarea
             rows={3}
             value={formData.description}
@@ -65,7 +65,7 @@ export default function StoreSetupPage() {
           />
         </div>
         <div className="mb-4">
-          <label className="block mb-1 text-gray-700">العنوان *</label>
+          <label className="block mb-1 text-slate-700">العنوان *</label>
           <input
             type="text"
             required
@@ -75,7 +75,7 @@ export default function StoreSetupPage() {
           />
         </div>
         <div className="mb-6">
-          <label className="block mb-1 text-gray-700">نطاق التوصيل (كم)</label>
+          <label className="block mb-1 text-slate-700">نطاق التوصيل (كم)</label>
           <input
             type="number"
             min="1"

@@ -139,7 +139,7 @@ export default function AdminProductForm({ product, stores }: AdminProductFormPr
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
-        <label className="block mb-1 text-gray-700">المتجر *</label>
+        <label className="block mb-1 text-slate-700">المتجر *</label>
         <select
           required
           value={formData.store_id}
@@ -155,7 +155,7 @@ export default function AdminProductForm({ product, stores }: AdminProductFormPr
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block mb-1 text-gray-700">اسم المنتج (عربي) *</label>
+          <label className="block mb-1 text-slate-700">اسم المنتج (عربي) *</label>
           <input
             type="text"
             required
@@ -165,7 +165,7 @@ export default function AdminProductForm({ product, stores }: AdminProductFormPr
           />
         </div>
         <div>
-          <label className="block mb-1 text-gray-700">اسم المنتج (فرنسي)</label>
+          <label className="block mb-1 text-slate-700">اسم المنتج (فرنسي)</label>
           <input
             type="text"
             value={formData.name_fr}
@@ -176,7 +176,7 @@ export default function AdminProductForm({ product, stores }: AdminProductFormPr
       </div>
 
       <div>
-        <label className="block mb-1 text-gray-700">التصنيف *</label>
+        <label className="block mb-1 text-slate-700">التصنيف *</label>
         <select
           required
           value={formData.category_id}
@@ -191,7 +191,7 @@ export default function AdminProductForm({ product, stores }: AdminProductFormPr
       </div>
 
       <div>
-        <label className="block mb-1 text-gray-700">الوصف</label>
+        <label className="block mb-1 text-slate-700">الوصف</label>
         <textarea
           rows={3}
           value={formData.description}
@@ -202,7 +202,7 @@ export default function AdminProductForm({ product, stores }: AdminProductFormPr
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label className="block mb-1 text-gray-700">السعر (دج) *</label>
+          <label className="block mb-1 text-slate-700">السعر (دج) *</label>
           <input
             type="number"
             required
@@ -214,7 +214,7 @@ export default function AdminProductForm({ product, stores }: AdminProductFormPr
           />
         </div>
         <div>
-          <label className="block mb-1 text-gray-700">الوحدة *</label>
+          <label className="block mb-1 text-slate-700">الوحدة *</label>
           <select
             value={formData.unit}
             onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
@@ -228,7 +228,7 @@ export default function AdminProductForm({ product, stores }: AdminProductFormPr
           </select>
         </div>
         <div>
-          <label className="block mb-1 text-gray-700">الكمية في المخزون</label>
+          <label className="block mb-1 text-slate-700">الكمية في المخزون</label>
           <input
             type="number"
             min="0"
@@ -240,7 +240,7 @@ export default function AdminProductForm({ product, stores }: AdminProductFormPr
       </div>
 
       <div>
-        <label className="block mb-1 text-gray-700">الحد الأدنى للطلب</label>
+        <label className="block mb-1 text-slate-700">الحد الأدنى للطلب</label>
         <input
           type="number"
           min="1"
@@ -251,14 +251,14 @@ export default function AdminProductForm({ product, stores }: AdminProductFormPr
       </div>
 
       <div>
-        <label className="block mb-1 text-gray-700">صور المنتج (أقل من 1 ميغابايت لكل صورة)</label>
+        <label className="block mb-1 text-slate-700">صور المنتج (أقل من 1 ميغابايت لكل صورة)</label>
         <div
           {...getRootProps()}
-          className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-blue-500"
+          className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center cursor-pointer hover:border-blue-500"
         >
           <input {...getInputProps()} />
           <Upload className="mx-auto mb-2 text-gray-400" size={32} />
-          <p className="text-gray-600">اسحب الصور هنا أو انقر للاختيار</p>
+          <p className="text-slate-600">اسحب الصور هنا أو انقر للاختيار</p>
         </div>
         <div className="mt-4 flex flex-wrap gap-4">
           {imagePreviews.map((src, idx) => (
@@ -287,7 +287,7 @@ export default function AdminProductForm({ product, stores }: AdminProductFormPr
         <button
           type="button"
           onClick={() => router.push('/admin/products')}
-          className="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300"
+          className="bg-slate-200 text-slate-800 px-6 py-2 rounded-lg hover:bg-slate-300"
         >
           إلغاء
         </button>

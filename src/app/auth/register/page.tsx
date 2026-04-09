@@ -120,8 +120,8 @@ export default function RegisterPage() {
         <span className="agreement">
           <Link href="#">Learn user licence agreement</Link>
         </span>
-        <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-4">
-          Already have an account? <Link href="/auth/login" className="text-blue-600 dark:text-blue-400">Sign In</Link>
+        <p className="text-center text-xs text-slate-500  mt-4">
+          Already have an account? <Link href="/auth/login" className="text-blue-600 ">Sign In</Link>
         </p>
       </div>
     </div>

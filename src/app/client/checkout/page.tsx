@@ -152,7 +152,7 @@ export default function CheckoutPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block mb-1 text-gray-700">الاسم الكامل *</label>
+                <label className="block mb-1 text-slate-700">الاسم الكامل *</label>
                 <input
                   type="text"
                   required
@@ -162,7 +162,7 @@ export default function CheckoutPage() {
                 />
               </div>
               <div>
-                <label className="block mb-1 text-gray-700">رقم الهاتف *</label>
+                <label className="block mb-1 text-slate-700">رقم الهاتف *</label>
                 <input
                   type="tel"
                   required
@@ -186,7 +186,7 @@ export default function CheckoutPage() {
             />
 
             <div className="mb-4">
-              <label className="block mb-1 text-gray-700">العنوان بالتفصيل *</label>
+              <label className="block mb-1 text-slate-700">العنوان بالتفصيل *</label>
               <textarea
                 required
                 rows={3}
@@ -198,7 +198,7 @@ export default function CheckoutPage() {
             </div>
 
             <div className="mb-6">
-              <label className="block mb-1 text-gray-700">ملاحظات إضافية (اختياري)</label>
+              <label className="block mb-1 text-slate-700">ملاحظات إضافية (اختياري)</label>
               <textarea
                 rows={2}
                 value={formData.notes}
@@ -251,10 +251,10 @@ export default function CheckoutPage() {
             <div className="border-t pt-4 mt-4">
               <div className="flex justify-between font-bold text-lg">
                 <span>الإجمالي</span>
-                <span className="text-primary dark:text-primary">{total.toLocaleString()} دج</span>
+                <span className="text-primary ">{total.toLocaleString()} دج</span>
               </div>
-              <p className="text-sm text-gray-500 mt-2">سيتم حساب تكلفة التوصيل لاحقاً</p>
-              <p className="text-sm text-gray-500 mt-1">طريقة الدفع: الدفع عند الاستلام</p>
+              <p className="text-sm text-slate-500 mt-2">سيتم حساب تكلفة التوصيل لاحقاً</p>
+              <p className="text-sm text-slate-500 mt-1">طريقة الدفع: الدفع عند الاستلام</p>
             </div>
           </div>
         </div>

@@ -56,23 +56,23 @@ function OrdersContent() {
   }
 
   if (loading) {
-    return <div className="text-center py-12 text-gray-600 dark:text-gray-400">"Loading..."</div>
+    return <div className="text-center py-12 text-slate-600 ">"Loading..."</div>
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
       {success && (
-        <div className="bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-800 text-green-700 dark:text-green-400 px-4 py-3 rounded mb-6">
+        <div className="bg-green-100 /30 border border-green-400 dark:border-green-800 text-green-700  px-4 py-3 rounded mb-6">
           {t('order_success')}
         </div>
       )}
 
-      <h1 className="text-3xl font-bold mb-6 text-black dark:text-white">{t('my_orders')}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-black ">{t('my_orders')}</h1>
 
       {orders.length === 0 ? (
-        <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-12 text-center border border-gray-200 dark:border-gray-800">
-          <Package size={64} className="mx-auto text-gray-300 dark:text-gray-600 mb-4" />
-          <p className="text-gray-600 dark:text-gray-400 mb-4">{t('no_orders')}</p>
+        <div className="bg-white  rounded-lg shadow p-12 text-center border border-slate-200 dark:border-gray-800">
+          <Package size={64} className="mx-auto text-gray-300  mb-4" />
+          <p className="text-slate-600  mb-4">{t('no_orders')}</p>
           <Link
             href="/client/products"
             className="bg-primary text-white px-6 py-2 rounded-lg inline-block hover:bg-secondary"
@@ -83,16 +83,16 @@ function OrdersContent() {
       ) : (
         <div className="space-y-4">
           {orders.map((order) => (
-            <div key={order.id} className="bg-white dark:bg-gray-900 rounded-lg shadow overflow-hidden border border-gray-200 dark:border-gray-800">
-              <div className="p-4 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
+            <div key={order.id} className="bg-white  rounded-lg shadow overflow-hidden border border-slate-200 dark:border-gray-800">
+              <div className="p-4 border-b border-slate-200 dark:border-gray-800 bg-slate-50 /50">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">{t('order_number')}: </span>
-                    <span className="font-mono text-sm text-gray-900 dark:text-gray-100">{order.order_number}</span>
+                    <span className="text-sm text-slate-500 ">{t('order_number')}: </span>
+                    <span className="font-mono text-sm text-slate-900 ">{order.order_number}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     {getStatusIcon(order.order_status)}
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{getStatusText(order.order_status)}</span>
+                    <span className="text-sm font-medium text-slate-700 ">{getStatusText(order.order_status)}</span>
                   </div>
                 </div>
               </div>
@@ -100,26 +100,26 @@ function OrdersContent() {
                 <div className="space-y-2">
                   {order.order_items?.map((item: any) => (
                     <div key={item.id} className="flex justify-between text-sm">
-                      <span className="text-gray-700 dark:text-gray-300">
+                      <span className="text-slate-700 ">
                         {item.products?.name_ar} x {item.quantity}
                       </span>
-                      <span className="text-gray-900 dark:text-white font-medium">{item.total_price.toLocaleString()} DA</span>
+                      <span className="text-slate-900  font-medium">{item.total_price.toLocaleString()} DA</span>
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-800 flex justify-between items-center">
+                <div className="mt-4 pt-4 border-t border-slate-200 dark:border-gray-800 flex justify-between items-center">
                   <div>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">{t('store')}: </span>
-                    <span className="font-medium text-gray-700 dark:text-gray-300">{order.stores?.store_name}</span>
+                    <span className="text-sm text-slate-500 ">{t('store')}: </span>
+                    <span className="font-medium text-slate-700 ">{order.stores?.store_name}</span>
                   </div>
                   <div className="text-left">
-                    <span className="text-sm text-gray-500 dark:text-gray-400">{t('total')}: </span>
+                    <span className="text-sm text-slate-500 ">{t('total')}: </span>
                     <span className="font-bold text-primary">
                       {order.total_amount.toLocaleString()} DA
                     </span>
                   </div>
                 </div>
-                <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                <div className="mt-4 text-sm text-slate-500 ">
                   {t('order_date')}: {new Date(order.created_at).toLocaleDateString()}
                 </div>
               </div>
