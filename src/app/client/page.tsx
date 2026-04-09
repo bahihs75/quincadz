@@ -149,11 +149,6 @@ export default function ClientHomePage() {
           )}
         </section>
 
-        <Marquee className="py-4 bg-slate-100 my-8">
-          <span className="mx-4 text-sm text-slate-700">✅ 50+ متجر موثوق</span>
-          <span className="mx-4 text-sm text-slate-700">🚚 توصيل إلى جميع الولايات</span>
-          <span className="mx-4 text-sm text-slate-700">⭐ أكثر من 1000 طلب مكتمل</span>
-        </Marquee>
       </div>
     </div>
   )
