@@ -1,0 +1,81 @@
+name: AI Fix Suggestion
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  suggest-fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Attempt build and capture error
+        id: build
+        continue-on-error: true
+        run: |
+          npm run build 2>&1 | tee build-error.log
+          echo "BUILD_EXIT_CODE=$?" >> $GITHUB_ENV
+
+      - name: Check if build failed
+        if: env.BUILD_EXIT_CODE != 0
+        id: extract
+        run: |
+          tail -150 build-error.log > error-context.log
+          echo "ERROR_CONTEXT<<EOF" >> $GITHUB_OUTPUT
+          cat error-context.log >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Ask AI for fix suggestion
+        if: env.BUILD_EXIT_CODE != 0
+        id: ai
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://api.openai.com/v1/chat/completions'
+          method: 'POST'
+          contentType: 'application/json'
+          bearerToken: ${{ secrets.OPENAI_API_KEY }}
+          data: |
+            {
+              "model": "gpt-4",
+              "messages": [
+                {"role": "system", "content": "You are an expert in Next.js, TypeScript, and Tailwind CSS. You will receive a build error log. Suggest a precise fix. Return ONLY the exact code changes in a unified diff format, or a clear instruction if a simple code change is not enough."},
+                {"role": "user", "content": "Build error:\n${{ steps.extract.outputs.ERROR_CONTEXT }}\n\nPlease suggest a fix."}
+              ],
+              "temperature": 0.2
+            }
+          timeout: 60000
+
+      - name: Create pull request with suggestion
+        if: env.BUILD_EXIT_CODE != 0
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "AI suggested fix for build error"
+          title: "🤖 AI Suggestion: fix build error"
+          body: |
+            The build failed with the following error:
+${{ steps.extract.outputs.ERROR_CONTEXT }}
+
+
+🤖 **AI suggested fix:**
+${{ steps.ai.outputs.response }}
+
+
+**Please review carefully before merging.**
+branch: ai-fix-suggestion
+base: ${{ github.ref_name }}
+delete-branch: true
