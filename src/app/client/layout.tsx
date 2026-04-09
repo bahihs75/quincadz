@@ -64,12 +64,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white dark:bg-navy-800 border-b border-slate-200 dark:border-slate-700">
+      <header className="sticky top-0 z-40 bg-white shadow-sm border-b border-slate-200">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-2">
               <img src="/logo.png" alt="QuincaDZ" className="h-8 w-auto" />
-              <Link href="/client" onClick={handleLinkClick} className="text-2xl font-bold text-primary dark:text-primary">
+              <Link href="/client" onClick={handleLinkClick} className="text-2xl font-bold text-primary">
                 QuincaDZ
               </Link>
             </div>
@@ -82,8 +82,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   onClick={handleLinkClick}
                   className={`rounded-md px-3 py-2 text-sm font-medium ${
                     pathname === item.href
-                      ? 'bg-primary text-white dark:bg-secondary'
-                      : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700'
+                      ? 'bg-primary text-white'
+                      : 'text-slate-600 hover:bg-slate-100'
                   }`}
                 >
                   {item.label}
@@ -95,11 +95,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               <LanguageSwitcher />
 
               {userLocation && (
-                <div className="hidden items-center text-sm text-slate-600 dark:text-slate-400 md:flex">
+                <div className="hidden items-center text-sm text-slate-600 md:flex">
                   <MapPin size={16} className="ml-1" />
                   <button
                     onClick={() => setShowLocationPicker(true)}
-                    className="underline hover:text-primary dark:hover:text-primary"
+                    className="underline hover:text-primary"
                   >
                     {userLocation.wilaya_name} - {userLocation.baladiya_name}
                   </button>
@@ -108,7 +108,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
               <button
                 onClick={openCart}
-                className="relative p-2 text-slate-600 hover:text-primary dark:text-slate-400 dark:hover:text-primary"
+                className="relative p-2 text-slate-600 hover:text-primary"
               >
                 <ShoppingCart size={20} />
                 {getItemCount() > 0 && (
@@ -135,7 +135,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <Link
                   href="/auth/login"
                   onClick={handleLinkClick}
-                  className="btn-primary inline-flex items-center justify-center px-4 py-2 text-sm"
+                  className="rounded-lg bg-primary px-4 py-2 text-sm text-white hover:bg-secondary"
                 >
                   {t('login')}
                 </Link>
@@ -143,7 +143,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-slate-600 dark:text-slate-400 md:hidden"
+                className="p-2 text-slate-600 md:hidden"
               >
                 {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
@@ -151,11 +151,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
 
           {userLocation && (
-            <div className="flex items-center justify-center border-t border-slate-200 py-2 text-sm text-slate-600 dark:border-slate-700 dark:text-slate-400 md:hidden">
+            <div className="flex items-center justify-center border-t border-slate-200 py-2 text-sm text-slate-600 md:hidden">
               <MapPin size={14} className="ml-1" />
               <button
                 onClick={() => setShowLocationPicker(true)}
-                className="underline hover:text-primary dark:hover:text-primary"
+                className="underline hover:text-primary"
               >
                 {userLocation.wilaya_name} - {userLocation.baladiya_name}
               </button>
@@ -163,15 +163,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           )}
 
           {mobileMenuOpen && (
-            <nav className="border-t border-slate-200 py-4 dark:border-slate-700 md:hidden">
+            <nav className="border-t border-slate-200 py-4 md:hidden">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={`block rounded-md px-3 py-2 text-sm font-medium ${
                     pathname === item.href
-                      ? 'bg-primary text-white dark:bg-secondary'
-                      : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700'
+                      ? 'bg-primary text-white'
+                      : 'text-slate-600 hover:bg-slate-100'
                   }`}
                   onClick={handleLinkClick}
                 >
@@ -184,8 +184,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       </header>
 
       {showLocationPicker && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 p-4 backdrop-blur-sm">
-          <div className="relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl">
             <LocationPicker
               onLocationSelect={handleLocationSelect}
               initialLocation={userLocation}

@@ -9,8 +9,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#f97316',      // orange-500
-        secondary: '#ea580c',     // orange-600
+        primary: '#f97316',
+        secondary: '#ea580c',
         slate: {
           50: '#f8fafc',
           100: '#f1f5f9',
