@@ -64,26 +64,28 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white shadow-sm border-b border-slate-200">
+      <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
         <div className="container mx-auto px-4">
-          <div className="flex h-16 items-center justify-between">
-            <div className="flex items-center gap-2">
+          <div className="flex h-16 items-center justify-between gap-4">
+            {/* Logo */}
+            <div className="flex items-center gap-2 shrink-0">
               <img src="/logo.png" alt="QuincaDZ" className="h-8 w-auto" />
-              <Link href="/client" onClick={handleLinkClick} className="text-2xl font-bold text-primary">
+              <Link href="/client" onClick={handleLinkClick} className="text-xl font-bold text-primary">
                 QuincaDZ
               </Link>
             </div>
 
-            <nav className="hidden space-x-6 space-x-reverse md:flex">
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-6">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={handleLinkClick}
-                  className={`rounded-md px-3 py-2 text-sm font-medium ${
+                  className={`text-sm font-medium transition-colors ${
                     pathname === item.href
-                      ? 'bg-primary text-white'
-                      : 'text-slate-600 hover:bg-slate-100'
+                      ? 'text-primary border-b-2 border-primary pb-1'
+                      : 'text-slate-600 hover:text-primary'
                   }`}
                 >
                   {item.label}
@@ -91,24 +93,23 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               ))}
             </nav>
 
-            <div className="flex items-center gap-3">
+            {/* Right side icons */}
+            <div className="flex items-center gap-2">
               <LanguageSwitcher />
 
               {userLocation && (
-                <div className="hidden items-center text-sm text-slate-600 md:flex">
-                  <MapPin size={16} className="ml-1" />
-                  <button
-                    onClick={() => setShowLocationPicker(true)}
-                    className="underline hover:text-primary"
-                  >
-                    {userLocation.wilaya_name} - {userLocation.baladiya_name}
-                  </button>
-                </div>
+                <button
+                  onClick={() => setShowLocationPicker(true)}
+                  className="hidden md:flex items-center gap-1 text-sm text-slate-600 hover:text-primary transition-colors"
+                >
+                  <MapPin size={16} />
+                  <span className="max-w-[120px] truncate">{userLocation.wilaya_name}</span>
+                </button>
               )}
 
               <button
                 onClick={openCart}
-                className="relative p-2 text-slate-600 hover:text-primary"
+                className="relative p-2 text-slate-600 hover:text-primary transition-colors"
               >
                 <ShoppingCart size={20} />
                 {getItemCount() > 0 && (
@@ -121,57 +122,57 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               {user ? (
                 <button
                   onClick={handleLogout}
-                  className="Btn group"
+                  className="p-2 text-slate-600 hover:text-red-500 transition-colors"
                   aria-label="Logout"
                 >
-                  <div className="sign">
-                    <svg viewBox="0 0 512 512">
-                      <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"></path>
-                    </svg>
-                  </div>
-                  <div className="text">Logout</div>
+                  <svg className="w-5 h-5" viewBox="0 0 512 512" fill="currentColor">
+                    <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/>
+                  </svg>
                 </button>
               ) : (
                 <Link
                   href="/auth/login"
                   onClick={handleLinkClick}
-                  className="rounded-lg bg-primary px-4 py-2 text-sm text-white hover:bg-secondary"
+                  className="btn-primary text-sm px-4 py-2"
                 >
                   {t('login')}
                 </Link>
               )}
 
+              {/* Mobile menu button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-slate-600 md:hidden"
+                className="md:hidden p-2 text-slate-600"
               >
                 {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>
           </div>
 
+          {/* Mobile location (visible only on mobile) */}
           {userLocation && (
-            <div className="flex items-center justify-center border-t border-slate-200 py-2 text-sm text-slate-600 md:hidden">
+            <div className="md:hidden flex items-center justify-center py-2 text-sm text-slate-600 border-t border-slate-100">
               <MapPin size={14} className="ml-1" />
               <button
                 onClick={() => setShowLocationPicker(true)}
-                className="underline hover:text-primary"
+                className="hover:text-primary transition-colors"
               >
                 {userLocation.wilaya_name} - {userLocation.baladiya_name}
               </button>
             </div>
           )}
 
+          {/* Mobile navigation drawer */}
           {mobileMenuOpen && (
-            <nav className="border-t border-slate-200 py-4 md:hidden">
+            <nav className="md:hidden py-4 border-t border-slate-100 space-y-2">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`block rounded-md px-3 py-2 text-sm font-medium ${
+                  className={`block px-3 py-2 rounded-md text-sm font-medium ${
                     pathname === item.href
-                      ? 'bg-primary text-white'
-                      : 'text-slate-600 hover:bg-slate-100'
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-slate-600 hover:bg-slate-50'
                   }`}
                   onClick={handleLinkClick}
                 >
@@ -183,6 +184,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         </div>
       </header>
 
+      {/* Location picker modal */}
       {showLocationPicker && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
           <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl">
