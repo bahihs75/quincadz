@@ -44,7 +44,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-sm border border-slate-100 p-8">
         <div className="text-center mb-8">
-          <img src="/logo.png" alt="QuincaDZ" className="h-12 mx-auto mb-4" />
+          <img src="/brand.svg" alt="QuincaDZ" className="h-12 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-slate-800">QuincaDZ</h1>
           <p className="text-slate-500 text-sm mt-1">تسجيل الدخول إلى حسابك</p>
         </div>

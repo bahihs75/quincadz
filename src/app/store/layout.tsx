@@ -92,7 +92,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
       >
         <div className="flex items-center justify-between border-b border-slate-200 p-6 dark:border-gray-800">
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="QuincaDZ" className="h-6 w-auto" />
+            <img src="/brand.svg" alt="QuincaDZ" className="h-6 w-auto" />
             <div>
               <h2 className="text-xl font-bold text-primary ">QuincaDZ</h2>
               <p className="mt-1 text-sm text-slate-600 ">{storeName || t('dashboard')}</p>

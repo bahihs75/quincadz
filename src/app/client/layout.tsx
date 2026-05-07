@@ -69,7 +69,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           <div className="flex h-16 items-center justify-between gap-4">
             {/* Logo */}
             <div className="flex items-center gap-2 shrink-0">
-              <img src="/logo.png" alt="QuincaDZ" className="h-8 w-auto" />
+              <img src="/brand.svg" alt="QuincaDZ" className="h-8 w-auto" />
               <Link href="/client" onClick={handleLinkClick} className="text-xl font-bold text-primary">
                 QuincaDZ
               </Link>
