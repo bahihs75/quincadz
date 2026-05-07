@@ -5,21 +5,18 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/contexts/CartContext'
-import { useLanguage } from '@/contexts/LanguageContext'
 import CartSidebar from '@/components/client/CartSidebar'
 import LocationPicker from '@/components/LocationPicker'
-import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
-import { ShoppingCart, Menu, X, User, MapPin } from 'lucide-react'
+import { ShoppingCart, Menu, X, MapPin } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
   const { getItemCount, openCart, closeCart } = useCart()
-  const { t } = useLanguage()
   const [user, setUser] = useState<any>(null)
   const [userLocation, setUserLocation] = useState<any>(null)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [showLocationPicker, setShowLocationPicker] = useState(false)
   const supabase = createClient()
 
@@ -44,22 +41,19 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     setShowLocationPicker(false)
   }
 
-  const handleLinkClick = () => {
-    closeCart()
-    setMobileMenuOpen(false)
-  }
+  const closeMenu = () => setIsMenuOpen(false)
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
-    toast.success(t('logout_success'))
+    toast.success('Logged out')
     router.push('/')
   }
 
   const navItems = [
-    { href: '/client', label: t('home') },
-    { href: '/client/products', label: t('products') },
-    { href: '/client/orders', label: t('orders') },
-    { href: '/client/profile', label: t('profile') },
+    { href: '/client', label: 'Home' },
+    { href: '/client/products', label: 'Products' },
+    { href: '/client/orders', label: 'My Orders' },
+    { href: '/client/profile', label: 'Profile' },
   ]
 
   return (
@@ -67,122 +61,84 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between gap-4">
-            {/* Logo */}
-            <div className="flex items-center gap-2 shrink-0">
-              <img src="/brand.svg" alt="QuincaDZ" className="h-8 w-auto" />
-              <Link href="/client" onClick={handleLinkClick} className="text-xl font-bold text-primary">
-                QuincaDZ
+            {/* Left side: hamburger menu (only on mobile) */}
+            <button
+              onClick={() => setIsMenuOpen(true)}
+              className="p-2 text-slate-600 hover:text-primary md:hidden"
+            >
+              <Menu size={24} />
+            </button>
+
+            {/* Logo - centered */}
+            <div className="flex-1 flex justify-center">
+              <Link href="/client" onClick={closeMenu} className="flex items-center gap-2">
+                <img src="/logo.png" alt="QuincaDZ" className="h-8 w-auto" />
+                <span className="text-xl font-bold text-primary">QuincaDZ</span>
               </Link>
             </div>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-6">
+            {/* Right side: cart icon (always visible) */}
+            <button
+              onClick={openCart}
+              className="relative p-2 text-slate-600 hover:text-primary transition-colors"
+            >
+              <ShoppingCart size={20} />
+              {getItemCount() > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-white">
+                  {getItemCount()}
+                </span>
+              )}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile/Desktop slide‑out menu (from right in RTL) */}
+      {isMenuOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/50 z-50"
+            onClick={closeMenu}
+          />
+          <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-xl z-50 p-6 transform transition-transform duration-300">
+            <div className="flex justify-end mb-6">
+              <button onClick={closeMenu} className="p-1 text-slate-500 hover:text-primary">
+                <X size={24} />
+              </button>
+            </div>
+            <nav className="flex flex-col gap-4">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={handleLinkClick}
-                  className={`text-sm font-medium transition-colors ${
+                  onClick={closeMenu}
+                  className={`text-base font-medium transition-colors ${
                     pathname === item.href
-                      ? 'text-primary border-b-2 border-primary pb-1'
+                      ? 'text-primary border-r-2 border-primary pr-2'
                       : 'text-slate-600 hover:text-primary'
                   }`}
                 >
                   {item.label}
                 </Link>
               ))}
-            </nav>
-
-            {/* Right side icons */}
-            <div className="flex items-center gap-2">
-              <LanguageSwitcher />
-
+              {/* Optional: show location inside menu */}
               {userLocation && (
                 <button
-                  onClick={() => setShowLocationPicker(true)}
-                  className="hidden md:flex items-center gap-1 text-sm text-slate-600 hover:text-primary transition-colors"
+                  onClick={() => {
+                    closeMenu()
+                    setShowLocationPicker(true)
+                  }}
+                  className="flex items-center gap-2 text-sm text-slate-600 hover:text-primary mt-4 pt-4 border-t border-slate-200"
                 >
                   <MapPin size={16} />
-                  <span className="max-w-[120px] truncate">{userLocation.wilaya_name}</span>
+                  <span className="truncate">{userLocation.wilaya_name}</span>
                 </button>
               )}
-
-              <button
-                onClick={openCart}
-                className="relative p-2 text-slate-600 hover:text-primary transition-colors"
-              >
-                <ShoppingCart size={20} />
-                {getItemCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-white">
-                    {getItemCount()}
-                  </span>
-                )}
-              </button>
-
-              {user ? (
-                <button
-                  onClick={handleLogout}
-                  className="p-2 text-slate-600 hover:text-red-500 transition-colors"
-                  aria-label="Logout"
-                >
-                  <svg className="w-5 h-5" viewBox="0 0 512 512" fill="currentColor">
-                    <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/>
-                  </svg>
-                </button>
-              ) : (
-                <Link
-                  href="/auth/login"
-                  onClick={handleLinkClick}
-                  className="btn-primary text-sm px-4 py-2"
-                >
-                  {t('login')}
-                </Link>
-              )}
-
-              {/* Mobile menu button */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 text-slate-600"
-              >
-                {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile location (visible only on mobile) */}
-          {userLocation && (
-            <div className="md:hidden flex items-center justify-center py-2 text-sm text-slate-600 border-t border-slate-100">
-              <MapPin size={14} className="ml-1" />
-              <button
-                onClick={() => setShowLocationPicker(true)}
-                className="hover:text-primary transition-colors"
-              >
-                {userLocation.wilaya_name} - {userLocation.baladiya_name}
-              </button>
-            </div>
-          )}
-
-          {/* Mobile navigation drawer */}
-          {mobileMenuOpen && (
-            <nav className="md:hidden py-4 border-t border-slate-100 space-y-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`block px-3 py-2 rounded-md text-sm font-medium ${
-                    pathname === item.href
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-slate-600 hover:bg-slate-50'
-                  }`}
-                  onClick={handleLinkClick}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {/* No logout button here – only in profile page */}
             </nav>
-          )}
-        </div>
-      </header>
+          </div>
+        </>
+      )}
 
       {/* Location picker modal */}
       {showLocationPicker && (
