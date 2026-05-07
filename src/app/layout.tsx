@@ -5,6 +5,7 @@ import { CartProvider } from '@/contexts/CartContext'
 import { LanguageProvider } from '@/contexts/LanguageContext'
 import { Toaster } from 'react-hot-toast'
 import ClientGuard from '@/components/ClientGuard'
+import ThemeDetector from '@/components/ThemeDetector'
 
 const cairo = Cairo({
   subsets: ['arabic', 'latin'],
@@ -23,8 +24,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ar" dir="rtl" className={cairo.className}>
-      <body>
+    <html lang="ar" dir="rtl">
+      <body className={cairo.className}>
+        <ThemeDetector />
         <ClientGuard>
           <LanguageProvider>
             <CartProvider>
