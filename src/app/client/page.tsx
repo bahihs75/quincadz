@@ -7,7 +7,6 @@ import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/contexts/LanguageContext'
 import ProductCard from '@/components/client/ProductCard'
 import Link from 'next/link'
-import { Marquee } from "@/components/Marquee"
 
 const PAGE_SIZE = 8
 
@@ -90,14 +89,25 @@ export default function ClientHomePage() {
 
   return (
     <div className="bg-white">
-      <div className="container mx-auto px-4 py-8">
-        {!userLocation && (
-          <div className="mb-8">
-            <LocationPicker onLocationSelect={handleLocationSelect} />
-          </div>
-        )}
+      {/* Hero section with background image */}
+      <div 
+        className="relative bg-cover bg-center bg-no-repeat py-20"
+        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1581094794329-c8112c89f12c?q=80&w=2070&auto=format&fit=crop')" }}
+      >
+        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="container mx-auto px-4 relative z-10 text-center text-white">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">QuincaDZ</h1>
+          <p className="text-lg md:text-xl mb-6">Votre quincaillerie en ligne</p>
+          {!userLocation && (
+            <div className="max-w-md mx-auto bg-white/10 backdrop-blur-sm rounded-xl p-4">
+              <LocationPicker onLocationSelect={handleLocationSelect} />
+            </div>
+          )}
+        </div>
+      </div>
 
-        {categories.length > 0 && (
+      <div className="container mx-auto px-4 py-8">
+        {userLocation && categories.length > 0 && (
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-slate-800 mb-6">{t('browse_categories')}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -119,7 +129,7 @@ export default function ClientHomePage() {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-slate-800">{t('all_products')}</h2>
             <Link href="/client/products" className="text-primary hover:text-secondary font-semibold">
-              {t('view_all')}
+              {t('view_all')} →
             </Link>
           </div>
 
@@ -148,7 +158,6 @@ export default function ClientHomePage() {
             </>
           )}
         </section>
-
       </div>
     </div>
   )
