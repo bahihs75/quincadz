@@ -25,20 +25,16 @@ export default function DirectOrderModal({ product, onClose }: DirectOrderModalP
       toast.error('الرجاء ملء جميع الحقول المطلوبة')
       return
     }
-
     setLoading(true)
-    // Get current user (if logged in)
     const { data: { user } } = await supabase.auth.getUser()
     const clientName = `${firstName} ${lastName}`
     const total = product.price * quantity
-
-    // Create order directly
     const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`
     const { error } = await supabase.from('orders').insert({
       order_number: orderNumber,
       client_id: user?.id || null,
       store_id: product.store_id,
-      wilaya_id: null, // you may want to map wilaya name to ID
+      wilaya_id: null,
       delivery_address: wilaya,
       client_phone: phone,
       client_name: clientName,
@@ -49,7 +45,6 @@ export default function DirectOrderModal({ product, onClose }: DirectOrderModalP
       order_status: 'pending',
       notes: `Direct order from product page. Quantity: ${quantity}`
     })
-
     if (error) {
       toast.error('فشل إنشاء الطلب: ' + error.message)
     } else {
@@ -73,23 +68,11 @@ export default function DirectOrderModal({ product, onClose }: DirectOrderModalP
             <input type="number" min="1" max={product.stock_quantity} value={quantity} onChange={(e) => setQuantity(Number(e.target.value))} className="input" required />
           </div>
           <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="block text-sm font-medium text-slate-700">الاسم الأول *</label>
-              <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="input" required />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700">الاسم الأخير *</label>
-              <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} className="input" required />
-            </div>
+            <div><label className="block text-sm font-medium text-slate-700">الاسم الأول *</label><input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="input" required /></div>
+            <div><label className="block text-sm font-medium text-slate-700">الاسم الأخير *</label><input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} className="input" required /></div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700">رقم الهاتف *</label>
-            <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className="input" required />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700">الولاية *</label>
-            <input type="text" value={wilaya} onChange={(e) => setWilaya(e.target.value)} className="input" required />
-          </div>
+          <div><label className="block text-sm font-medium text-slate-700">رقم الهاتف *</label><input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className="input" required /></div>
+          <div><label className="block text-sm font-medium text-slate-700">الولاية *</label><input type="text" value={wilaya} onChange={(e) => setWilaya(e.target.value)} className="input" required /></div>
           <button type="submit" disabled={loading} className="btn-primary w-full">تأكيد الطلب</button>
         </form>
       </div>
