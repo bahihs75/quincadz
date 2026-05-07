@@ -1,10 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname, useRouter } from '/navigation'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/contexts/LanguageContext'
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
 import { 
   LayoutDashboard, 
   Store, 
@@ -22,9 +23,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
-  const { language, setLanguage, t } = useLanguage()
+  const { t } = useLanguage()
   const [userName, setUserName] = useState('')
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
     const getUser = async () => {
@@ -64,10 +65,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         href={item.href}
         className={`flex items-center gap-3 rounded-lg px-4 py-3 transition ${
           isActive
-            ? 'bg-primary text-white '
-            : 'text-slate-700 hover:bg-slate-100  dark:hover:bg-gray-800'
+            ? 'bg-primary text-white'
+            : 'text-slate-700 hover:bg-slate-100'
         }`}
-        onClick={() => setMobileSidebarOpen(false)}
+        onClick={() => setSidebarOpen(false)}
       >
         <Icon size={20} />
         <span>{item.label}</span>
@@ -76,52 +77,48 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 ">
-      <div className="lg:hidden bg-white  shadow p-4 flex items-center justify-between border-b border-slate-200 dark:border-gray-800">
-        <button onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)} className="text-slate-700 ">
-          {mobileSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+    <div className="min-h-screen bg-slate-50">
+      {/* Mobile header with menu button */}
+      <div className="lg:hidden bg-white border-b border-slate-200 p-4 flex items-center justify-between sticky top-0 z-30">
+        <button onClick={() => setSidebarOpen(true)} className="text-slate-600">
+          <Menu size={24} />
         </button>
-        <span className="font-bold text-primary ">QuincaDZ – {t('admin_dashboard')}</span>
-        <select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value as 'ar'|'fr'|'en')}
-          className="bg-slate-100  border border-slate-300 dark:border-gray-700 text-slate-900  text-sm rounded-lg p-1"
-        >
-          <option value="ar">AR</option>
-          <option value="fr">FR</option>
-          <option value="en">EN</option>
-        </select>
+        <div className="flex items-center gap-2">
+          <img src="/logo.png" alt="QuincaDZ" className="h-6 w-auto" />
+          <span className="font-bold text-primary">QuincaDZ</span>
+        </div>
+        <LanguageSwitcher />
       </div>
 
-      {mobileSidebarOpen && (
-        <div className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden" onClick={() => setMobileSidebarOpen(false)} />
+      {/* Sidebar overlay for mobile */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
       )}
 
+      {/* Sidebar – fixed on desktop, slide‑out on mobile */}
       <aside
-        className={`fixed top-0 right-0 z-50 h-full w-64 transform border-l border-slate-200 bg-white shadow-lg transition-transform lg:relative lg:translate-x-0 dark:border-gray-800  ${
-          mobileSidebarOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed top-0 right-0 h-full w-64 bg-white border-l border-slate-200 shadow-lg z-50 transform transition-transform duration-300 lg:translate-x-0 ${
+          sidebarOpen ? 'translate-x-0' : 'translate-x-full'
+        } lg:relative lg:translate-x-0`}
       >
-        <div className="flex items-center justify-between border-b border-slate-200 p-6 dark:border-gray-800">
+        <div className="flex items-center justify-between border-b border-slate-200 p-4">
           <div className="flex items-center gap-2">
-            <img src="/brand.svg" alt="QuincaDZ" className="h-6 w-auto" />
-            <div>
-              <h2 className="text-xl font-bold text-primary ">QuincaDZ</h2>
-              <p className="mt-1 text-sm text-slate-600 ">{userName || t('admin_dashboard')}</p>
-            </div>
+            <img src="/logo.png" alt="QuincaDZ" className="h-6 w-auto" />
+            <span className="text-xl font-bold text-primary">QuincaDZ</span>
           </div>
-          <div className="hidden lg:block">
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value as 'ar'|'fr'|'en')}
-              className="bg-slate-100  border border-slate-300 dark:border-gray-700 text-slate-900  text-sm rounded-lg p-1"
-            >
-              <option value="ar">AR</option>
-              <option value="fr">FR</option>
-              <option value="en">EN</option>
-            </select>
-          </div>
+          <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-slate-500">
+            <X size={20} />
+          </button>
         </div>
+
+        <div className="p-4 border-b border-slate-200">
+          <p className="text-sm text-slate-500">Admin</p>
+          <p className="font-medium text-slate-800">{userName || t('admin_dashboard')}</p>
+        </div>
+
         <nav className="p-4">
           <ul className="space-y-1">
             {navItems.map((item) => (
@@ -129,10 +126,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <NavLink item={item} />
               </li>
             ))}
-            <li className="mt-4 border-t border-slate-200 pt-4 dark:border-gray-800">
+            <li className="pt-4 mt-4 border-t border-slate-200">
               <button
                 onClick={handleLogout}
-                className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-slate-700 transition hover:bg-slate-100  dark:hover:bg-gray-800"
+                className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-slate-700 transition hover:bg-slate-100"
               >
                 <LogOut size={20} />
                 <span>{t('logout')}</span>
@@ -142,8 +139,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </nav>
       </aside>
 
+      {/* Main content – automatically offset by sidebar width on desktop */}
       <main className="lg:mr-64 p-6">
-        <div className="mx-auto max-w-7xl">
+        <div className="max-w-7xl mx-auto">
           {children}
         </div>
       </main>
