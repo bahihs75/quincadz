@@ -24,18 +24,12 @@ export default function ClientHomePage() {
 
   useEffect(() => {
     const saved = localStorage.getItem('quincadz_location')
-    if (saved) {
-      setUserLocation(JSON.parse(saved))
-    }
+    if (saved) setUserLocation(JSON.parse(saved))
   }, [])
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const { data } = await supabase
-        .from('categories')
-        .select('*')
-        .eq('is_active', true)
-        .order('sort_order')
+      const { data } = await supabase.from('categories').select('*').eq('is_active', true).order('sort_order')
       setCategories(data || [])
     }
     fetchCategories()
@@ -62,16 +56,11 @@ export default function ClientHomePage() {
       .order('created_at', { ascending: false })
 
     const { data } = await query
-
     if (data) {
-      if (loadMore) {
-        setProducts(prev => [...prev, ...data])
-      } else {
-        setProducts(data)
-      }
+      if (loadMore) setProducts(prev => [...prev, ...data])
+      else setProducts(data)
       setHasMore(data.length === PAGE_SIZE)
     }
-
     if (loadMore) setLoadingMore(false)
     else setLoading(false)
   }
@@ -90,33 +79,22 @@ export default function ClientHomePage() {
   return (
     <div className="bg-white">
       {/* Hero section with background image */}
-      <div 
-        className="relative bg-cover bg-center bg-no-repeat py-20"
-        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1581094794329-c8112c89f12c?q=80&w=2070&auto=format&fit=crop')" }}
-      >
-        <div className="absolute inset-0 bg-black/40"></div>
-        <div className="container mx-auto px-4 relative z-10 text-center text-white">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">QuincaDZ</h1>
-          <p className="text-lg md:text-xl mb-6">Votre quincaillerie en ligne</p>
-          {!userLocation && (
-            <div className="max-w-md mx-auto bg-white/10 backdrop-blur-sm rounded-xl p-4">
-              <LocationPicker onLocationSelect={handleLocationSelect} />
-            </div>
-          )}
+      <div className="relative h-[300px] md:h-[400px] bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')" }}>
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative container mx-auto px-4 h-full flex flex-col justify-center items-center text-center text-white">
+          <h1 className="text-3xl md:text-5xl font-bold mb-4">QuincaDZ</h1>
+          <p className="text-lg md:text-xl mb-6">{t('hero_subtitle') || 'Votre quincaillerie en ligne, livraison rapide'}</p>
+          {!userLocation && <LocationPicker onLocationSelect={handleLocationSelect} />}
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        {userLocation && categories.length > 0 && (
+        {categories.length > 0 && (
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-slate-800 mb-6">{t('browse_categories')}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
               {categories.map((cat) => (
-                <Link
-                  key={cat.id}
-                  href={`/client/products?category=${cat.id}`}
-                  className="group card-hover bg-white rounded-lg shadow-sm p-4 text-center"
-                >
+                <Link key={cat.id} href={`/client/products?category=${cat.id}`} className="group card-hover bg-white rounded-lg shadow-sm p-4 text-center">
                   <div className="text-3xl mb-2">{cat.icon || '📦'}</div>
                   <span className="text-slate-700">{cat.name_ar}</span>
                 </Link>
@@ -128,33 +106,16 @@ export default function ClientHomePage() {
         <section>
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold text-slate-800">{t('all_products')}</h2>
-            <Link href="/client/products" className="text-primary hover:text-secondary font-semibold">
-              {t('view_all')} →
-            </Link>
+            <Link href="/client/products" className="text-primary hover:text-secondary font-semibold">{t('view_all')}</Link>
           </div>
-
-          {loading ? (
-            <div className="text-center py-12 text-slate-500">{t('loading')}</div>
-          ) : products.length === 0 ? (
-            <div className="text-center py-12 text-slate-500">{t('no_products')}</div>
-          ) : (
+          {loading ? <div className="text-center py-12 text-slate-500">{t('loading')}</div>
+          : products.length === 0 ? <div className="text-center py-12 text-slate-500">{t('no_products')}</div>
+          : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {products.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
+              <div className="product-grid">
+                {products.map((product) => <ProductCard key={product.id} product={product} />)}
               </div>
-              {hasMore && (
-                <div className="text-center mt-8">
-                  <button
-                    onClick={loadMore}
-                    disabled={loadingMore}
-                    className="btn-primary"
-                  >
-                    {loadingMore ? t('loading') : t('view_all')}
-                  </button>
-                </div>
-              )}
+              {hasMore && <div className="text-center mt-8"><button onClick={loadMore} disabled={loadingMore} className="btn-primary">{loadingMore ? t('loading') : t('view_all')}</button></div>}
             </>
           )}
         </section>

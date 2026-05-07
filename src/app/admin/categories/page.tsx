@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { Plus, Edit, Trash2, ChevronUp, ChevronDown } from 'lucide-react'
+import toast from 'react-hot-toast'
 
 interface Category {
   id: number
@@ -36,37 +37,27 @@ export default function AdminCategoriesPage() {
 
   const fetchCategories = async () => {
     setLoading(true)
-    const { data } = await supabase
-      .from('categories')
-      .select('*')
-      .order('sort_order', { ascending: true })
+    const { data } = await supabase.from('categories').select('*').order('sort_order')
     setCategories(data || [])
     setLoading(false)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const payload = {
+      name_ar: formData.name_ar,
+      name_fr: formData.name_fr || null,
+      icon: formData.icon || null,
+      parent_id: formData.parent_id ? parseInt(formData.parent_id) : null,
+      sort_order: formData.sort_order,
+      is_active: formData.is_active,
+    }
     if (editingId) {
-      await supabase
-        .from('categories')
-        .update({
-          name_ar: formData.name_ar,
-          name_fr: formData.name_fr || null,
-          icon: formData.icon || null,
-          parent_id: formData.parent_id ? parseInt(formData.parent_id) : null,
-          sort_order: formData.sort_order,
-          is_active: formData.is_active,
-        })
-        .eq('id', editingId)
+      await supabase.from('categories').update(payload).eq('id', editingId)
+      toast.success('تم تحديث التصنيف')
     } else {
-      await supabase.from('categories').insert({
-        name_ar: formData.name_ar,
-        name_fr: formData.name_fr || null,
-        icon: formData.icon || null,
-        parent_id: formData.parent_id ? parseInt(formData.parent_id) : null,
-        sort_order: formData.sort_order,
-        is_active: formData.is_active,
-      })
+      await supabase.from('categories').insert(payload)
+      toast.success('تم إضافة التصنيف')
     }
     setEditingId(null)
     setFormData({ name_ar: '', name_fr: '', icon: '', parent_id: '', sort_order: 0, is_active: true })
@@ -89,37 +80,22 @@ export default function AdminCategoriesPage() {
     if (!confirm('هل أنت متأكد من حذف هذا التصنيف؟')) return
     await supabase.from('categories').delete().eq('id', id)
     fetchCategories()
+    toast.success('تم الحذف')
   }
 
   const moveUp = async (cat: Category) => {
-    const prev = categories
-      .filter(c => c.parent_id === cat.parent_id && c.sort_order < cat.sort_order)
-      .sort((a, b) => b.sort_order - a.sort_order)[0]
+    const prev = categories.filter(c => c.parent_id === cat.parent_id && c.sort_order < cat.sort_order).sort((a,b) => b.sort_order - a.sort_order)[0]
     if (!prev) return
-    await supabase
-      .from('categories')
-      .update({ sort_order: prev.sort_order })
-      .eq('id', cat.id)
-    await supabase
-      .from('categories')
-      .update({ sort_order: cat.sort_order })
-      .eq('id', prev.id)
+    await supabase.from('categories').update({ sort_order: prev.sort_order }).eq('id', cat.id)
+    await supabase.from('categories').update({ sort_order: cat.sort_order }).eq('id', prev.id)
     fetchCategories()
   }
 
   const moveDown = async (cat: Category) => {
-    const next = categories
-      .filter(c => c.parent_id === cat.parent_id && c.sort_order > cat.sort_order)
-      .sort((a, b) => a.sort_order - b.sort_order)[0]
+    const next = categories.filter(c => c.parent_id === cat.parent_id && c.sort_order > cat.sort_order).sort((a,b) => a.sort_order - b.sort_order)[0]
     if (!next) return
-    await supabase
-      .from('categories')
-      .update({ sort_order: next.sort_order })
-      .eq('id', cat.id)
-    await supabase
-      .from('categories')
-      .update({ sort_order: cat.sort_order })
-      .eq('id', next.id)
+    await supabase.from('categories').update({ sort_order: next.sort_order }).eq('id', cat.id)
+    await supabase.from('categories').update({ sort_order: cat.sort_order }).eq('id', next.id)
     fetchCategories()
   }
 
@@ -127,147 +103,59 @@ export default function AdminCategoriesPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">إدارة التصنيفات</h1>
-
-      {/* Add/Edit Form */}
-      <div className="bg-white rounded-lg shadow p-6 mb-8">
-        <h2 className="text-xl font-bold mb-4">{editingId ? 'تعديل تصنيف' : 'إضافة تصنيف جديد'}</h2>
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-1 text-slate-700">الاسم (عربي) *</label>
-            <input
-              type="text"
-              required
-              value={formData.name_ar}
-              onChange={(e) => setFormData({ ...formData, name_ar: e.target.value })}
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div>
-            <label className="block mb-1 text-slate-700">الاسم (فرنسي)</label>
-            <input
-              type="text"
-              value={formData.name_fr}
-              onChange={(e) => setFormData({ ...formData, name_fr: e.target.value })}
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div>
-            <label className="block mb-1 text-slate-700">الأيقونة</label>
-            <input
-              type="text"
-              value={formData.icon}
-              onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
-              placeholder="🔧"
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div>
-            <label className="block mb-1 text-slate-700">التصنيف الأب</label>
-            <select
-              value={formData.parent_id}
-              onChange={(e) => setFormData({ ...formData, parent_id: e.target.value })}
-              className="w-full p-2 border rounded"
-            >
-              <option value="">لا يوجد</option>
-              {categories.filter(c => !c.parent_id).map(cat => (
-                <option key={cat.id} value={cat.id}>{cat.name_ar}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="block mb-1 text-slate-700">الترتيب</label>
-            <input
-              type="number"
-              value={formData.sort_order}
-              onChange={(e) => setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })}
-              className="w-full p-2 border rounded"
-            />
-          </div>
-          <div className="flex items-center">
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={formData.is_active}
-                onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-              />
-              <span>نشط</span>
-            </label>
-          </div>
-          <div className="col-span-2 flex gap-2">
-            <button type="submit" className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary">
-              {editingId ? 'تحديث' : 'إضافة'}
-            </button>
-            {editingId && (
-              <button
-                type="button"
-                onClick={() => {
-                  setEditingId(null)
-                  setFormData({ name_ar: '', name_fr: '', icon: '', parent_id: '', sort_order: 0, is_active: true })
-                }}
-                className="bg-slate-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600"
-              >
-                إلغاء
-              </button>
-            )}
-          </div>
-        </form>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-slate-800">إدارة التصنيفات</h1>
+        <button onClick={() => { setEditingId(null); setFormData({ name_ar: '', name_fr: '', icon: '', parent_id: '', sort_order: 0, is_active: true }) }} className="btn-primary flex items-center gap-2">
+          <Plus size={18} /> إضافة تصنيف
+        </button>
       </div>
 
-      {/* Categories List */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="w-full data-table">
-          <thead className="bg-slate-50">
-            <tr>
-              <th className="text-right py-3 px-4">الترتيب</th>
-              <th className="text-right py-3 px-4">الأيقونة</th>
-              <th className="text-right py-3 px-4">الاسم (عربي)</th>
-              <th className="text-right py-3 px-4">الاسم (فرنسي)</th>
-              <th className="text-right py-3 px-4">التصنيف الأب</th>
-              <th className="text-right py-3 px-4">الحالة</th>
-              <th className="text-right py-3 px-4">إجراءات</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categories.map((cat) => (
-              <tr key={cat.id} className="border-b hover:bg-slate-50">
-                <td className="py-3 px-4">
-                  <div className="flex items-center gap-1">
-                    <span>{cat.sort_order}</span>
-                    <button onClick={() => moveUp(cat)} className="text-slate-500 hover:text-primary ">
-                      <ChevronUp size={16} />
-                    </button>
-                    <button onClick={() => moveDown(cat)} className="text-slate-500 hover:text-primary ">
-                      <ChevronDown size={16} />
-                    </button>
-                  </div>
-                </td>
-                <td className="py-3 px-4 text-2xl">{cat.icon || '-'}</td>
-                <td className="py-3 px-4">{cat.name_ar}</td>
-                <td className="py-3 px-4">{cat.name_fr || '-'}</td>
-                <td className="py-3 px-4">
-                  {categories.find(c => c.id === cat.parent_id)?.name_ar || '-'}
-                </td>
-                <td className="py-3 px-4">
-                  <span className={`px-2 py-1 rounded text-sm ${cat.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                    {cat.is_active ? 'نشط' : 'غير نشط'}
-                  </span>
-                </td>
-                <td className="py-3 px-4">
-                  <div className="flex gap-2">
-                    <button onClick={() => editCategory(cat)} className="p-1 text-primary  hover:bg-blue-50 rounded">
-                      <Edit size={18} />
-                    </button>
-                    <button onClick={() => deleteCategory(cat.id)} className="p-1 text-red-600 hover:bg-red-50 rounded">
-                      <Trash2 size={18} />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="overflow-x-auto">
+          <table className="data-table w-full">
+            <thead className="bg-slate-100">
+              <tr><th className="px-6 py-3 text-right">الترتيب</th><th className="px-6 py-3 text-right">الأيقونة</th><th className="px-6 py-3 text-right">الاسم (عربي)</th><th className="px-6 py-3 text-right">الاسم (فرنسي)</th><th className="px-6 py-3 text-right">التصنيف الأب</th><th className="px-6 py-3 text-right">الحالة</th><th className="px-6 py-3 text-right">إجراءات</th></tr>
+            </thead>
+            <tbody>
+              {categories.map(cat => (
+                <tr key={cat.id} className="border-b">
+                  <td className="px-6 py-4"><div className="flex gap-1"><span>{cat.sort_order}</span><button onClick={() => moveUp(cat)}><ChevronUp size={16} /></button><button onClick={() => moveDown(cat)}><ChevronDown size={16} /></button></div></td>
+                  <td className="px-6 py-4 text-2xl">{cat.icon || '-'}</td>
+                  <td className="px-6 py-4">{cat.name_ar}</td>
+                  <td className="px-6 py-4">{cat.name_fr || '-'}</td>
+                  <td className="px-6 py-4">{categories.find(c => c.id === cat.parent_id)?.name_ar || '-'}</td>
+                  <td className="px-6 py-4"><span className={`badge ${cat.is_active ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-800'}`}>{cat.is_active ? 'نشط' : 'غير نشط'}</span></td>
+                  <td className="px-6 py-4"><div className="flex gap-2"><button onClick={() => editCategory(cat)} className="text-blue-600"><Edit size={18} /></button><button onClick={() => deleteCategory(cat.id)} className="text-red-600"><Trash2 size={18} /></button></div></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
+
+      {/* Modal for add/edit */}
+      {editingId !== null || formData.name_ar !== '' ? (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4">{editingId ? 'تعديل تصنيف' : 'إضافة تصنيف'}</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input type="text" placeholder="الاسم (عربي)" className="input" value={formData.name_ar} onChange={e => setFormData({...formData, name_ar: e.target.value})} required />
+              <input type="text" placeholder="الاسم (فرنسي)" className="input" value={formData.name_fr} onChange={e => setFormData({...formData, name_fr: e.target.value})} />
+              <input type="text" placeholder="الأيقونة (emoji)" className="input" value={formData.icon} onChange={e => setFormData({...formData, icon: e.target.value})} />
+              <select className="input" value={formData.parent_id} onChange={e => setFormData({...formData, parent_id: e.target.value})}>
+                <option value="">لا يوجد أب</option>
+                {categories.filter(c => !c.parent_id).map(c => <option key={c.id} value={c.id}>{c.name_ar}</option>)}
+              </select>
+              <input type="number" placeholder="الترتيب" className="input" value={formData.sort_order} onChange={e => setFormData({...formData, sort_order: parseInt(e.target.value)})} />
+              <label className="flex items-center gap-2"><input type="checkbox" checked={formData.is_active} onChange={e => setFormData({...formData, is_active: e.target.checked})} /> نشط</label>
+              <div className="flex gap-2">
+                <button type="submit" className="btn-primary flex-1">{editingId ? 'تحديث' : 'إضافة'}</button>
+                <button type="button" onClick={() => { setEditingId(null); setFormData({ name_ar: '', name_fr: '', icon: '', parent_id: '', sort_order: 0, is_active: true }) }} className="btn-secondary">إلغاء</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }
