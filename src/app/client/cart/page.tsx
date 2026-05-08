@@ -54,13 +54,13 @@ export default function CartPage() {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
         <ShoppingBag size={64} className="mx-auto text-gray-300 mb-4" />
-        <h1 className="text-2xl font-bold mb-4 text-black ">سلة التسوق فارغة</h1>
-        <p className="text-slate-600  mb-8">أضف بعض المنتجات إلى السلة للبدء</p>
+        <h1 className="text-2xl font-bold mb-4 text-gray-800">Your cart is empty</h1>
+        <p className="text-gray-600 mb-8">Add some products to get started</p>
         <Link
           href="/client/products"
-          className="bg-primary text-white px-6 py-3 rounded-lg inline-block hover:bg-secondary"
+          className="bg-orange-500 text-white px-6 py-3 rounded-lg inline-block hover:bg-orange-600"
         >
-          تصفح المنتجات
+          Browse Products
         </Link>
       </div>
     )
@@ -68,20 +68,19 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-black ">سلة التسوق</h1>
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Shopping Cart</h1>
 
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Cart items */}
         <div className="flex-1">
           {stores.map((store) => (
-            <div key={store.store_id} className="bg-white  rounded-lg shadow mb-6 overflow-hidden">
-              <div className="bg-slate-50  px-6 py-3 border-b 
-                <h2 className="font-bold text-lg text-slate-900 ">{store.store_name}</h2>
+            <div key={store.store_id} className="bg-white rounded-lg shadow mb-6 overflow-hidden">
+              <div className="bg-slate-50 px-6 py-3 border-b border-slate-200">
+                <h2 className="font-bold text-lg text-slate-900">{store.store_name}</h2>
               </div>
-              <div className="divide-y 
+              <div className="divide-y divide-slate-200">
                 {store.items.map((item: CartItem) => (
                   <div key={item.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4">
-                    <div className="w-20 h-20 bg-slate-200  rounded flex-shrink-0">
+                    <div className="w-20 h-20 bg-gray-100 rounded flex-shrink-0">
                       <img
                         src={item.image || '/default-product.jpg'}
                         alt={item.name_ar}
@@ -90,26 +89,23 @@ export default function CartPage() {
                     </div>
 
                     <div className="flex-1">
-                      <Link
-                        href={`/client/product/${item.id}`}
-                        className="font-medium hover:text-primary  
-                      >
+                      <Link href={`/client/product/${item.id}`} className="font-medium hover:text-orange-600">
                         {item.name_ar}
                       </Link>
-                      <p className="text-sm text-slate-500 ">{item.unit}</p>
-                      <p className="text-primary font-bold mt-1">
-                        {item.price.toLocaleString()} دج
+                      <p className="text-sm text-gray-500">{item.unit}</p>
+                      <p className="text-orange-600 font-bold mt-1">
+                        {item.price.toLocaleString()} DA
                       </p>
                     </div>
 
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="w-8 h-8 flex items-center justify-center border border-slate-300 rounded hover:bg-slate-100 text-slate-700 "
+                        className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
                       >
                         <Minus size={14} />
                       </button>
-                      <span className="w-8 text-center text-slate-900 ">{item.quantity}</span>
+                      <span className="w-8 text-center">{item.quantity}</span>
                       <button
                         onClick={() =>
                           updateQuantity(
@@ -117,7 +113,7 @@ export default function CartPage() {
                             Math.min(item.max_quantity, item.quantity + 1)
                           )
                         }
-                        className="w-8 h-8 flex items-center justify-center border border-slate-300 rounded hover:bg-slate-100 text-slate-700 "
+                        className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded hover:bg-gray-100"
                       >
                         <Plus size={14} />
                       </button>
@@ -131,10 +127,10 @@ export default function CartPage() {
                   </div>
                 ))}
               </div>
-              <div className="bg-slate-50  px-6 py-3 text-left border-t 
-                <span className="font-medium text-slate-700 ">المجموع الجزئي: </span>
-                <span className="text-primary font-bold">
-                  {store.subtotal.toLocaleString()} دج
+              <div className="bg-slate-50 px-6 py-3 text-left border-t border-slate-200">
+                <span className="font-medium">Subtotal: </span>
+                <span className="text-orange-600 font-bold">
+                  {store.subtotal.toLocaleString()} DA
                 </span>
               </div>
             </div>
@@ -142,36 +138,36 @@ export default function CartPage() {
         </div>
 
         <div className="lg:w-80">
-          <div className="bg-white  rounded-lg shadow p-6 sticky top-24">
-            <h2 className="text-xl font-bold mb-4 text-black ">ملخص الطلب</h2>
+          <div className="bg-white rounded-lg shadow p-6 sticky top-24">
+            <h2 className="text-xl font-bold mb-4 text-gray-800">Order Summary</h2>
             <div className="space-y-2 mb-4">
               <div className="flex justify-between">
-                <span className="text-slate-700 ">المجموع</span>
-                <span className="text-slate-900  font-medium">{getCartTotal().toLocaleString()} دج</span>
+                <span>Total</span>
+                <span>{getCartTotal().toLocaleString()} DA</span>
               </div>
-              <div className="flex justify-between text-sm text-slate-600 ">
-                <span>رسوم التوصيل</span>
-                <span>تحسب لاحقاً</span>
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>Delivery fee</span>
+                <span>Calculated later</span>
               </div>
             </div>
             <div className="border-t pt-4 mb-6">
               <div className="flex justify-between font-bold text-lg">
-                <span className="text-slate-800 ">الإجمالي</span>
-                <span className="text-primary">{getCartTotal().toLocaleString()} دج</span>
+                <span>Grand Total</span>
+                <span className="text-orange-600">{getCartTotal().toLocaleString()} DA</span>
               </div>
             </div>
             <button
               onClick={handleCheckout}
               disabled={loading}
-              className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-secondary disabled:opacity-50 transition"
+              className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold hover:bg-orange-600 disabled:opacity-50"
             >
-              {loading ? 'جاري التحميل...' : 'إتمام الشراء'}
+              {loading ? 'Loading...' : 'Proceed to Checkout'}
             </button>
             <button
               onClick={clearCart}
-              className="w-full mt-2 text-red-500  py-2 text-sm hover:underline"
+              className="w-full mt-2 text-red-500 py-2 text-sm hover:underline"
             >
-              إفراغ السلة
+              Clear Cart
             </button>
           </div>
         </div>

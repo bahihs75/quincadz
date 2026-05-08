@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
-import { Mail, Lock, LogIn, Chrome } from 'lucide-react'
+import { Mail, Lock, LogIn } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export default function LoginPage() {
@@ -48,7 +48,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
           <img src="/logo.png" alt="QuincaDZ" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-800 back</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Welcome back</h1>
           <p className="text-gray-500 mt-1">Sign in to your account</p>
         </div>
 
@@ -57,13 +57,18 @@ export default function LoginPage() {
           disabled={loading}
           className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 text-gray-700 py-2.5 rounded-lg hover:bg-gray-50 transition mb-6"
         >
-          <img src="/google-icon.png" alt="Google" className="w-5 h-5" />
+          <svg className="w-5 h-5" viewBox="0 0 24 24">
+            <path fill="#EA4335" d="M5.266 9.765A7.077 7.077 0 0 1 12 4.93c1.665 0 3.156.586 4.341 1.552l3.265-3.265C17.824 1.186 15.117 0 12 0 7.27 0 3.196 2.697 1.207 6.701l4.059 3.064z" />
+            <path fill="#34A853" d="M16.04 5.401a7.044 7.044 0 0 1 4.08 2.574l-3.266 3.265c-.92-.648-2.083-1.048-3.388-1.048-2.153 0-3.98 1.384-4.633 3.288l-4.06-3.064C6.12 8.562 8.877 6.3 12.201 6.3c1.316 0 2.558.351 3.639 1.101z" />
+            <path fill="#4A90E2" d="M7.047 14.468a7.026 7.026 0 0 1-.351-2.217c0-.762.133-1.498.374-2.186l-4.06-3.064C2.335 9.005 1.8 10.456 1.8 12c0 1.545.536 2.997 1.432 4.179l3.815-2.711z" />
+            <path fill="#FBBC05" d="M12.201 17.7c-1.66 0-3.156-.588-4.344-1.552l-3.266 3.265C6.48 21.41 9.176 23 12.201 23c3.026 0 5.72-1.59 7.414-4.065l-3.815-2.711c-1.05 1.645-2.864 2.776-4.999 2.776z" />
+          </svg>
           <span>Continue with Google</span>
         </button>
 
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200 
+            <div className="w-full border-t border-gray-200"></div>
           </div>
           <div className="relative flex justify-center text-sm">
             <span className="px-3 bg-white text-gray-400">or</span>
@@ -79,7 +84,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 placeholder="you@example.com"
                 required
               />
@@ -94,7 +99,7 @@ export default function LoginPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
                 placeholder="••••••••"
                 required
               />
@@ -104,9 +109,9 @@ export default function LoginPage() {
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2">
               <input type="checkbox" className="rounded border-gray-300 text-orange-500 focus:ring-orange-500" />
-              <span className="text-sm text-gray-600 me</span>
+              <span className="text-sm text-gray-600">Remember me</span>
             </label>
-            <Link href="/auth/forgot-password" className="text-sm text-orange-500 hover:text-orange-600 transition">Forgot password?</Link>
+            <Link href="/auth/forgot-password" className="text-sm text-orange-500 hover:text-orange-600">Forgot password?</Link>
           </div>
 
           <button
@@ -118,7 +123,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-500 
+        <p className="mt-6 text-center text-sm text-gray-500">
           Don't have an account?{' '}
           <Link href="/auth/register" className="text-orange-500 font-semibold hover:underline">Create one</Link>
         </p>

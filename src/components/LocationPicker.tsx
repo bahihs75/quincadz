@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { wilayas, baladiyas } from '@/lib/algeriaData'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { MapPin, AlertCircle, X, Search } from 'lucide-react'
+import { MapPin, Locate, AlertCircle, X } from 'lucide-react'
 
 interface Props {
   onLocationSelect: (location: {
@@ -48,14 +48,15 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
       async (position) => {
         const { latitude, longitude } = position.coords
         try {
+          // Simple reverse geocoding (Nominatim)
           const response = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=fr`
           )
           if (!response.ok) throw new Error('Geocoding service error')
           const data = await response.json()
           const address = data.address
-          const wilayaName = address.state || address.region || ''
-          const baladiyaName = address.city || address.town || address.village || ''
+          let wilayaName = address.state || address.region || ''
+          let baladiyaName = address.city || address.town || address.village || ''
 
           const matchedWilaya = wilayas.find(w => 
             wilayaName.includes(w.name_ar) || w.name_ar.includes(wilayaName) ||
@@ -85,65 +86,59 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
               latitude,
               longitude
             })
-            onClose?.()
+            if (onClose) onClose()
           } else {
             setSelectedWilaya(matchedWilaya.id)
             setSearchTerm('')
             setLocationError(t('location_baladiya_not_found'))
           }
         } catch (error) {
-          console.error('Geolocation error:', error)
+          console.error(error)
           setLocationError(t('location_error'))
         } finally {
           setGettingLocation(false)
         }
       },
       (error) => {
-        console.error('Geolocation permission error:', error)
         let message = t('location_failed')
         if (error.code === 1) message = t('location_permission_denied')
         else if (error.code === 2) message = t('location_unavailable')
         else if (error.code === 3) message = t('location_timeout')
         setLocationError(message)
         setGettingLocation(false)
-      },
-      { timeout: 10000, maximumAge: 60000 }
+      }
     )
   }
 
   return (
     <div className="relative">
       {onClose && (
-        <button
-          onClick={onClose}
-          className="absolute -top-2 -right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md "
-        >
+        <button onClick={onClose} className="absolute -top-2 -right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md">
           <X size={16} />
         </button>
       )}
-
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl ">
+      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-2xl">
         <div className="mb-6 flex items-center gap-3">
-          <div className="rounded-xl bg-blue-100 p-3 /30">
-            <MapPin className="h-6 w-6 text-primary " />
+          <div className="rounded-xl bg-orange-100 p-3">
+            <MapPin className="h-6 w-6 text-orange-500" />
           </div>
-          <h2 className="text-xl font-bold text-slate-900 ">{t('choose_location')}</h2>
+          <h2 className="text-xl font-bold text-gray-800">{t('choose_location')}</h2>
         </div>
 
         <div className="space-y-4">
           <button
             onClick={getCurrentLocation}
             disabled={gettingLocation}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-medium text-white transition hover:bg-secondary disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 py-3 font-medium text-white transition hover:bg-orange-600 disabled:opacity-50"
           >
             {gettingLocation ? (
               <>
-                <span className="location-loader" />
+                <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                 <span>{t('detecting')}</span>
               </>
             ) : (
               <>
-                <MapPin size={18} />
+                <Locate size={18} />
                 <span>{t('detect_my_location')}</span>
               </>
             )}
@@ -151,22 +146,22 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-200 
+              <div className="w-full border-t border-gray-200"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-3 text-slate-500  ">أو</span>
+              <span className="bg-white px-3 text-gray-500">أو</span>
             </div>
           </div>
 
           {locationError && (
-            <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600 /30 ">
+            <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600">
               <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
               <span>{locationError}</span>
             </div>
           )}
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700 ">{t('wilaya')}</label>
+            <label className="mb-2 block text-sm font-medium text-gray-700">{t('wilaya')}</label>
             <select
               value={selectedWilaya}
               onChange={(e) => {
@@ -175,20 +170,18 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
                 setSearchTerm('')
                 setShowDropdown(false)
               }}
-              className="w-full rounded-xl border border-slate-300 bg-white p-3 text-slate-900 focus:ring-2 focus:ring-primary  "
+              className="w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-900 focus:ring-2 focus:ring-orange-500"
             >
               <option value="">{t('select_wilaya')}</option>
               {wilayas.map((w) => (
-                <option key={w.id} value={w.id}>
-                  {language === 'fr' ? w.name_fr : w.name_ar}
-                </option>
+                <option key={w.id} value={w.id}>{language === 'fr' ? w.name_fr : w.name_ar}</option>
               ))}
             </select>
           </div>
 
           {selectedWilaya && (
             <div className="relative">
-              <label className="mb-2 block text-sm font-medium text-slate-700 ">{t('baladiya')}</label>
+              <label className="mb-2 block text-sm font-medium text-gray-700">{t('baladiya')}</label>
               <input
                 type="text"
                 placeholder={t('search_baladiya')}
@@ -198,14 +191,14 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
                   setShowDropdown(true)
                 }}
                 onFocus={() => setShowDropdown(true)}
-                className="w-full rounded-xl border border-slate-300 bg-white p-3 text-slate-900 focus:ring-2 focus:ring-primary  "
+                className="w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-900 focus:ring-2 focus:ring-orange-500"
               />
               {showDropdown && filteredBaladiyas.length > 0 && (
-                <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-slate-300 bg-white shadow-lg ">
+                <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-gray-200 bg-white shadow-lg">
                   {filteredBaladiyas.map((b) => (
                     <div
                       key={b.id}
-                      className="cursor-pointer p-3 hover:bg-slate-100 
+                      className="cursor-pointer p-3 hover:bg-gray-100"
                       onClick={() => {
                         setSearchTerm(b.name_ar)
                         setShowDropdown(false)
@@ -218,7 +211,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
                             baladiya_id: b.id,
                             baladiya_name: b.name_ar,
                           })
-                          onClose?.()
+                          if (onClose) onClose()
                         }
                       }}
                     >

@@ -5,14 +5,12 @@ import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import ProductCard from '@/components/client/ProductCard'
 import { Filter, Search, X } from 'lucide-react'
-import { useLanguage } from '@/contexts/LanguageContext'
 
 const PAGE_SIZE = 12
 
 function ProductsContent() {
   const searchParams = useSearchParams()
   const supabase = createClient()
-  const { t } = useLanguage()
   const [products, setProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
@@ -117,121 +115,104 @@ function ProductsContent() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-black ">{t('products')}</h1>
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Products</h1>
 
       <button
         onClick={() => setShowFilters(!showFilters)}
-        className="md:hidden flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg mb-4"
+        className="md:hidden flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-lg mb-4"
       >
         <Filter size={18} />
-        {t('filter')}
+        Filter
       </button>
 
       <div className="flex flex-col md:flex-row gap-6">
-        <div
-          className={`${
-            showFilters ? 'block' : 'hidden'
-          } md:block w-full md:w-64 bg-white  p-4 rounded-lg shadow h-fit border border-slate-200 
-        >
+        <div className={`${showFilters ? 'block' : 'hidden'} md:block w-full md:w-64 bg-white p-4 rounded-lg shadow h-fit`}>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="font-bold text-lg text-black ">{t('filter')}</h2>
-            <button onClick={clearFilters} className="text-sm text-primary">
-              {t('clear_all')}
-            </button>
+            <h2 className="font-bold text-lg">Filter</h2>
+            <button onClick={clearFilters} className="text-sm text-orange-600">Clear all</button>
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1 text-slate-700 ">{t('search')}</label>
+            <label className="block text-sm font-medium mb-1">Search</label>
             <div className="relative">
               <input
                 type="text"
                 value={filters.search}
                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                placeholder={t('search_placeholder')}
-                className="w-full p-2 pr-8 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
+                placeholder="Product name..."
+                className="w-full p-2 pr-8 border border-gray-300 rounded"
               />
-              <Search size={16} className="absolute left-2 top-3 text-gray-400 " />
+              <Search size={16} className="absolute left-2 top-3 text-gray-400" />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1 text-slate-700 ">{t('category')}</label>
+            <label className="block text-sm font-medium mb-1">Category</label>
             <select
               value={filters.category}
               onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-              className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
+              className="w-full p-2 border rounded"
             >
-              <option value="">{t('all')}</option>
+              <option value="">All</option>
               {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name_ar}
-                </option>
+                <option key={cat.id} value={cat.id}>{cat.name_ar}</option>
               ))}
             </select>
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1 text-slate-700 ">{t('price')}</label>
+            <label className="block text-sm font-medium mb-1">Price (DA)</label>
             <div className="flex gap-2">
               <input
                 type="number"
-                placeholder={t('min')}
+                placeholder="Min"
                 value={filters.minPrice}
                 onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
-                className="w-1/2 p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
+                className="w-1/2 p-2 border rounded"
               />
               <input
                 type="number"
-                placeholder={t('max')}
+                placeholder="Max"
                 value={filters.maxPrice}
                 onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
-                className="w-1/2 p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
+                className="w-1/2 p-2 border rounded"
               />
             </div>
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-1 text-slate-700 ">{t('sort_by')}</label>
+            <label className="block text-sm font-medium mb-1">Sort by</label>
             <select
               value={filters.sort}
               onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
-              className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
+              className="w-full p-2 border rounded"
             >
-              <option value="newest">{t('newest')}</option>
-              <option value="price_asc">{t('price_low_to_high')}</option>
-              <option value="price_desc">{t('price_high_to_low')}</option>
+              <option value="newest">Newest</option>
+              <option value="price_asc">Price: low to high</option>
+              <option value="price_desc">Price: high to low</option>
             </select>
           </div>
         </div>
 
         <div className="flex-1">
           {loading ? (
-            <div className="text-center py-12 text-slate-600 ">{t('loading')}</div>
+            <div className="text-center py-12 text-gray-500">Loading...</div>
           ) : products.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-slate-500  mb-4">{t('no_products_found')}</p>
-              <button
-                onClick={clearFilters}
-                className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary"
-              >
-                {t('clear_filters')}
-              </button>
+              <p className="text-gray-500 mb-4">No products match your criteria</p>
+              <button onClick={clearFilters} className="bg-orange-500 text-white px-6 py-2 rounded-lg">Clear Filters</button>
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="product-grid">
                 {products.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
               {hasMore && (
                 <div className="text-center mt-8">
-                  <button
-                    onClick={loadMore}
-                    disabled={loadingMore}
-                    className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary disabled:opacity-50"
-                  >
-                    {loadingMore ? t('loading') : t('load_more')}
+                  <button onClick={loadMore} disabled={loadingMore} className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 disabled:opacity-50">
+                    {loadingMore ? 'Loading...' : 'Load More'}
                   </button>
                 </div>
               )}
@@ -245,7 +226,7 @@ function ProductsContent() {
 
 export default function ProductsPage() {
   return (
-    <Suspense fallback={<div className="text-center py-12">Chargement...</div>}>
+    <Suspense fallback={<div className="text-center py-12 text-gray-500">Loading...</div>}>
       <ProductsContent />
     </Suspense>
   )

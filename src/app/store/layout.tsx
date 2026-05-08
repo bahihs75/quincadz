@@ -5,14 +5,13 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useLanguage } from '@/contexts/LanguageContext'
-import { LayoutDashboard, Package, ShoppingBag, Settings, Menu, X } from 'lucide-react'
-import toast from 'react-hot-toast'
+import { LayoutDashboard, Package, ShoppingBag, Settings, LogOut, Menu, X } from 'lucide-react'
 
 export default function StoreLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
   const supabase = createClient()
-  const { language, setLanguage, t } = useLanguage()
+  const { t } = useLanguage()
   const [storeName, setStoreName] = useState('')
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
@@ -33,7 +32,6 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
-    toast.success(t('logout_success'))
     router.push('/auth/login')
   }
 
@@ -52,8 +50,8 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
         href={item.href}
         className={`flex items-center gap-3 rounded-lg px-4 py-3 transition ${
           isActive
-            ? 'bg-primary text-white '
-            : 'text-slate-700 hover:bg-slate-100  
+            ? 'bg-orange-500 text-white'
+            : 'text-gray-700 hover:bg-gray-100'
         }`}
         onClick={() => setMobileSidebarOpen(false)}
       >
@@ -64,51 +62,27 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 ">
-      <div className="lg:hidden bg-white  shadow p-4 flex items-center justify-between border-b border-slate-200 
-        <button onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)} className="text-slate-700 ">
+    <div className="min-h-screen bg-gray-50">
+      <div className="lg:hidden bg-white shadow p-4 flex items-center justify-between">
+        <button onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)} className="text-gray-700">
           {mobileSidebarOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-        <span className="font-bold text-primary ">QuincaDZ – {t('dashboard')}</span>
-        <select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value as 'ar'|'fr'|'en')}
-          className="bg-slate-100  border border-slate-300 text-slate-900  text-sm rounded-lg p-1"
-        >
-          <option value="ar">AR</option>
-          <option value="fr">FR</option>
-          <option value="en">EN</option>
-        </select>
+        <span className="font-bold text-orange-500">QuincaDZ – {t('dashboard')}</span>
+        <div className="w-8" />
       </div>
 
       {mobileSidebarOpen && (
-        <div className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden" onClick={() => setMobileSidebarOpen(false)} />
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onClick={() => setMobileSidebarOpen(false)} />
       )}
 
       <aside
-        className={`fixed top-0 right-0 z-50 h-full w-64 transform border-l border-slate-200 bg-white shadow-lg transition-transform lg:relative lg:translate-x-0  ${
+        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform lg:relative lg:translate-x-0 ${
           mobileSidebarOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex items-center justify-between border-b border-slate-200 p-6 
-          <div className="flex items-center gap-2">
-            <img src="/brand.svg" alt="QuincaDZ" className="h-6 w-auto" />
-            <div>
-              <h2 className="text-xl font-bold text-primary ">QuincaDZ</h2>
-              <p className="mt-1 text-sm text-slate-600 ">{storeName || t('dashboard')}</p>
-            </div>
-          </div>
-          <div className="hidden lg:block">
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value as 'ar'|'fr'|'en')}
-              className="bg-slate-100  border border-slate-300 text-slate-900  text-sm rounded-lg p-1"
-            >
-              <option value="ar">AR</option>
-              <option value="fr">FR</option>
-              <option value="en">EN</option>
-            </select>
-          </div>
+        <div className="p-6 border-b">
+          <h2 className="text-xl font-bold text-orange-500">QuincaDZ</h2>
+          <p className="text-sm text-gray-600 mt-1">{storeName || t('dashboard')}</p>
         </div>
         <nav className="p-4">
           <ul className="space-y-1">
@@ -117,12 +91,21 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
                 <NavLink item={item} />
               </li>
             ))}
+            <li className="pt-4 mt-4 border-t">
+              <button
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-gray-700 transition hover:bg-gray-100"
+              >
+                <LogOut size={20} />
+                <span>{t('logout')}</span>
+              </button>
+            </li>
           </ul>
         </nav>
       </aside>
 
-      <main className="lg:mr-64 p-6">
-        <div className="mx-auto max-w-7xl">
+      <main className="lg:ml-64 p-6">
+        <div className="max-w-7xl mx-auto">
           {children}
         </div>
       </main>
