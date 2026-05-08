@@ -55,7 +55,7 @@ export default function LoginPage() {
         <button
           onClick={handleGoogleLogin}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-200 py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition mb-6"
+          className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-white py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition mb-6"
         >
           <img src="/google-icon.png" alt="Google" className="w-5 h-5" />
           <span>Continue with Google</span>
