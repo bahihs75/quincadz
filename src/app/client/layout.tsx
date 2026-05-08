@@ -43,12 +43,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   const closeMenu = () => setIsMenuOpen(false)
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    toast.success('Logged out')
-    router.push('/')
-  }
-
   const navItems = [
     { href: '/client', label: 'Home' },
     { href: '/client/products', label: 'Products' },
@@ -58,33 +52,33 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+      <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between gap-4">
-            {/* Left side: hamburger menu (only on mobile) */}
+            {/* Hamburger menu button (left side) */}
             <button
               onClick={() => setIsMenuOpen(true)}
-              className="p-2 text-slate-600 hover:text-primary md:hidden"
+              className="p-2 text-gray-600 hover:text-orange-500 md:hidden"
             >
               <Menu size={24} />
             </button>
 
-            {/* Logo - centered */}
+            {/* Logo centered */}
             <div className="flex-1 flex justify-center">
               <Link href="/client" onClick={closeMenu} className="flex items-center gap-2">
                 <img src="/logo.png" alt="QuincaDZ" className="h-8 w-auto" />
-                <span className="text-xl font-bold text-primary">QuincaDZ</span>
+                <span className="text-xl font-bold text-orange-500">QuincaDZ</span>
               </Link>
             </div>
 
-            {/* Right side: cart icon (always visible) */}
+            {/* Cart icon (right side) */}
             <button
               onClick={openCart}
-              className="relative p-2 text-slate-600 hover:text-primary transition-colors"
+              className="relative p-2 text-gray-600 hover:text-orange-500 transition-colors"
             >
               <ShoppingCart size={20} />
               {getItemCount() > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-white">
+                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-orange-500 text-xs text-white">
                   {getItemCount()}
                 </span>
               )}
@@ -93,7 +87,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         </div>
       </header>
 
-      {/* Mobile/Desktop slide‑out menu (from right in RTL) */}
+      {/* Slide‑out menu (sidebar) */}
       {isMenuOpen && (
         <>
           <div
@@ -102,7 +96,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           />
           <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-xl z-50 p-6 transform transition-transform duration-300">
             <div className="flex justify-end mb-6">
-              <button onClick={closeMenu} className="p-1 text-slate-500 hover:text-primary">
+              <button onClick={closeMenu} className="p-1 text-gray-500 hover:text-orange-500">
                 <X size={24} />
               </button>
             </div>
@@ -114,8 +108,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   onClick={closeMenu}
                   className={`text-base font-medium transition-colors ${
                     pathname === item.href
-                      ? 'text-primary border-r-2 border-primary pr-2'
-                      : 'text-slate-600 hover:text-primary'
+                      ? 'text-orange-500 border-r-2 border-orange-500 pr-2'
+                      : 'text-gray-700 hover:text-orange-500'
                   }`}
                 >
                   {item.label}
@@ -128,13 +122,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                     closeMenu()
                     setShowLocationPicker(true)
                   }}
-                  className="flex items-center gap-2 text-sm text-slate-600 hover:text-primary mt-4 pt-4 border-t border-slate-200"
+                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-orange-500 mt-4 pt-4 border-t border-gray-200"
                 >
                   <MapPin size={16} />
                   <span className="truncate">{userLocation.wilaya_name}</span>
                 </button>
               )}
-              {/* No logout button here – only in profile page */}
             </nav>
           </div>
         </>
