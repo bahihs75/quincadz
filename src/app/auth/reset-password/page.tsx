@@ -50,7 +50,7 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white  rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-primary ">QuincaDZ</h1>
@@ -66,7 +66,7 @@ export default function ResetPasswordPage() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
+                className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
                 placeholder="••••••••"
                 required
               />
@@ -81,7 +81,7 @@ export default function ResetPasswordPage() {
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
+                className="w-full pl-10 pr-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
                 placeholder="••••••••"
                 required
               />
@@ -91,7 +91,7 @@ export default function ResetPasswordPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary  text-white py-2 rounded-lg hover:bg-primary dark:hover:bg-blue-800 transition flex items-center justify-center gap-2"
+            className="w-full bg-primary  text-white py-2 rounded-lg hover:bg-primary transition flex items-center justify-center gap-2"
           >
             {loading ? 'جاري الحفظ...' : 'تغيير كلمة المرور'}
           </button>

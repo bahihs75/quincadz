@@ -122,7 +122,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
         </button>
       )}
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-gray-700 ">
+      <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl ">
         <div className="mb-6 flex items-center gap-3">
           <div className="rounded-xl bg-blue-100 p-3 /30">
             <MapPin className="h-6 w-6 text-primary " />
@@ -151,7 +151,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-200 dark:border-gray-700"></div>
+              <div className="w-full border-t border-slate-200 
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="bg-white px-3 text-slate-500  ">أو</span>
@@ -159,7 +159,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
           </div>
 
           {locationError && (
-            <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600 dark:border-red-800 /30 ">
+            <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600 /30 ">
               <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
               <span>{locationError}</span>
             </div>
@@ -175,7 +175,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
                 setSearchTerm('')
                 setShowDropdown(false)
               }}
-              className="w-full rounded-xl border border-slate-300 bg-white p-3 text-slate-900 focus:ring-2 focus:ring-primary dark:border-gray-600  "
+              className="w-full rounded-xl border border-slate-300 bg-white p-3 text-slate-900 focus:ring-2 focus:ring-primary  "
             >
               <option value="">{t('select_wilaya')}</option>
               {wilayas.map((w) => (
@@ -198,14 +198,14 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
                   setShowDropdown(true)
                 }}
                 onFocus={() => setShowDropdown(true)}
-                className="w-full rounded-xl border border-slate-300 bg-white p-3 text-slate-900 focus:ring-2 focus:ring-primary dark:border-gray-600  "
+                className="w-full rounded-xl border border-slate-300 bg-white p-3 text-slate-900 focus:ring-2 focus:ring-primary  "
               />
               {showDropdown && filteredBaladiyas.length > 0 && (
-                <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-slate-300 bg-white shadow-lg dark:border-gray-700 ">
+                <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-slate-300 bg-white shadow-lg ">
                   {filteredBaladiyas.map((b) => (
                     <div
                       key={b.id}
-                      className="cursor-pointer p-3 hover:bg-slate-100 dark:hover:bg-gray-700"
+                      className="cursor-pointer p-3 hover:bg-slate-100 
                       onClick={() => {
                         setSearchTerm(b.name_ar)
                         setShowDropdown(false)

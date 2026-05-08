@@ -75,10 +75,10 @@ export default function CartPage() {
         <div className="flex-1">
           {stores.map((store) => (
             <div key={store.store_id} className="bg-white  rounded-lg shadow mb-6 overflow-hidden">
-              <div className="bg-slate-50  px-6 py-3 border-b dark:border-gray-700">
+              <div className="bg-slate-50  px-6 py-3 border-b 
                 <h2 className="font-bold text-lg text-slate-900 ">{store.store_name}</h2>
               </div>
-              <div className="divide-y dark:divide-gray-700">
+              <div className="divide-y 
                 {store.items.map((item: CartItem) => (
                   <div key={item.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4">
                     <div className="w-20 h-20 bg-slate-200  rounded flex-shrink-0">
@@ -92,7 +92,7 @@ export default function CartPage() {
                     <div className="flex-1">
                       <Link
                         href={`/client/product/${item.id}`}
-                        className="font-medium hover:text-primary  dark:hover:text-primary"
+                        className="font-medium hover:text-primary  
                       >
                         {item.name_ar}
                       </Link>
@@ -105,7 +105,7 @@ export default function CartPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="w-8 h-8 flex items-center justify-center border border-slate-300 dark:border-gray-600 rounded hover:bg-slate-100 dark:hover:bg-gray-700 text-slate-700 "
+                        className="w-8 h-8 flex items-center justify-center border border-slate-300 rounded hover:bg-slate-100 text-slate-700 "
                       >
                         <Minus size={14} />
                       </button>
@@ -117,13 +117,13 @@ export default function CartPage() {
                             Math.min(item.max_quantity, item.quantity + 1)
                           )
                         }
-                        className="w-8 h-8 flex items-center justify-center border border-slate-300 dark:border-gray-600 rounded hover:bg-slate-100 dark:hover:bg-gray-700 text-slate-700 "
+                        className="w-8 h-8 flex items-center justify-center border border-slate-300 rounded hover:bg-slate-100 text-slate-700 "
                       >
                         <Plus size={14} />
                       </button>
                       <button
                         onClick={() => removeFromCart(item.id)}
-                        className="w-8 h-8 flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded ml-2"
+                        className="w-8 h-8 flex items-center justify-center text-red-500 hover:bg-red-50 rounded ml-2"
                       >
                         <Trash2 size={16} />
                       </button>
@@ -131,7 +131,7 @@ export default function CartPage() {
                   </div>
                 ))}
               </div>
-              <div className="bg-slate-50  px-6 py-3 text-left border-t dark:border-gray-700">
+              <div className="bg-slate-50  px-6 py-3 text-left border-t 
                 <span className="font-medium text-slate-700 ">المجموع الجزئي: </span>
                 <span className="text-primary font-bold">
                   {store.subtotal.toLocaleString()} دج
@@ -154,7 +154,7 @@ export default function CartPage() {
                 <span>تحسب لاحقاً</span>
               </div>
             </div>
-            <div className="border-t dark:border-gray-700 pt-4 mb-6">
+            <div className="border-t pt-4 mb-6">
               <div className="flex justify-between font-bold text-lg">
                 <span className="text-slate-800 ">الإجمالي</span>
                 <span className="text-primary">{getCartTotal().toLocaleString()} دج</span>

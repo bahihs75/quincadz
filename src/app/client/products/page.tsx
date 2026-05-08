@@ -131,7 +131,7 @@ function ProductsContent() {
         <div
           className={`${
             showFilters ? 'block' : 'hidden'
-          } md:block w-full md:w-64 bg-white  p-4 rounded-lg shadow h-fit border border-slate-200 dark:border-gray-800`}
+          } md:block w-full md:w-64 bg-white  p-4 rounded-lg shadow h-fit border border-slate-200 
         >
           <div className="flex justify-between items-center mb-4">
             <h2 className="font-bold text-lg text-black ">{t('filter')}</h2>
@@ -148,7 +148,7 @@ function ProductsContent() {
                 value={filters.search}
                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                 placeholder={t('search_placeholder')}
-                className="w-full p-2 pr-8 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
+                className="w-full p-2 pr-8 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
               />
               <Search size={16} className="absolute left-2 top-3 text-gray-400 " />
             </div>
@@ -159,7 +159,7 @@ function ProductsContent() {
             <select
               value={filters.category}
               onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-              className="w-full p-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
+              className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
             >
               <option value="">{t('all')}</option>
               {categories.map((cat) => (
@@ -178,14 +178,14 @@ function ProductsContent() {
                 placeholder={t('min')}
                 value={filters.minPrice}
                 onChange={(e) => setFilters({ ...filters, minPrice: e.target.value })}
-                className="w-1/2 p-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
+                className="w-1/2 p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
               />
               <input
                 type="number"
                 placeholder={t('max')}
                 value={filters.maxPrice}
                 onChange={(e) => setFilters({ ...filters, maxPrice: e.target.value })}
-                className="w-1/2 p-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
+                className="w-1/2 p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
               />
             </div>
           </div>
@@ -195,7 +195,7 @@ function ProductsContent() {
             <select
               value={filters.sort}
               onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
-              className="w-full p-2 border border-slate-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
+              className="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary bg-white  text-slate-900 "
             >
               <option value="newest">{t('newest')}</option>
               <option value="price_asc">{t('price_low_to_high')}</option>

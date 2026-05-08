@@ -44,18 +44,18 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
-      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
         <div className="text-center mb-8">
           <img src="/logo.png" alt="QuincaDZ" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Welcome back</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">Sign in to your account</p>
+          <h1 className="text-2xl font-bold text-gray-800 back</h1>
+          <p className="text-gray-500 mt-1">Sign in to your account</p>
         </div>
 
         <button
           onClick={handleGoogleLogin}
           disabled={loading}
-          className="w-full flex items-center justify-center gap-3 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-white py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition mb-6"
+          className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 text-gray-700 py-2.5 rounded-lg hover:bg-gray-50 transition mb-6"
         >
           <img src="/google-icon.png" alt="Google" className="w-5 h-5" />
           <span>Continue with Google</span>
@@ -63,23 +63,23 @@ export default function LoginPage() {
 
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200 dark:border-gray-700"></div>
+            <div className="w-full border-t border-gray-200 
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-3 bg-white dark:bg-gray-800 text-gray-400">or</span>
+            <span className="px-3 bg-white text-gray-400">or</span>
           </div>
         </div>
 
         <form onSubmit={handleEmailLogin} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 placeholder="you@example.com"
                 required
               />
@@ -87,14 +87,14 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 placeholder="••••••••"
                 required
               />
@@ -104,7 +104,7 @@ export default function LoginPage() {
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2">
               <input type="checkbox" className="rounded border-gray-300 text-orange-500 focus:ring-orange-500" />
-              <span className="text-sm text-gray-600 dark:text-gray-400">Remember me</span>
+              <span className="text-sm text-gray-600 me</span>
             </label>
             <Link href="/auth/forgot-password" className="text-sm text-orange-500 hover:text-orange-600 transition">Forgot password?</Link>
           </div>
@@ -118,7 +118,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-6 text-center text-sm text-gray-500 
           Don't have an account?{' '}
           <Link href="/auth/register" className="text-orange-500 font-semibold hover:underline">Create one</Link>
         </p>

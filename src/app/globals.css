@@ -77,122 +77,69 @@
 }
 
 /* Dark mode body defaults */
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #0f172a; /* slate-900 */
-    color: #f1f5f9; /* slate-100 */
-  }
 }
 
 /* Force dark mode background and text */
-.dark body {
   background-color: #0f172a !important; /* slate-900 */
   color: #f1f5f9 !important; /* slate-100 */
 }
 
-.dark .bg-white,
-.dark .bg-gray-50,
-.dark .bg-gray-100,
-.dark .bg-white\/80 {
   background-color: #1e293b !important; /* slate-800 */
 }
 
-.dark .text-gray-800,
-.dark .text-gray-700,
-.dark .text-gray-600,
-.dark .text-gray-500 {
   color: #e2e8f0 !important; /* slate-200 */
 }
 
-.dark .border-gray-200,
-.dark .border-gray-100 {
   border-color: #334155 !important; /* slate-700 */
 }
 
-.dark .text-primary {
   color: #f97316 !important;
 }
 
-.dark input,
-.dark textarea,
-.dark select {
   background-color: #0f172a !important;
   border-color: #334155 !important;
   color: #f1f5f9 !important;
 }
 
 /* Force dark mode background and text */
-.dark body {
   background-color: #0f172a !important; /* slate-900 */
   color: #f1f5f9 !important; /* slate-100 */
 }
 
-.dark .bg-white,
-.dark .bg-gray-50,
-.dark .bg-gray-100,
-.dark .bg-white\/80 {
   background-color: #1e293b !important; /* slate-800 */
 }
 
-.dark .text-gray-800,
-.dark .text-gray-700,
-.dark .text-gray-600,
-.dark .text-gray-500 {
   color: #e2e8f0 !important; /* slate-200 */
 }
 
-.dark .border-gray-200,
-.dark .border-gray-100 {
   border-color: #334155 !important; /* slate-700 */
 }
 
-.dark .text-primary {
   color: #f97316 !important;
 }
 
-.dark input,
-.dark textarea,
-.dark select {
   background-color: #0f172a !important;
   border-color: #334155 !important;
   color: #f1f5f9 !important;
 }
 
-.dark input::placeholder,
-.dark textarea::placeholder {
   color: #94a3b8 !important;
 }
 
 /* Force dark mode text and background */
-.dark body,
-.dark .dark\:text-white,
-.dark .dark\:text-gray-100,
-.dark .dark\:text-gray-200 {
   color: #f3f4f6 !important;
 }
 
-.dark .text-gray-800,
-.dark .text-gray-700,
-.dark .text-gray-600,
-.dark .text-gray-500,
-.dark .text-gray-900 {
   color: #e5e7eb !important;
 }
 
-.dark .bg-white {
   background-color: #1f2937 !important;
 }
 
-.dark input,
-.dark textarea,
-.dark select,
-.dark button {
   color: #f3f4f6 !important;
   background-color: #374151 !important;
 }
 
-.dark button.bg-primary,
-.dark button.bg-orange-500 {
   background-color: #f97316 !important;
   color: white !important;
 }

@@ -62,7 +62,7 @@ function OrdersContent() {
   return (
     <div className="container mx-auto px-4 py-8">
       {success && (
-        <div className="bg-green-100 /30 border border-green-400 dark:border-green-800 text-green-700  px-4 py-3 rounded mb-6">
+        <div className="bg-green-100 /30 border border-green-400 text-green-700  px-4 py-3 rounded mb-6">
           {t('order_success')}
         </div>
       )}
@@ -70,7 +70,7 @@ function OrdersContent() {
       <h1 className="text-3xl font-bold mb-6 text-black ">{t('my_orders')}</h1>
 
       {orders.length === 0 ? (
-        <div className="bg-white  rounded-lg shadow p-12 text-center border border-slate-200 dark:border-gray-800">
+        <div className="bg-white  rounded-lg shadow p-12 text-center border border-slate-200 
           <Package size={64} className="mx-auto text-gray-300  mb-4" />
           <p className="text-slate-600  mb-4">{t('no_orders')}</p>
           <Link
@@ -83,8 +83,8 @@ function OrdersContent() {
       ) : (
         <div className="space-y-4">
           {orders.map((order) => (
-            <div key={order.id} className="bg-white  rounded-lg shadow overflow-hidden border border-slate-200 dark:border-gray-800">
-              <div className="p-4 border-b border-slate-200 dark:border-gray-800 bg-slate-50 /50">
+            <div key={order.id} className="bg-white  rounded-lg shadow overflow-hidden border border-slate-200 
+              <div className="p-4 border-b border-slate-200 bg-slate-50 /50">
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <div>
                     <span className="text-sm text-slate-500 ">{t('order_number')}: </span>
@@ -107,7 +107,7 @@ function OrdersContent() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 pt-4 border-t border-slate-200 dark:border-gray-800 flex justify-between items-center">
+                <div className="mt-4 pt-4 border-t border-slate-200 flex justify-between items-center">
                   <div>
                     <span className="text-sm text-slate-500 ">{t('store')}: </span>
                     <span className="font-medium text-slate-700 ">{order.stores?.store_name}</span>
