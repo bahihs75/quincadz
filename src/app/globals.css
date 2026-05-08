@@ -162,3 +162,37 @@
 .dark textarea::placeholder {
   color: #94a3b8 !important;
 }
+
+/* Force dark mode text and background */
+.dark body,
+.dark .dark\:text-white,
+.dark .dark\:text-gray-100,
+.dark .dark\:text-gray-200 {
+  color: #f3f4f6 !important;
+}
+
+.dark .text-gray-800,
+.dark .text-gray-700,
+.dark .text-gray-600,
+.dark .text-gray-500,
+.dark .text-gray-900 {
+  color: #e5e7eb !important;
+}
+
+.dark .bg-white {
+  background-color: #1f2937 !important;
+}
+
+.dark input,
+.dark textarea,
+.dark select,
+.dark button {
+  color: #f3f4f6 !important;
+  background-color: #374151 !important;
+}
+
+.dark button.bg-primary,
+.dark button.bg-orange-500 {
+  background-color: #f97316 !important;
+  color: white !important;
+}
