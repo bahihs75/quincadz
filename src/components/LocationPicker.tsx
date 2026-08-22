@@ -109,8 +109,8 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
   return (
     <div className="relative">
       {onClose && (
-        <button onClick={onClose} className="absolute -top-2 -right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md">
-          <X size={16} />
+        <button type="button" onClick={onClose} aria-label="إغلاق اختيار الموقع" className="icon-button absolute -right-3 -top-3 z-10">
+          <X size={18} strokeWidth={1.8} aria-hidden="true" />
         </button>
       )}
       <div className="border border-[#D8D4CB] bg-[#FFFFFF] p-6 shadow-[0_18px_48px_rgba(17,17,17,0.12)]">

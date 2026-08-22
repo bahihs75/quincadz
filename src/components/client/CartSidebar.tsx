@@ -20,24 +20,24 @@ export default function CartSidebar() {
     <>
       {/* Overlay */}
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 z-50"
+        className="fixed inset-0 z-50 bg-[#111111]/60 backdrop-blur-[2px]"
         onClick={closeCart}
       />
 
       {/* Sidebar */}
-      <div className="fixed top-0 left-0 h-full w-full sm:w-96 bg-white shadow-xl z-50 overflow-y-auto transition-transform">
-        <div className="p-4 border-b flex items-center justify-between bg-slate-50">
+      <div className="fixed left-0 top-0 z-50 h-full w-full overflow-y-auto bg-[#FFFFFF] shadow-[0_24px_64px_rgba(17,17,17,0.16)] transition-transform sm:w-96">
+        <div className="flex items-center justify-between border-b border-[#D8D4CB] bg-[#F5F2EA] p-4">
           <h2 className="text-xl font-bold flex items-center gap-2">
             <ShoppingBag size={20} />
             سلة التسوق
             {getItemCount() > 0 && (
-              <span className="bg-primary text-white text-sm px-2 py-0.5 rounded-full">
+              <span className="rounded-full bg-[#F5C400] px-2 py-0.5 text-sm text-[#111111]">
                 {getItemCount()}
               </span>
             )}
           </h2>
-          <button onClick={closeCart} className="p-1 hover:bg-slate-200 rounded">
-            <X size={20} />
+          <button type="button" onClick={closeCart} aria-label="إغلاق السلة" className="icon-button">
+            <X size={19} strokeWidth={1.8} aria-hidden="true" />
           </button>
         </div>
 
@@ -47,7 +47,7 @@ export default function CartSidebar() {
             <p className="mb-4">سلة التسوق فارغة</p>
             <button
               onClick={closeCart}
-              className="bg-primary text-white px-6 py-2 rounded-lg"
+              className="btn-primary"
             >
               متابعة التسوق
             </button>
@@ -69,14 +69,14 @@ export default function CartSidebar() {
                       <div className="flex items-center gap-1">
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="w-6 h-6 flex items-center justify-center border rounded"
+                          className="icon-button h-11 min-h-11 w-11 min-w-11"
                         >
                           <Minus size={12} />
                         </button>
                         <span className="w-8 text-center">{item.quantity}</span>
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="w-6 h-6 flex items-center justify-center border rounded"
+                          className="icon-button h-11 min-h-11 w-11 min-w-11"
                         >
                           <Plus size={12} />
                         </button>
@@ -87,7 +87,7 @@ export default function CartSidebar() {
                         </span>
                         <button
                           onClick={() => removeFromCart(item.id)}
-                          className="text-red-500 hover:text-red-700"
+                          className="icon-button text-[#C62828] hover:text-[#C62828]"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -105,7 +105,7 @@ export default function CartSidebar() {
               </div>
               <button
                 onClick={handleCheckout}
-                className="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary"
+                className="btn-primary w-full min-h-12"
               >
                 إتمام الشراء
               </button>

@@ -47,7 +47,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const Icon = item.icon
     const isActive = pathname === item.href
     return (
-      <Link href={item.href} onClick={() => setSidebarOpen(false)} className={`flex items-center gap-3 rounded-lg px-4 py-3 transition ${isActive ? 'bg-primary text-white' : 'text-slate-700 hover:bg-slate-100'}`}>
+      <Link href={item.href} onClick={() => setSidebarOpen(false)} className={`flex min-h-11 items-center gap-3 rounded-xl px-4 py-3 transition duration-200 ${isActive ? 'bg-[#F5C400] text-[#111111] shadow-[0_8px_18px_rgba(245,196,0,0.18)]' : 'text-[#777777] hover:bg-[#F5F2EA] hover:text-[#111111]'}`}>
         <Icon size={20} /> <span>{item.label}</span>
       </Link>
     )
@@ -56,15 +56,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="flex min-h-screen bg-slate-50">
       {/* Mobile menu button */}
-      <button onClick={() => setSidebarOpen(true)} className="fixed top-4 left-4 z-50 p-2 bg-white rounded-md shadow-md lg:hidden">
-        <Menu size={20} />
+      <button type="button" onClick={() => setSidebarOpen(true)} aria-label="فتح القائمة" className="icon-button fixed left-4 top-4 z-50 lg:hidden">
+        <Menu size={19} strokeWidth={1.8} aria-hidden="true" />
       </button>
 
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 right-0 z-40 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="flex items-center justify-between p-4 border-b">
-          <h2 className="text-xl font-bold text-primary">QuincaDZ</h2>
-          <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-slate-500"><X size={20} /></button>
+      <aside className={`fixed inset-y-0 right-0 z-40 w-64 transform border-l border-[#D8D4CB] bg-[#FFFFFF] shadow-[0_24px_64px_rgba(17,17,17,0.12)] transition-transform duration-200 lg:relative lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="flex items-center justify-between border-b border-[#D8D4CB] p-4">
+          <h2 className="text-xl font-extrabold text-[#111111]">Quinca<span className="text-[#F5C400]">DZ</span></h2>
+          <button type="button" onClick={() => setSidebarOpen(false)} aria-label="إغلاق القائمة" className="icon-button lg:hidden"><X size={18} strokeWidth={1.8} aria-hidden="true" /></button>
         </div>
         <div className="p-4 border-b">
           <p className="text-sm text-slate-600">{userName || t('admin_dashboard')}</p>
@@ -72,7 +72,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <nav className="p-4">
           <ul className="space-y-1">
             {navItems.map(item => <li key={item.href}><NavLink item={item} /></li>)}
-            <li className="pt-4 mt-4 border-t"><button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-slate-700 hover:bg-slate-100"><LogOut size={20} /> {t('logout')}</button></li>
+            <li className="mt-4 border-t border-[#D8D4CB] pt-4"><button type="button" onClick={handleLogout} className="flex min-h-11 w-full items-center gap-3 rounded-xl px-4 py-3 text-[#777777] transition hover:bg-[#F5F2EA] hover:text-[#111111]"><LogOut size={20} strokeWidth={1.8} aria-hidden="true" /> {t('logout')}</button></li>
           </ul>
         </nav>
         <div className="p-4 border-t mt-auto"><LanguageSwitcher /></div>

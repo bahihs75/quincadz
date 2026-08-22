@@ -105,6 +105,58 @@ body {
     transform: translateY(-2px);
   }
 
+  .icon-button {
+    position: relative;
+    display: inline-flex;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid var(--hairline);
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--ink);
+    box-shadow: 0 4px 14px rgba(17, 17, 17, 0.06);
+    transition: transform 180ms var(--ease-apple), background-color 180ms var(--ease-apple), box-shadow 180ms var(--ease-apple), color 180ms var(--ease-apple);
+  }
+
+  .icon-button::after {
+    position: absolute;
+    inset: 1px 16% auto;
+    height: 35%;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.58);
+    content: "";
+    pointer-events: none;
+  }
+
+  .icon-button:hover {
+    background: var(--surface);
+    color: var(--accent);
+    box-shadow: 0 10px 24px rgba(17, 17, 17, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .icon-button:active {
+    transform: scale(0.95);
+  }
+
+  .icon-button:focus-visible {
+    border-color: var(--accent);
+  }
+
+  .icon-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none;
+  }
+
+  .icon-button svg {
+    position: relative;
+    z-index: 1;
+  }
+
   .badge {
     display: inline-flex;
     align-items: center;

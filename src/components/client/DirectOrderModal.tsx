@@ -55,10 +55,10 @@ export default function DirectOrderModal({ product, onClose }: DirectOrderModalP
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl max-w-md w-full p-6 relative">
-        <button onClick={onClose} className="absolute left-4 top-4 text-slate-400 hover:text-slate-600">
-          <X size={20} />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#111111]/60 p-4 backdrop-blur-[2px]">
+      <div className="relative w-full max-w-md bg-[#FFFFFF] p-6 shadow-[0_24px_64px_rgba(17,17,17,0.16)]">
+        <button type="button" onClick={onClose} aria-label="إغلاق الشراء المباشر" className="icon-button absolute left-4 top-4">
+          <X size={19} strokeWidth={1.8} aria-hidden="true" />
         </button>
         <h2 className="text-xl font-bold mb-4">شراء مباشر</h2>
         <p className="text-slate-600 mb-4">{product.name_ar} – {product.price} DA</p>

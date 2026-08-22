@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { Mail, Lock, LogIn, ArrowLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { getAuthErrorMessage } from '@/lib/authError'
+import GoogleMark from '@/components/icons/GoogleMark'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -86,12 +87,7 @@ export default function LoginPage() {
             disabled={loading || !isSupabaseConfigured}
             className="flex min-h-12 w-full items-center justify-center gap-3 border border-[#D8D4CB] bg-[#FFFFFF] px-4 py-3 text-sm font-bold text-[#111111] transition hover:border-[#F5C400] hover:bg-[#F5F2EA] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="#EA4335" d="M5.266 9.765A7.077 7.077 0 0 1 12 4.93c1.665 0 3.156.586 4.341 1.552l3.265-3.265C17.824 1.186 15.117 0 12 0 7.27 0 3.196 2.697 1.207 6.701l4.059 3.064z" />
-              <path fill="#34A853" d="M16.04 5.401a7.044 7.044 0 0 1 4.08 2.574l-3.266 3.265c-.92-.648-2.083-1.048-3.388-1.048-2.153 0-3.98 1.384-4.633 3.288l-4.06-3.064C6.12 8.562 8.877 6.3 12.201 6.3c1.316 0 2.558.351 3.639 1.101z" />
-              <path fill="#4A90E2" d="M7.047 14.468a7.026 7.026 0 0 1-.351-2.217c0-.762.133-1.498.374-2.186l-4.06-3.064C2.335 9.005 1.8 10.456 1.8 12c0 1.545.536 2.997 1.432 4.179l3.815-2.711z" />
-              <path fill="#FBBC05" d="M12.201 17.7c-1.66 0-3.156-.588-4.344-1.552l-3.266 3.265C6.48 21.41 9.176 23 12.201 23c3.026 0 5.72-1.59 7.414-4.065l-3.815-2.711c-1.05 1.645-2.864 2.776-4.999 2.776z" />
-            </svg>
+            <GoogleMark size={20} />
             <span>المتابعة باستخدام Google</span>
           </button>
 

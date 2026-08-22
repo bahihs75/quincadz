@@ -55,25 +55,25 @@ export default function AdminProductTable({ products }: { products: Product[] })
                   <div className="flex gap-2">
                     <button
                       onClick={() => router.push(`/client/product/${product.id}`)}
-                      className="p-1 text-primary hover:bg-blue-50 rounded"
-                      title="عرض"
+                      className="icon-button"
+                      title="عرض" aria-label="عرض المنتج"
                     >
-                      <Eye size={18} />
+                      <Eye size={18} strokeWidth={1.8} aria-hidden="true" />
                     </button>
                     <button
                       onClick={() => router.push(`/admin/products/${product.id}/edit`)}
-                      className="p-1 text-green-600 hover:bg-green-50 rounded"
-                      title="تعديل"
+                      className="icon-button"
+                      title="تعديل" aria-label="تعديل المنتج"
                     >
-                      <Edit size={18} />
+                      <Edit size={18} strokeWidth={1.8} aria-hidden="true" />
                     </button>
                     <button
                       onClick={() => handleDelete(product.id)}
                       disabled={deleting === product.id}
-                      className="p-1 text-red-600 hover:bg-red-50 rounded disabled:opacity-50"
-                      title="حذف"
+                      className="icon-button text-[#C62828] hover:text-[#C62828] disabled:opacity-50"
+                      title="حذف" aria-label="حذف المنتج"
                     >
-                      <Trash2 size={18} />
+                      <Trash2 size={18} strokeWidth={1.8} aria-hidden="true" />
                     </button>
                   </div>
                 </td>
