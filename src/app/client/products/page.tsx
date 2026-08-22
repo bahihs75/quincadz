@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client'
 import ProductCard from '@/components/client/ProductCard'
 import type { Category, Product } from '@/lib/types'
 import { Filter, Search, X } from 'lucide-react'
@@ -19,7 +19,7 @@ type ProductFilters = {
 
 function ProductsContent() {
   const searchParams = useSearchParams()
-  const supabase = createClient()
+  const supabase = isSupabaseConfigured ? createClient() : null
   const [products, setProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
@@ -38,6 +38,7 @@ function ProductsContent() {
 
   useEffect(() => {
     const fetchCategories = async () => {
+      if (!supabase) return
       const { data, error: categoriesError } = await supabase
         .from('categories')
         .select('id, name_ar, name_fr, is_active, sort_order')
@@ -55,6 +56,10 @@ function ProductsContent() {
   }, [supabase])
 
   const fetchProducts = useCallback(async (currentOffset: number) => {
+    if (!supabase) {
+      setLoading(false)
+      return
+    }
     const loadMore = currentOffset > 0
     if (loadMore) setLoadingMore(true)
     else setLoading(true)
@@ -195,6 +200,9 @@ function ProductsContent() {
         </aside>
 
         <section aria-live="polite" className="min-w-0">
+          {!isSupabaseConfigured && (
+            <div role="status" className="mb-5 border border-[#3F6475]/30 bg-[#3F6475]/10 px-4 py-3 text-sm text-[#3F6475]">المعاينة تعمل دون ربط قاعدة البيانات. أضف إعدادات Supabase لعرض المنتجات الفعلية.</div>
+          )}
           {error && (
             <div role="alert" className="mb-5 flex items-center justify-between gap-4 border border-[#C62828]/30 bg-[#C62828]/10 px-4 py-3 text-sm text-[#C62828]">
               <span>{error}</span>

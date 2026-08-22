@@ -58,3 +58,13 @@ The most important mobile design constraints are readable prices, large tap targ
 ## 8. Anti-patterns
 
 Never use Inter, generic startup gradients, pure black, emoji as product icons, dead `#` links, fake round metrics, generic names, or copy such as “seamless,” “next-gen,” and “unleash.” Never use three equal feature cards as the default marketing structure, never hide errors in alerts, never make the checkout rely on anonymous client-side multi-step writes as the long-term transaction boundary, and never ship a marketplace page without an empty state, a loading state, and a failure state.
+
+## 9. Apple Liquid Glass adaptation
+
+QuincaDZ adopts the Apple principles without replacing its Algerian industrial identity. The page ground remains the supplied warm brand canvas `#F5F2EA`; surfaces are unified white `#FFFFFF`; typography and hierarchy remain grayscale; and `#F5C400` is reserved for action, focus, active, and live brand meaning.
+
+Glass is used only on overlapping layers: the sticky client header, modal scrim context, and future transient sheets. Plain product, form, and catalogue surfaces remain solid white with a hairline divider and a restrained shadow. Sibling categories use one unified panel with internal rules rather than a collection of unrelated tinted cards.
+
+The interface uses Cairo as the Arabic-first face with a system UI fallback for Latin copy. Large titles use negative tracking, prices and operational figures use tabular numerals, routine interactions use the `--ease-apple` curve under 300ms, and reduced motion removes non-essential transitions. All primary controls keep a minimum 44px touch target and a visible yellow focus ring.
+
+The implementation does not copy Apple branding, logos, text, or proprietary assets. It applies the design principles as a product-specific system for a local construction marketplace.

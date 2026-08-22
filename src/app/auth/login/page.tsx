@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client'
 import Link from 'next/link'
 import { Mail, Lock, LogIn, ArrowLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -13,12 +13,17 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const supabase = createClient()
+  const supabase = isSupabaseConfigured ? createClient() : null
 
   const handleEmailLogin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!email.trim() || !password) {
       toast.error('يرجى إدخال البريد الإلكتروني وكلمة المرور.')
+      return
+    }
+
+    if (!supabase) {
+      toast.error('خدمة تسجيل الدخول غير مهيأة بعد. أضف إعدادات Supabase في بيئة النشر.')
       return
     }
 
@@ -41,6 +46,11 @@ export default function LoginPage() {
   }
 
   const handleGoogleLogin = async () => {
+    if (!supabase) {
+      toast.error('خدمة تسجيل الدخول غير مهيأة بعد. أضف إعدادات Supabase في بيئة النشر.')
+      return
+    }
+
     setLoading(true)
     try {
       const { error } = await supabase.auth.signInWithOAuth({
@@ -64,6 +74,7 @@ export default function LoginPage() {
 
         <section className="w-full border border-[#D8D4CB] bg-[#FFFFFF] p-6 shadow-[0_18px_48px_rgba(17,17,17,0.09)] sm:p-8">
           <div className="mb-8 text-center">
+            {!isSupabaseConfigured && <div role="alert" className="mb-5 border border-[#C62828]/30 bg-[#C62828]/10 px-3 py-2 text-right text-xs leading-5 text-[#C62828]">المصادقة غير مهيأة في هذه البيئة. يمكنك عرض الواجهة، لكن تسجيل الدخول يحتاج إعداد Supabase.</div>}
             <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#777777]">ACCOUNT / ACCESS</p>
             <h1 className="mt-3 text-3xl font-extrabold tracking-tight">مرحباً بعودتك</h1>
             <p className="mt-2 text-sm text-[#777777]">سجّل الدخول للوصول إلى طلباتك ومتاجرك المفضلة.</p>
@@ -72,7 +83,7 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={handleGoogleLogin}
-            disabled={loading}
+            disabled={loading || !isSupabaseConfigured}
             className="flex min-h-12 w-full items-center justify-center gap-3 border border-[#D8D4CB] bg-[#FFFFFF] px-4 py-3 text-sm font-bold text-[#111111] transition hover:border-[#F5C400] hover:bg-[#F5F2EA] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
@@ -109,7 +120,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <button type="submit" disabled={loading} className="btn-primary mt-1 min-h-12 w-full">
+            <button type="submit" disabled={loading || !isSupabaseConfigured} className="btn-primary mt-1 min-h-12 w-full">
               {loading ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#111111] border-t-transparent" aria-label="جارٍ تسجيل الدخول" /> : <><LogIn size={18} aria-hidden="true" /> تسجيل الدخول <ArrowLeft size={17} aria-hidden="true" /></>}
             </button>
           </form>

@@ -15,7 +15,7 @@ interface Props {
     latitude?: number
     longitude?: number
   }) => void
-  initialLocation?: Partial<LocationSelection>
+  initialLocation?: Partial<LocationSelection> | null
   onClose?: () => void
 }
 

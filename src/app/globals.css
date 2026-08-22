@@ -16,6 +16,12 @@
   --error: #C62828;
   --info: #3F6475;
   --disabled: #B5B5B5;
+  --hairline: rgba(17, 17, 17, 0.08);
+  --radius-control: 0.75rem;
+  --radius-surface: 1.25rem;
+  --shadow-surface: 0 18px 48px rgba(17, 17, 17, 0.08);
+  --ease-apple: cubic-bezier(0.23, 1, 0.32, 1);
+  --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
 }
 
 * {
@@ -29,12 +35,12 @@ html {
 body {
   background: var(--canvas);
   color: var(--ink);
-  font-family: var(--font-cairo), Arial, sans-serif;
+  font-family: var(--font-cairo), var(--font-ui);
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: rgba(217, 107, 39, 0.2);
+  background: rgba(245, 196, 0, 0.25);
   color: var(--ink);
 }
 
@@ -51,13 +57,13 @@ body {
     justify-content: center;
     gap: 0.5rem;
     border: 1px solid var(--accent);
-    border-radius: 0.375rem;
+    border-radius: var(--radius-control);
     background: var(--accent);
     padding: 0.75rem 1.125rem;
-    color: white;
+    color: var(--ink);
     font-size: 0.875rem;
     font-weight: 700;
-    transition: background-color 220ms cubic-bezier(0.16, 1, 0.3, 1), transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: background-color 180ms var(--ease-apple), transform 180ms var(--ease-apple), box-shadow 180ms var(--ease-apple);
   }
 
   .btn-primary:hover {
@@ -65,7 +71,7 @@ body {
   }
 
   .btn-primary:active {
-    transform: translateY(1px) scale(0.99);
+    transform: scale(0.98);
   }
 
   .btn-primary:disabled {
@@ -76,12 +82,12 @@ body {
   .input {
     min-height: 2.75rem;
     border: 1px solid var(--line);
-    border-radius: 0.375rem;
+    border-radius: var(--radius-control);
     background: var(--surface);
     padding: 0.625rem 0.75rem;
     color: var(--ink);
     outline: none;
-    transition: border-color 180ms ease, box-shadow 180ms ease;
+    transition: border-color 180ms var(--ease-apple), box-shadow 180ms var(--ease-apple);
   }
 
   .input:focus {

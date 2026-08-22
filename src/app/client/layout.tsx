@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client'
 import { useCart } from '@/contexts/CartContext'
 import CartSidebar from '@/components/client/CartSidebar'
 import LocationPicker from '@/components/LocationPicker'
@@ -12,28 +12,30 @@ import { ShoppingCart, Menu, X, MapPin } from 'lucide-react'
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const { getItemCount, openCart, closeCart } = useCart()
-  const [user, setUser] = useState<any>(null)
-  const [userLocation, setUserLocation] = useState<any>(null)
+  const [user, setUser] = useState<unknown>(null)
+  const [userLocation, setUserLocation] = useState<{ wilaya_name: string; baladiya_name?: string } | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [showLocationPicker, setShowLocationPicker] = useState(false)
-  const supabase = createClient()
+  const supabase = isSupabaseConfigured ? createClient() : null
 
   useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
+    if (supabase) {
+      const getUser = async () => {
+        const { data: { user } } = await supabase.auth.getUser()
+        setUser(user)
+      }
+      void getUser()
     }
-    getUser()
 
-    const saved = localStorage.getItem('quincadz_location')
-    if (saved) {
-      setUserLocation(JSON.parse(saved))
-    } else {
-      setShowLocationPicker(true)
+    try {
+      const saved = localStorage.getItem('quincadz_location')
+      if (saved) setUserLocation(JSON.parse(saved) as { wilaya_name: string; baladiya_name?: string })
+    } catch {
+      localStorage.removeItem('quincadz_location')
     }
   }, [supabase])
 
-  const handleLocationSelect = (loc: any) => {
+  const handleLocationSelect = (loc: { wilaya_name: string; baladiya_name?: string }) => {
     setUserLocation(loc)
     localStorage.setItem('quincadz_location', JSON.stringify(loc))
     setShowLocationPicker(false)

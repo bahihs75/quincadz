@@ -9,6 +9,7 @@ export type Category = {
   id: string
   name_ar: string
   name_fr?: string | null
+  icon?: string | null
   is_active?: boolean
   sort_order?: number | null
 }
