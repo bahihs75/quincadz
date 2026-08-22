@@ -75,11 +75,11 @@ export default function StoreTable({ stores }: { stores: Store[] }) {
                     disabled={processing === store.id}
                     className={`px-2 py-1 rounded text-sm flex items-center gap-1 ${
                       store.is_verified
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-yellow-100 text-yellow-800'
+                        ? 'border-[#234F32]/20 bg-[#234F32]/10 text-[#234F32]'
+                        : 'border-[#F5C400]/30 bg-[#F5C400]/10 text-[#111111]'
                     }`}
                   >
-                    {store.is_verified ? <Check size={14} /> : <X size={14} />}
+                    {store.is_verified ? <Check size={15} strokeWidth={1.8} aria-hidden="true" /> : <X size={15} strokeWidth={1.8} aria-hidden="true" />}
                     {store.is_verified ? 'موثق' : 'غير موثق'}
                   </button>
                 </td>
@@ -89,8 +89,8 @@ export default function StoreTable({ stores }: { stores: Store[] }) {
                     disabled={processing === store.id}
                     className={`px-2 py-1 rounded text-sm flex items-center gap-1 ${
                       store.is_active
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
+                        ? 'border-[#234F32]/20 bg-[#234F32]/10 text-[#234F32]'
+                        : 'border-[#C62828]/20 bg-[#C62828]/10 text-[#C62828]'
                     }`}
                   >
                     {store.is_active ? 'نشط' : 'موقوف'}
@@ -103,25 +103,25 @@ export default function StoreTable({ stores }: { stores: Store[] }) {
                   <div className="flex gap-2">
                     <button
                       onClick={() => router.push(`/admin/stores/${store.id}`)}
-                      className="p-1 text-primary hover:bg-blue-50 rounded"
+                      className="icon-button"
                       title="عرض"
                     >
-                      <Eye size={18} />
+                      <Eye size={18} strokeWidth={1.8} aria-hidden="true" />
                     </button>
                     <button
                       onClick={() => router.push(`/admin/stores/${store.id}/edit`)}
-                      className="p-1 text-green-600 hover:bg-green-50 rounded"
+                      className="icon-button"
                       title="تعديل"
                     >
-                      <Edit size={18} />
+                      <Edit size={18} strokeWidth={1.8} aria-hidden="true" />
                     </button>
                     <button
                       onClick={() => deleteStore(store.id)}
                       disabled={processing === store.id}
-                      className="p-1 text-red-600 hover:bg-red-50 rounded disabled:opacity-50"
+                      className="icon-button text-[#C62828] hover:text-[#C62828] disabled:opacity-50"
                       title="حذف"
                     >
-                      <Trash2 size={18} />
+                      <Trash2 size={18} strokeWidth={1.8} aria-hidden="true" />
                     </button>
                   </div>
                 </td>

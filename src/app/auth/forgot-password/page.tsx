@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
-import { Mail, ArrowLeft } from 'lucide-react'
+import { CheckCircle2, Mail, ArrowLeft } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export default function ForgotPasswordPage() {
@@ -60,17 +60,15 @@ export default function ForgotPasswordPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary  text-white py-2 rounded-lg hover:bg-primary transition flex items-center justify-center gap-2"
+              className="btn-primary w-full"
             >
               {loading ? 'جاري الإرسال...' : 'إرسال الرابط'}
             </button>
           </form>
         ) : (
           <div className="text-center">
-            <div className="w-16 h-16 bg-green-100 /30 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-green-600 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#234F32]/10 text-[#234F32] shadow-[0_8px_20px_rgba(35,79,50,0.12)]">
+              <CheckCircle2 size={32} strokeWidth={1.8} aria-hidden="true" />
             </div>
             <p className="text-slate-600  mb-6">
               تم إرسال الرابط إلى <strong>{email}</strong>. يرجى التحقق من بريدك الإلكتروني.

@@ -81,10 +81,10 @@ export default function UserTable({ users }: { users: User[] }) {
                   <button
                     onClick={() => deleteUser(user.id)}
                     disabled={processing === user.id}
-                    className="p-1 text-red-600 hover:bg-red-50 rounded disabled:opacity-50"
-                    title="حذف"
+                    className="icon-button text-[#C62828] hover:text-[#C62828] disabled:opacity-50"
+                    title="حذف" aria-label="حذف المستخدم"
                   >
-                    <Trash2 size={18} />
+                    <Trash2 size={18} strokeWidth={1.8} aria-hidden="true" />
                   </button>
                 </td>
               </tr>

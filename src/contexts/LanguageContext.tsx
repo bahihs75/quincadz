@@ -250,7 +250,7 @@ export const useLanguage = () => {
 }
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {
-  const [language, setLanguage] = useState<Language>('fr')
+  const [language, setLanguage] = useState<Language>('ar')
 
   useEffect(() => {
     const saved = localStorage.getItem('quincadz_language') as Language

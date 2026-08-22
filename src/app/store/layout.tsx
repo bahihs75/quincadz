@@ -3,20 +3,21 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { LayoutDashboard, Package, ShoppingBag, Settings, LogOut, Menu, X } from 'lucide-react'
 
 export default function StoreLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
-  const supabase = createClient()
+  const supabase = isSupabaseConfigured ? createClient() : null
   const { t } = useLanguage()
   const [storeName, setStoreName] = useState('')
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
   useEffect(() => {
     const getStore = async () => {
+      if (!supabase) return
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
         const { data } = await supabase
@@ -31,7 +32,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
   }, [supabase])
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
+    if (supabase) await supabase.auth.signOut()
     router.push('/auth/login')
   }
 
@@ -48,41 +49,41 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
     return (
       <Link
         href={item.href}
-        className={`flex items-center gap-3 rounded-lg px-4 py-3 transition ${
+        className={`flex min-h-11 items-center gap-3 rounded-xl px-4 py-3 transition duration-200 ${
           isActive
-            ? 'bg-orange-500 text-white'
-            : 'text-gray-700 hover:bg-gray-100'
+            ? 'bg-[#F5C400] text-[#111111] shadow-[0_8px_18px_rgba(245,196,0,0.18)]'
+            : 'text-[#777777] hover:bg-[#F5F2EA] hover:text-[#111111]'
         }`}
         onClick={() => setMobileSidebarOpen(false)}
       >
-        <Icon size={20} />
+        <Icon size={20} strokeWidth={1.8} aria-hidden="true" />
         <span>{item.label}</span>
       </Link>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="lg:hidden bg-white shadow p-4 flex items-center justify-between">
-        <button onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)} className="text-gray-700">
-          {mobileSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+    <div className="min-h-[100dvh] bg-[#F5F2EA]">
+      <div className="flex items-center justify-between border-b border-[#D8D4CB] bg-[#F5F2EA] p-4 lg:hidden">
+        <button type="button" onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)} aria-label={mobileSidebarOpen ? 'إغلاق القائمة' : 'فتح القائمة'} className="icon-button">
+          {mobileSidebarOpen ? <X size={19} strokeWidth={1.8} aria-hidden="true" /> : <Menu size={19} strokeWidth={1.8} aria-hidden="true" />}
         </button>
-        <span className="font-bold text-orange-500">QuincaDZ – {t('dashboard')}</span>
-        <div className="w-8" />
+        <span className="font-extrabold text-[#111111]">Quinca<span className="text-[#F5C400]">DZ</span></span>
+        <div className="w-11" />
       </div>
 
       {mobileSidebarOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden" onClick={() => setMobileSidebarOpen(false)} />
+        <div className="fixed inset-0 z-40 bg-[#111111]/60 backdrop-blur-[2px] lg:hidden" onClick={() => setMobileSidebarOpen(false)} />
       )}
 
       <aside
-        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 transform transition-transform lg:relative lg:translate-x-0 ${
+        className={`fixed right-0 top-0 z-50 h-full w-64 transform border-l border-[#D8D4CB] bg-[#FFFFFF] shadow-[0_24px_64px_rgba(17,17,17,0.12)] transition-transform duration-200 lg:relative lg:translate-x-0 ${
           mobileSidebarOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="p-6 border-b">
-          <h2 className="text-xl font-bold text-orange-500">QuincaDZ</h2>
-          <p className="text-sm text-gray-600 mt-1">{storeName || t('dashboard')}</p>
+        <div className="border-b border-[#D8D4CB] p-6">
+          <h2 className="text-xl font-extrabold text-[#111111]">QuincaDZ</h2>
+          <p className="mt-1 text-sm text-[#777777]">{storeName || t('dashboard')}</p>
         </div>
         <nav className="p-4">
           <ul className="space-y-1">
@@ -91,12 +92,12 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
                 <NavLink item={item} />
               </li>
             ))}
-            <li className="pt-4 mt-4 border-t">
+            <li className="mt-4 border-t border-[#D8D4CB] pt-4">
               <button
                 onClick={handleLogout}
-                className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-gray-700 transition hover:bg-gray-100"
+                className="flex min-h-11 w-full items-center gap-3 rounded-xl px-4 py-3 text-[#777777] transition hover:bg-[#F5F2EA] hover:text-[#111111]"
               >
-                <LogOut size={20} />
+                <LogOut size={20} strokeWidth={1.8} aria-hidden="true" />
                 <span>{t('logout')}</span>
               </button>
             </li>

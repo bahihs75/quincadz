@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { Plus, Edit, Trash2, ChevronUp, ChevronDown } from 'lucide-react'
+import CategoryIcon, { categoryIconOptions } from '@/components/icons/CategoryIcon'
 import toast from 'react-hot-toast'
 
 interface Category {
@@ -119,13 +120,13 @@ export default function AdminCategoriesPage() {
             <tbody>
               {categories.map(cat => (
                 <tr key={cat.id} className="border-b">
-                  <td className="px-6 py-4"><div className="flex gap-1"><span>{cat.sort_order}</span><button onClick={() => moveUp(cat)}><ChevronUp size={16} /></button><button onClick={() => moveDown(cat)}><ChevronDown size={16} /></button></div></td>
-                  <td className="px-6 py-4 text-2xl">{cat.icon || '-'}</td>
+                  <td className="px-6 py-4"><div className="flex items-center gap-1"><span>{cat.sort_order}</span><button type="button" aria-label="تحريك التصنيف إلى الأعلى" className="icon-button h-9 min-h-9 w-9 min-w-9" onClick={() => moveUp(cat)}><ChevronUp size={16} strokeWidth={1.8} aria-hidden="true" /></button><button type="button" aria-label="تحريك التصنيف إلى الأسفل" className="icon-button h-9 min-h-9 w-9 min-w-9" onClick={() => moveDown(cat)}><ChevronDown size={16} strokeWidth={1.8} aria-hidden="true" /></button></div></td>
+                  <td className="px-6 py-4"><CategoryIcon name={cat.icon} className="text-[#777777]" /></td>
                   <td className="px-6 py-4">{cat.name_ar}</td>
                   <td className="px-6 py-4">{cat.name_fr || '-'}</td>
                   <td className="px-6 py-4">{categories.find(c => c.id === cat.parent_id)?.name_ar || '-'}</td>
                   <td className="px-6 py-4"><span className={`badge ${cat.is_active ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-800'}`}>{cat.is_active ? 'نشط' : 'غير نشط'}</span></td>
-                  <td className="px-6 py-4"><div className="flex gap-2"><button onClick={() => editCategory(cat)} className="text-blue-600"><Edit size={18} /></button><button onClick={() => deleteCategory(cat.id)} className="text-red-600"><Trash2 size={18} /></button></div></td>
+                  <td className="px-6 py-4"><div className="flex gap-2"><button type="button" onClick={() => editCategory(cat)} aria-label="تعديل التصنيف" className="icon-button"><Edit size={18} strokeWidth={1.8} aria-hidden="true" /></button><button type="button" onClick={() => deleteCategory(cat.id)} aria-label="حذف التصنيف" className="icon-button text-[#C62828] hover:text-[#C62828]"><Trash2 size={18} strokeWidth={1.8} aria-hidden="true" /></button></div></td>
                 </tr>
               ))}
             </tbody>
@@ -141,7 +142,7 @@ export default function AdminCategoriesPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <input type="text" placeholder="الاسم (عربي)" className="input" value={formData.name_ar} onChange={e => setFormData({...formData, name_ar: e.target.value})} required />
               <input type="text" placeholder="الاسم (فرنسي)" className="input" value={formData.name_fr} onChange={e => setFormData({...formData, name_fr: e.target.value})} />
-              <input type="text" placeholder="الأيقونة (emoji)" className="input" value={formData.icon} onChange={e => setFormData({...formData, icon: e.target.value})} />
+              <select className="input" aria-label="أيقونة التصنيف" value={formData.icon} onChange={e => setFormData({...formData, icon: e.target.value})}><option value="">اختر أيقونة التصنيف</option>{categoryIconOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select>
               <select className="input" value={formData.parent_id} onChange={e => setFormData({...formData, parent_id: e.target.value})}>
                 <option value="">لا يوجد أب</option>
                 {categories.filter(c => !c.parent_id).map(c => <option key={c.id} value={c.id}>{c.name_ar}</option>)}

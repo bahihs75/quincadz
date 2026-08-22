@@ -1,11 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client'
 import Link from 'next/link'
-import { User, Mail, Lock, LogIn } from 'lucide-react'
+import { ArrowLeft, Lock, LogIn, Mail, User } from 'lucide-react'
 import toast from 'react-hot-toast'
+import GoogleMark from '@/components/icons/GoogleMark'
+import { getAuthErrorMessage } from '@/lib/authError'
 
 export default function RegisterPage() {
   const [fullName, setFullName] = useState('')
@@ -15,176 +17,118 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const router = useRouter()
-  const supabase = createClient()
+  const supabase = isSupabaseConfigured ? createClient() : null
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (email !== confirmEmail) {
-      toast.error('Emails do not match')
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!supabase) {
+      toast.error('خدمة التسجيل غير مهيأة بعد. أضف إعدادات Supabase في بيئة النشر.')
+      return
+    }
+    if (email.trim().toLowerCase() !== confirmEmail.trim().toLowerCase()) {
+      toast.error('البريد الإلكتروني وتأكيده غير متطابقين.')
       return
     }
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match')
+      toast.error('كلمة المرور وتأكيدها غير متطابقين.')
       return
     }
     if (password.length < 6) {
-      toast.error('Password must be at least 6 characters')
+      toast.error('يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.')
       return
     }
+
     setLoading(true)
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
-          role: 'client'
-        }
-      }
-    })
-    if (error) {
-      toast.error(error.message)
+    try {
+      const { error } = await supabase.auth.signUp({
+        email: email.trim().toLowerCase(),
+        password,
+        options: { data: { full_name: fullName.trim(), role: 'client' } },
+      })
+      if (error) throw error
+      toast.success('تم إنشاء الحساب. تحقق من بريدك الإلكتروني لتأكيده.')
+      router.push('/auth/login?message=confirm-email')
+    } catch (error) {
+      toast.error(getAuthErrorMessage(error, 'تعذر إنشاء الحساب. حاول مرة أخرى.'))
+    } finally {
       setLoading(false)
-    } else {
-      toast.success('Account created! Please check your email to confirm.')
-      router.push('/auth/login?message=Check your email to confirm')
     }
   }
 
   const handleGoogleLogin = async () => {
+    if (!supabase) {
+      toast.error('خدمة التسجيل غير مهيأة بعد. أضف إعدادات Supabase في بيئة النشر.')
+      return
+    }
+
     setLoading(true)
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback` }
-    })
-    if (error) {
-      toast.error(error.message)
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: `${window.location.origin}/auth/callback?next=/` },
+      })
+      if (error) throw error
+    } catch (error) {
+      toast.error(getAuthErrorMessage(error, 'تعذر بدء التسجيل عبر Google.'))
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
-        <div className="text-center mb-8">
-          <img src="/logo.png" alt="QuincaDZ" className="h-12 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-800">Create account</h1>
-          <p className="text-gray-500 mt-1">Join QuincaDZ today</p>
-        </div>
+    <main dir="rtl" className="min-h-[100dvh] bg-[#F5F2EA] px-4 py-10 text-[#111111] sm:py-16">
+      <div className="mx-auto flex w-full max-w-md flex-col items-center">
+        <Link href="/" className="mb-8 flex items-center gap-3" aria-label="العودة إلى الصفحة الرئيسية">
+          <img src="/logo.svg" alt="QuincaDZ" className="h-11 w-auto" />
+          <span className="text-xl font-extrabold tracking-tight">QuincaDZ</span>
+        </Link>
 
-        <button
-          onClick={handleGoogleLogin}
-          disabled={loading}
-          className="w-full flex items-center justify-center gap-3 bg-white border border-gray-200 text-gray-700 py-2.5 rounded-lg hover:bg-gray-50 transition mb-6"
-        >
-          <svg className="w-5 h-5" viewBox="0 0 24 24">
-            <path fill="#EA4335" d="M5.266 9.765A7.077 7.077 0 0 1 12 4.93c1.665 0 3.156.586 4.341 1.552l3.265-3.265C17.824 1.186 15.117 0 12 0 7.27 0 3.196 2.697 1.207 6.701l4.059 3.064z" />
-            <path fill="#34A853" d="M16.04 5.401a7.044 7.044 0 0 1 4.08 2.574l-3.266 3.265c-.92-.648-2.083-1.048-3.388-1.048-2.153 0-3.98 1.384-4.633 3.288l-4.06-3.064C6.12 8.562 8.877 6.3 12.201 6.3c1.316 0 2.558.351 3.639 1.101z" />
-            <path fill="#4A90E2" d="M7.047 14.468a7.026 7.026 0 0 1-.351-2.217c0-.762.133-1.498.374-2.186l-4.06-3.064C2.335 9.005 1.8 10.456 1.8 12c0 1.545.536 2.997 1.432 4.179l3.815-2.711z" />
-            <path fill="#FBBC05" d="M12.201 17.7c-1.66 0-3.156-.588-4.344-1.552l-3.266 3.265C6.48 21.41 9.176 23 12.201 23c3.026 0 5.72-1.59 7.414-4.065l-3.815-2.711c-1.05 1.645-2.864 2.776-4.999 2.776z" />
-          </svg>
-          <span>Sign up with Google</span>
-        </button>
-
-        <div className="relative my-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-200"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-3 bg-white text-gray-400">or</span>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Full name</label>
-            <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-              <input
-                type="text"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="John Doe"
-                required
-              />
-            </div>
+        <section className="w-full border border-[#D8D4CB] bg-[#FFFFFF] p-6 shadow-[0_18px_48px_rgba(17,17,17,0.09)] sm:p-8">
+          <div className="mb-8 text-center">
+            {!isSupabaseConfigured && <div role="alert" className="mb-5 border border-[#C62828]/30 bg-[#C62828]/10 px-3 py-2 text-right text-xs leading-5 text-[#C62828]">التسجيل غير مهيأ في هذه البيئة. يمكنك عرض الواجهة، لكن إنشاء الحساب يحتاج إعداد Supabase.</div>}
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#777777]">ACCOUNT / CREATE</p>
+            <h1 className="mt-3 text-3xl font-extrabold tracking-tight">أنشئ حسابك</h1>
+            <p className="mt-2 text-sm text-[#777777]">ابدأ التسوق من متاجر الأدوات والمواد القريبة منك.</p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Confirm email</label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-              <input
-                type="email"
-                value={confirmEmail}
-                onChange={(e) => setConfirmEmail(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="you@example.com"
-                required
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Confirm password</label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-              <input
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                placeholder="••••••••"
-                required
-              />
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 rounded-lg transition flex items-center justify-center gap-2"
-          >
-            {loading ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <><LogIn size={18} /> Sign Up</>}
+          <button type="button" onClick={handleGoogleLogin} disabled={loading || !isSupabaseConfigured} className="flex min-h-12 w-full items-center justify-center gap-3 border border-[#D8D4CB] bg-[#FFFFFF] px-4 py-3 text-sm font-bold text-[#111111] transition hover:border-[#F5C400] hover:bg-[#F5F2EA] disabled:cursor-not-allowed disabled:opacity-50">
+            <GoogleMark size={20} />
+            <span>المتابعة باستخدام Google</span>
           </button>
-        </form>
 
-        <p className="mt-6 text-center text-sm text-gray-500">
-          Already have an account?{' '}
-          <Link href="/auth/login" className="text-orange-500 font-semibold hover:underline">Sign in</Link>
-        </p>
+          <div className="relative my-7">
+            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-[#D8D4CB]" /></div>
+            <div className="relative flex justify-center text-xs"><span className="bg-[#FFFFFF] px-3 text-[#777777]">أو بالبريد الإلكتروني</span></div>
+          </div>
+
+          <form onSubmit={handleSubmit} className="grid gap-5">
+            <AuthField id="register-name" label="الاسم الكامل" icon={<User size={18} aria-hidden="true" />}>
+              <input id="register-name" type="text" value={fullName} onChange={(event) => setFullName(event.target.value)} className="input w-full pr-10" placeholder="الاسم واللقب" autoComplete="name" required />
+            </AuthField>
+            <AuthField id="register-email" label="البريد الإلكتروني" icon={<Mail size={18} aria-hidden="true" />}>
+              <input id="register-email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} className="input w-full pr-10" placeholder="you@example.com" autoComplete="email" required />
+            </AuthField>
+            <AuthField id="register-confirm-email" label="تأكيد البريد الإلكتروني" icon={<Mail size={18} aria-hidden="true" />}>
+              <input id="register-confirm-email" type="email" value={confirmEmail} onChange={(event) => setConfirmEmail(event.target.value)} className="input w-full pr-10" placeholder="you@example.com" autoComplete="email" required />
+            </AuthField>
+            <AuthField id="register-password" label="كلمة المرور" icon={<Lock size={18} aria-hidden="true" />}>
+              <input id="register-password" type="password" value={password} onChange={(event) => setPassword(event.target.value)} className="input w-full pr-10" placeholder="••••••••" autoComplete="new-password" minLength={6} required />
+            </AuthField>
+            <AuthField id="register-confirm-password" label="تأكيد كلمة المرور" icon={<Lock size={18} aria-hidden="true" />}>
+              <input id="register-confirm-password" type="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} className="input w-full pr-10" placeholder="••••••••" autoComplete="new-password" minLength={6} required />
+            </AuthField>
+
+            <button type="submit" disabled={loading || !isSupabaseConfigured} className="btn-primary mt-1 min-h-12 w-full">
+              {loading ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#111111] border-t-transparent" aria-label="جارٍ إنشاء الحساب" /> : <><LogIn size={18} aria-hidden="true" /> إنشاء الحساب <ArrowLeft size={17} aria-hidden="true" /></>}
+            </button>
+          </form>
+
+          <p className="mt-7 text-center text-sm text-[#777777]">لديك حساب بالفعل؟ <Link href="/auth/login" className="font-bold text-[#111111] underline decoration-[#F5C400] decoration-2 underline-offset-4">سجّل الدخول</Link></p>
+        </section>
       </div>
-    </div>
+    </main>
   )
+}
+
+function AuthField({ id, label, icon, children }: { id: string; label: string; icon: React.ReactNode; children: React.ReactNode }) {
+  return <div className="grid gap-2"><label htmlFor={id} className="text-sm font-bold">{label}</label><div className="relative"><span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#777777]">{icon}</span>{children}</div></div>
 }

@@ -1,18 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
-
-type CartItem = {
-  id: string
-  name_ar: string
-  price: number
-  image: string
-  store_id: string
-  store_name: string
-  unit: string
-  max_quantity: number
-  quantity: number
-}
+import type { CartItem } from '@/lib/types'
 
 interface CartContextType {
   cartItems: CartItem[]
@@ -55,7 +44,12 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'quincadz_cart') {
-        setCartItems(JSON.parse(e.newValue || '[]'))
+        try {
+          setCartItems(JSON.parse(e.newValue || '[]') as CartItem[])
+        } catch (error) {
+          console.error('Failed to sync cart from localStorage', error)
+          setCartItems([])
+        }
       }
     }
     window.addEventListener('storage', handleStorageChange)
