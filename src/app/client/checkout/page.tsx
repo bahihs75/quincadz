@@ -1,25 +1,26 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/contexts/CartContext'
+import type { OrderGroup } from '@/lib/types'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Loader2 } from 'lucide-react'
+import type { User } from '@supabase/supabase-js'
 
-// Validation schema – only firstName, lastName, phone, wilaya are required
 const checkoutSchema = z.object({
-  firstName: z.string().min(1, 'First name is required'),
-  lastName: z.string().min(1, 'Last name is required'),
-  email: z.string().email('Invalid email address').optional(),
-  phone: z.string().min(1, 'Phone number is required'),
-  address: z.string().optional(),
-  city: z.string().optional(),
-  wilaya: z.string().min(1, 'Wilaya is required'),
-  postalCode: z.string().optional(),
-  notes: z.string().optional(),
+  firstName: z.string().trim().min(1, 'First name is required'),
+  lastName: z.string().trim().min(1, 'Last name is required'),
+  email: z.string().email('Invalid email address').optional().or(z.literal('')),
+  phone: z.string().trim().min(1, 'Phone number is required'),
+  address: z.string().trim().optional(),
+  city: z.string().trim().optional(),
+  wilaya: z.string().trim().min(1, 'Wilaya is required'),
+  postalCode: z.string().trim().optional(),
+  notes: z.string().trim().optional(),
 })
 
 type CheckoutFormData = z.infer<typeof checkoutSchema>
@@ -29,57 +30,77 @@ export default function CheckoutPage() {
   const supabase = createClient()
   const { cartItems, getCartTotal, clearCart } = useCart()
   const [loading, setLoading] = useState(false)
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
+  const [submitError, setSubmitError] = useState('')
 
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      address: '',
+      city: '',
+      wilaya: '',
+      postalCode: '',
+      notes: '',
+    },
   })
 
   useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
-      if (user) {
-        // Pre-fill first/last name from user metadata if available
-        const { data: profile } = await supabase
-          .from('users')
-          .select('full_name')
-          .eq('id', user.id)
-          .single()
-        if (profile?.full_name) {
-          const [first = '', last = ''] = profile.full_name.split(' ')
-          // You could set default values here, but for simplicity leave it to user
-        }
+    const loadUser = async () => {
+      const { data: { user: authenticatedUser } } = await supabase.auth.getUser()
+      setUser(authenticatedUser)
+
+      if (!authenticatedUser) return
+
+      const { data: profile } = await supabase
+        .from('users')
+        .select('full_name, phone')
+        .eq('id', authenticatedUser.id)
+        .single()
+
+      if (profile?.full_name) {
+        const [firstName = '', ...lastNameParts] = profile.full_name.trim().split(/\s+/)
+        setValue('firstName', firstName)
+        setValue('lastName', lastNameParts.join(' '))
       }
+      if (profile?.phone) setValue('phone', profile.phone)
+      if (authenticatedUser.email) setValue('email', authenticatedUser.email)
     }
-    getUser()
-  }, [supabase])
 
-  if (cartItems.length === 0) {
-    router.push('/client/cart')
-    return null
-  }
+    void loadUser()
+  }, [setValue, supabase])
 
-  // Group items by store
-  const storesMap = new Map()
-  cartItems.forEach(item => {
-    if (!storesMap.has(item.store_id)) {
+  useEffect(() => {
+    if (cartItems.length === 0) router.replace('/client/cart')
+  }, [cartItems.length, router])
+
+  const stores = useMemo<OrderGroup[]>(() => {
+    const storesMap = new Map<string, OrderGroup>()
+    for (const item of cartItems) {
+      const current = storesMap.get(item.store_id)
+      if (current) {
+        current.items.push(item)
+        current.subtotal += item.price * item.quantity
+        continue
+      }
       storesMap.set(item.store_id, {
         store_id: item.store_id,
         store_name: item.store_name,
-        items: [],
-        subtotal: 0,
+        items: [item],
+        subtotal: item.price * item.quantity,
       })
     }
-    const store = storesMap.get(item.store_id)
-    store.items.push(item)
-    store.subtotal += item.price * item.quantity
-  })
-  const stores = Array.from(storesMap.values())
+    return Array.from(storesMap.values())
+  }, [cartItems])
+
   const total = getCartTotal()
 
   const onSubmit = async (data: CheckoutFormData) => {
@@ -89,149 +110,182 @@ export default function CheckoutPage() {
     }
 
     setLoading(true)
-    const fullName = `${data.firstName} ${data.lastName}`
+    setSubmitError('')
+    const createdOrderIds: string[] = []
+    const fullName = `${data.firstName} ${data.lastName}`.trim()
 
     try {
       for (const store of stores) {
-        const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`
-
-        const { error: orderError } = await supabase.from('orders').insert({
-          order_number: orderNumber,
-          client_id: user.id,
-          store_id: store.store_id,
-          wilaya_id: null,
-          delivery_address: `${data.address}, ${data.city}, ${data.wilaya}`,
-          client_phone: data.phone,
-          client_name: fullName,
-          items_total: store.subtotal,
-          delivery_fee: 0,
-          total_amount: store.subtotal,
-          payment_method: 'cod',
-          order_status: 'pending',
-          notes: data.notes || '',
-        })
+        const orderNumber = `QD-${crypto.randomUUID().replaceAll('-', '').slice(0, 12).toUpperCase()}`
+        const { data: order, error: orderError } = await supabase
+          .from('orders')
+          .insert({
+            order_number: orderNumber,
+            client_id: user.id,
+            store_id: store.store_id,
+            wilaya_id: null,
+            delivery_address: [data.address, data.city, data.wilaya].filter(Boolean).join(', '),
+            client_phone: data.phone,
+            client_name: fullName,
+            items_total: store.subtotal,
+            delivery_fee: 0,
+            total_amount: store.subtotal,
+            payment_method: 'cod',
+            order_status: 'pending',
+            notes: data.notes || '',
+          })
+          .select('id')
+          .single()
 
         if (orderError) throw orderError
+        if (!order) throw new Error('The order could not be created.')
+        createdOrderIds.push(order.id)
 
-        // Create order items
-        const orderItems = store.items.map((item: any) => ({
-          order_id: orderNumber, // you might need the actual order id, but we'll use order_number as string – better to get the inserted order id
+        const orderItems = store.items.map((item) => ({
+          order_id: order.id,
           product_id: item.id,
           quantity: item.quantity,
           unit_price: item.price,
           total_price: item.price * item.quantity,
         }))
-        // Actually, you'd need to fetch the order's UUID after insertion. Simplified here.
+        const { error: itemError } = await supabase.from('order_items').insert(orderItems)
+        if (itemError) throw itemError
+
+        for (const item of store.items) {
+          const { error: stockError } = await supabase.rpc('decrement_stock', {
+            product_id: item.id,
+            quantity: item.quantity,
+          })
+          if (stockError) throw stockError
+        }
       }
 
       clearCart()
       router.push('/client/orders?success=true')
-    } catch (error: any) {
-      alert('Error creating order: ' + error.message)
+    } catch (error) {
+      if (createdOrderIds.length > 0) {
+        await supabase.from('orders').delete().in('id', createdOrderIds)
+      }
+      const message = error instanceof Error ? error.message : 'We could not place your order.'
+      setSubmitError(`Order failed: ${message}`)
     } finally {
       setLoading(false)
     }
   }
 
+  if (cartItems.length === 0) return null
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Checkout</h1>
+    <div className="container py-10">
+      <div className="mb-8 border-b border-[#e4e1dc] pb-6">
+        <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#d96b27]">ORDER / FINAL CHECK</p>
+        <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-[#171717]">Checkout</h1>
+        <p className="mt-2 text-sm text-[#6f6d68]">Confirm your delivery details. Payment is collected on delivery.</p>
+      </div>
 
-      <div className="flex flex-col lg:flex-row gap-8">
-        <div className="flex-1">
-          <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-bold mb-4">Contact Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">First name *</label>
-                <input {...register('firstName')} className="input w-full" />
-                {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName.message}</p>}
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Last name *</label>
-                <input {...register('lastName')} className="input w-full" />
-                {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName.message}</p>}
-              </div>
-            </div>
-
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700">Email (optional)</label>
-              <input {...register('email')} type="email" className="input w-full" />
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-            </div>
-
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700">Phone *</label>
-              <input {...register('phone')} className="input w-full" />
-              {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
-            </div>
-
-            <h2 className="text-xl font-bold mt-6 mb-4">Delivery Address</h2>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Address (optional)</label>
-              <input {...register('address')} className="input w-full" />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">City (optional)</label>
-                <input {...register('city')} className="input w-full" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Wilaya *</label>
-                <input {...register('wilaya')} className="input w-full" />
-                {errors.wilaya && <p className="text-red-500 text-sm mt-1">{errors.wilaya.message}</p>}
-              </div>
-            </div>
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700">Postal code (optional)</label>
-              <input {...register('postalCode')} className="input w-full" />
-            </div>
-
-            <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700">Order notes (optional)</label>
-              <textarea {...register('notes')} rows={3} className="input w-full" />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-orange-500 text-white py-3 rounded-lg font-bold hover:bg-orange-600 mt-6 disabled:opacity-50"
-            >
-              {loading ? <Loader2 className="animate-spin mx-auto" /> : 'Place Order'}
-            </button>
-          </form>
+      {submitError && (
+        <div role="alert" className="mb-6 border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          {submitError}
         </div>
+      )}
 
-        {/* Order summary */}
-        <div className="lg:w-96">
-          <div className="bg-white rounded-lg shadow p-6 sticky top-24">
-            <h2 className="text-xl font-bold mb-4">Your Order</h2>
-            {stores.map(store => (
-              <div key={store.store_id} className="mb-4 pb-4 border-b">
-                <h3 className="font-bold mb-2">{store.store_name}</h3>
-                {store.items.map((item: any) => (
-                  <div key={item.id} className="flex justify-between text-sm mb-1">
-                    <span>{item.name_ar} x {item.quantity}</span>
-                    <span>{(item.price * item.quantity).toLocaleString()} DA</span>
-                  </div>
-                ))}
-                <div className="flex justify-between font-medium mt-2">
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
+        <form onSubmit={handleSubmit(onSubmit)} className="border border-[#e4e1dc] bg-white p-6 sm:p-8">
+          <section>
+            <h2 className="text-xl font-bold text-[#171717]">Contact information</h2>
+            <div className="mt-5 grid gap-4 md:grid-cols-2">
+              <Field label="First name *" error={errors.firstName?.message}>
+                <input {...register('firstName')} className="input w-full" autoComplete="given-name" />
+              </Field>
+              <Field label="Last name *" error={errors.lastName?.message}>
+                <input {...register('lastName')} className="input w-full" autoComplete="family-name" />
+              </Field>
+            </div>
+            <div className="mt-4">
+              <Field label="Email (optional)" error={errors.email?.message}>
+                <input {...register('email')} type="email" className="input w-full" autoComplete="email" />
+              </Field>
+            </div>
+            <div className="mt-4">
+              <Field label="Phone *" error={errors.phone?.message}>
+                <input {...register('phone')} type="tel" className="input w-full" autoComplete="tel" />
+              </Field>
+            </div>
+          </section>
+
+          <section className="mt-10 border-t border-[#e4e1dc] pt-8">
+            <h2 className="text-xl font-bold text-[#171717]">Delivery address</h2>
+            <div className="mt-5">
+              <Field label="Address (optional)" error={errors.address?.message}>
+                <input {...register('address')} className="input w-full" autoComplete="street-address" />
+              </Field>
+            </div>
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              <Field label="City (optional)" error={errors.city?.message}>
+                <input {...register('city')} className="input w-full" autoComplete="address-level2" />
+              </Field>
+              <Field label="Wilaya *" error={errors.wilaya?.message}>
+                <input {...register('wilaya')} className="input w-full" autoComplete="address-level1" />
+              </Field>
+            </div>
+            <div className="mt-4">
+              <Field label="Postal code (optional)" error={errors.postalCode?.message}>
+                <input {...register('postalCode')} className="input w-full" autoComplete="postal-code" />
+              </Field>
+            </div>
+            <div className="mt-4">
+              <Field label="Order notes (optional)" error={errors.notes?.message}>
+                <textarea {...register('notes')} rows={3} className="input w-full" />
+              </Field>
+            </div>
+          </section>
+
+          <button type="submit" disabled={loading} className="btn-primary mt-8 w-full">
+            {loading ? <Loader2 className="animate-spin" aria-label="Submitting" /> : 'Place order'}
+          </button>
+        </form>
+
+        <aside className="h-fit border border-[#e4e1dc] bg-white p-6 lg:sticky lg:top-24">
+          <p className="font-mono text-xs uppercase tracking-[0.16em] text-[#6f6d68]">SUMMARY</p>
+          <h2 className="mt-2 text-xl font-bold text-[#171717]">Your order</h2>
+          <div className="mt-6 space-y-6">
+            {stores.map((store) => (
+              <div key={store.store_id} className="border-b border-[#e4e1dc] pb-5 last:border-b-0 last:pb-0">
+                <h3 className="font-bold text-[#171717]">{store.store_name}</h3>
+                <div className="mt-3 space-y-2">
+                  {store.items.map((item) => (
+                    <div key={item.id} className="flex justify-between gap-4 text-sm text-[#6f6d68]">
+                      <span>{item.name_ar} × {item.quantity}</span>
+                      <span className="shrink-0 font-mono text-[#171717]">{(item.price * item.quantity).toLocaleString()} DA</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-3 flex justify-between text-sm font-bold text-[#171717]">
                   <span>Subtotal</span>
                   <span>{store.subtotal.toLocaleString()} DA</span>
                 </div>
               </div>
             ))}
-            <div className="border-t pt-4 mt-4">
-              <div className="flex justify-between font-bold text-lg">
-                <span>Total</span>
-                <span className="text-orange-600">{total.toLocaleString()} DA</span>
-              </div>
-              <p className="text-sm text-gray-500 mt-2">Delivery fee calculated later</p>
-              <p className="text-sm text-gray-500">Payment: Cash on delivery</p>
-            </div>
           </div>
-        </div>
+          <div className="mt-6 border-t-2 border-[#171717] pt-4">
+            <div className="flex justify-between text-lg font-extrabold text-[#171717]">
+              <span>Total</span>
+              <span className="font-mono text-[#d96b27]">{total.toLocaleString()} DA</span>
+            </div>
+            <p className="mt-3 text-xs leading-5 text-[#6f6d68]">Delivery fee will be confirmed by the store. Payment method: cash on delivery.</p>
+          </div>
+        </aside>
       </div>
+    </div>
+  )
+}
+
+function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+  return (
+    <div className="grid gap-2">
+      <label className="text-sm font-semibold text-[#171717]">{label}</label>
+      {children}
+      {error && <p className="text-sm text-red-700">{error}</p>}
     </div>
   )
 }

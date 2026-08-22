@@ -1,14 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useSyncExternalStore } from 'react'
+
+const subscribe = () => () => undefined
+const getClientSnapshot = () => true
+const getServerSnapshot = () => false
 
 export default function ClientGuard({ children }: { children: React.ReactNode }) {
-  const [isClient, setIsClient] = useState(false)
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
+  const isClient = useSyncExternalStore(subscribe, getClientSnapshot, getServerSnapshot)
+
   if (!isClient) {
-    return null // or a loading spinner
+    return <div aria-hidden="true" className="min-h-[100dvh] bg-[#f7f6f3]" />
   }
+
   return <>{children}</>
 }

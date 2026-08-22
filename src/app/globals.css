@@ -2,7 +2,139 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --canvas: #f7f6f3;
+  --surface: #ffffff;
+  --ink: #171717;
+  --muted: #6f6d68;
+  --line: #e4e1dc;
+  --accent: #d96b27;
+  --accent-dark: #b75419;
+  --success: #2f6f4e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background-color: white;
-  color: black;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-cairo), Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(217, 107, 39, 0.2);
+  color: var(--ink);
+}
+
+@layer components {
+  .container {
+    width: min(100% - 2rem, 80rem);
+    margin-inline: auto;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid var(--accent);
+    border-radius: 0.375rem;
+    background: var(--accent);
+    padding: 0.75rem 1.125rem;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 700;
+    transition: background-color 220ms cubic-bezier(0.16, 1, 0.3, 1), transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-dark);
+  }
+
+  .btn-primary:active {
+    transform: translateY(1px) scale(0.99);
+  }
+
+  .btn-primary:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  .input {
+    min-height: 2.75rem;
+    border: 1px solid var(--line);
+    border-radius: 0.375rem;
+    background: var(--surface);
+    padding: 0.625rem 0.75rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(217, 107, 39, 0.14);
+  }
+
+  .card-hover {
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1), border-color 220ms ease;
+  }
+
+  .card-hover:hover {
+    border-color: rgba(217, 107, 39, 0.42);
+    box-shadow: 0 8px 24px rgba(62, 45, 31, 0.07);
+    transform: translateY(-2px);
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .badge-success {
+    background: #edf3ec;
+    color: var(--success);
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .product-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .product-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid rgba(217, 107, 39, 0.45);
+  outline-offset: 2px;
 }

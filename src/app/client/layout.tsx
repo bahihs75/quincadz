@@ -1,18 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useCart } from '@/contexts/CartContext'
 import CartSidebar from '@/components/client/CartSidebar'
 import LocationPicker from '@/components/LocationPicker'
 import { ShoppingCart, Menu, X, MapPin } from 'lucide-react'
-import toast from 'react-hot-toast'
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const router = useRouter()
   const { getItemCount, openCart, closeCart } = useCart()
   const [user, setUser] = useState<any>(null)
   const [userLocation, setUserLocation] = useState<any>(null)
@@ -52,7 +50,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+      <header className="sticky top-0 z-40 border-b border-[#e4e1dc] bg-[#f7f6f3]/95 shadow-[0_2px_12px_rgba(62,45,31,0.04)] backdrop-blur">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between gap-4">
             {/* Hamburger menu button (left side) */}
@@ -66,7 +64,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             {/* Logo centered */}
             <div className="flex-1 flex justify-center">
               <Link href="/client" onClick={closeMenu} className="flex items-center gap-2">
-                <img src="/logo.png" alt="QuincaDZ" className="h-8 w-auto" />
+                <img src="/logo.svg" alt="QuincaDZ" className="h-8 w-auto" />
                 <span className="text-xl font-bold text-orange-500">QuincaDZ</span>
               </Link>
             </div>
@@ -74,7 +72,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             {/* Cart icon (right side) */}
             <button
               onClick={openCart}
-              className="relative p-2 text-gray-600 hover:text-orange-500 transition-colors"
+              className="relative min-h-11 min-w-11 p-2 text-gray-600 transition-colors hover:text-orange-500"
             >
               <ShoppingCart size={20} />
               {getItemCount() > 0 && (
