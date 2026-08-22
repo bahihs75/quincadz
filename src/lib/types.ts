@@ -5,6 +5,14 @@ export type StoreSummary = {
   address?: string | null
 }
 
+export type Category = {
+  id: string
+  name_ar: string
+  name_fr?: string | null
+  is_active?: boolean
+  sort_order?: number | null
+}
+
 export type Product = {
   id: string
   name_ar: string
@@ -35,6 +43,7 @@ export type CartItem = {
 export type LocationSelection = {
   wilaya_id?: number | null
   wilaya_name: string
+  baladiya_id?: number | null
   baladiya_name?: string | null
   latitude?: number | null
   longitude?: number | null

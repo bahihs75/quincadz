@@ -8,8 +8,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#f97316',
-        secondary: '#ea580c',
+        primary: '#F5C400',
+        secondary: '#242424',
+        dark: '#111111',
+        'dark-elevated': '#242424',
+        'text-tertiary': '#777777',
+        'border-default': '#D8D4CB',
+        'border-active': '#F5C400',
+        success: '#234F32',
+        warning: '#F5C400',
+        error: '#C62828',
+        info: '#3F6475',
+        disabled: '#B5B5B5',
       },
     },
   },

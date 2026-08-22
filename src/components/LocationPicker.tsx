@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { wilayas, baladiyas } from '@/lib/algeriaData'
 import { useLanguage } from '@/contexts/LanguageContext'
+import type { LocationSelection } from '@/lib/types'
 import { MapPin, Locate, AlertCircle, X } from 'lucide-react'
 
 interface Props {
@@ -14,7 +15,7 @@ interface Props {
     latitude?: number
     longitude?: number
   }) => void
-  initialLocation?: any
+  initialLocation?: Partial<LocationSelection>
   onClose?: () => void
 }
 
@@ -26,18 +27,13 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
   const [showDropdown, setShowDropdown] = useState(false)
   const [gettingLocation, setGettingLocation] = useState(false)
   const [locationError, setLocationError] = useState('')
-  const [isClient, setIsClient] = useState(false)
-
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
 
   const filteredBaladiyas = baladiyas
     .filter(b => b.wilaya_id === selectedWilaya)
     .filter(b => b.name_ar.includes(searchTerm) || b.name_fr.includes(searchTerm))
 
   const getCurrentLocation = () => {
-    if (!isClient) return
+    if (typeof navigator === 'undefined') return
     if (!navigator.geolocation) {
       setLocationError(t('geolocation_not_supported'))
       return
@@ -55,8 +51,8 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
           if (!response.ok) throw new Error('Geocoding service error')
           const data = await response.json()
           const address = data.address
-          let wilayaName = address.state || address.region || ''
-          let baladiyaName = address.city || address.town || address.village || ''
+          const wilayaName = address.state || address.region || ''
+          const baladiyaName = address.city || address.town || address.village || ''
 
           const matchedWilaya = wilayas.find(w => 
             wilayaName.includes(w.name_ar) || w.name_ar.includes(wilayaName) ||
@@ -117,10 +113,10 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
           <X size={16} />
         </button>
       )}
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-2xl">
+      <div className="border border-[#D8D4CB] bg-[#FFFFFF] p-6 shadow-[0_18px_48px_rgba(17,17,17,0.12)]">
         <div className="mb-6 flex items-center gap-3">
-          <div className="rounded-xl bg-orange-100 p-3">
-            <MapPin className="h-6 w-6 text-orange-500" />
+          <div className="rounded-md bg-[#F5C400]/20 p-3">
+            <MapPin className="h-6 w-6 text-[#F5C400]" />
           </div>
           <h2 className="text-xl font-bold text-gray-800">{t('choose_location')}</h2>
         </div>
@@ -129,7 +125,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
           <button
             onClick={getCurrentLocation}
             disabled={gettingLocation}
-            className="flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-4 py-3 font-medium text-white transition hover:bg-orange-600 disabled:opacity-50"
+            className="flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-[#F5C400] px-4 py-3 font-medium text-[#111111] transition hover:bg-[#FFD21F] disabled:opacity-50"
           >
             {gettingLocation ? (
               <>
@@ -146,15 +142,15 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200"></div>
+              <div className="w-full border-t border-[#D8D4CB]"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-3 text-gray-500">أو</span>
+              <span className="bg-[#FFFFFF] px-3 text-[#777777]">أو</span>
             </div>
           </div>
 
           {locationError && (
-            <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+            <div role="alert" className="flex items-start gap-2 rounded-md border border-[#C62828]/30 bg-[#C62828]/10 p-3 text-sm text-[#C62828]">
               <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
               <span>{locationError}</span>
             </div>
@@ -170,7 +166,7 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
                 setSearchTerm('')
                 setShowDropdown(false)
               }}
-              className="w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-900 focus:ring-2 focus:ring-orange-500"
+              className="input w-full"
             >
               <option value="">{t('select_wilaya')}</option>
               {wilayas.map((w) => (
@@ -191,14 +187,14 @@ export default function LocationPicker({ onLocationSelect, initialLocation, onCl
                   setShowDropdown(true)
                 }}
                 onFocus={() => setShowDropdown(true)}
-                className="w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-900 focus:ring-2 focus:ring-orange-500"
+                className="input w-full"
               />
               {showDropdown && filteredBaladiyas.length > 0 && (
-                <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-xl border border-gray-200 bg-white shadow-lg">
+                <div className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border border-[#D8D4CB] bg-[#FFFFFF] shadow-[0_12px_24px_rgba(17,17,17,0.1)]">
                   {filteredBaladiyas.map((b) => (
                     <div
                       key={b.id}
-                      className="cursor-pointer p-3 hover:bg-gray-100"
+                      className="min-h-11 cursor-pointer p-3 transition-colors hover:bg-[#F5F2EA]"
                       onClick={() => {
                         setSearchTerm(b.name_ar)
                         setShowDropdown(false)

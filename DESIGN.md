@@ -2,7 +2,7 @@
 
 ## 1. Visual theme and atmosphere
 
-QuincaDZ should feel like a **local construction catalog rebuilt for the phone**: practical, trustworthy, and visibly connected to real stores rather than abstract platform software. The dominant direction is **Swiss-industrial print with warm utility**. It uses a paper-like canvas, charcoal ink, a single construction-orange accent, and deliberate structural lines. The interface should be calm enough for first-time shoppers but precise enough for merchants managing inventory and orders.
+QuincaDZ should feel like a **local construction catalog rebuilt for the phone**: practical, trustworthy, and visibly connected to real stores rather than abstract platform software. The dominant direction is **Swiss-industrial print with warm utility**. It uses a paper-like canvas, charcoal ink, a single industrial-yellow accent, and deliberate structural lines. The interface should be calm enough for first-time shoppers but precise enough for merchants managing inventory and orders.
 
 The target dials are **variance 6**, **motion 4**, and **density 5**. Marketing surfaces can use asymmetry and generous whitespace; operational screens should become more compact and use dividers instead of decorative card stacks.
 
@@ -10,14 +10,14 @@ The target dials are **variance 6**, **motion 4**, and **density 5**. Marketing 
 
 | Token | Hex | Role |
 |---|---|---|
-| Paper canvas | `#F7F6F3` | Global page background and quiet surfaces |
+| Paper canvas | `#F5F2EA` | Global page background and quiet surfaces |
 | White surface | `#FFFFFF` | Forms, product surfaces, and elevated work areas |
-| Charcoal ink | `#171717` | Main text, headings, navigation, and strong rules |
-| Muted stone | `#6F6D68` | Secondary text, metadata, helper copy |
-| Structural line | `#E4E1DC` | Dividers, borders, table rules, and input outlines |
-| Construction orange | `#D96B27` | The single accent for primary actions, active states, and marketplace markers |
-| Accent dark | `#B75419` | Hover state and pressed state for the orange action |
-| Quiet success | `#2F6F4E` | Inventory availability and completed states only |
+| Charcoal ink | `#111111` | Main text, headings, navigation, and strong rules |
+| Muted stone | `#777777` | Secondary text, metadata, helper copy |
+| Structural line | `#D8D4CB` | Dividers, borders, table rules, and input outlines |
+| Industrial yellow | `#F5C400` | The single accent for primary actions, active states, and marketplace markers |
+| Accent dark | `#FFD21F` | Hover state and pressed state for the yellow action |
+| Quiet success | `#234F32` | Inventory availability and completed states only |
 
 Do not introduce a second brand accent. Do not use neon gradients, purple-blue AI gradients, pure black, or large saturated color fields. Status colors are semantic and should not become decorative brand colors.
 
@@ -35,11 +35,11 @@ All content is contained within a maximum width of approximately 1280px. Touch t
 
 ## 5. Component styling
 
-**Primary buttons** are compact rectangular actions with a 6px radius, orange fill, white text, and a tactile one-pixel press. **Secondary actions** use white fill with a structural line and charcoal text. Tertiary actions should be text links with the orange accent; do not make every action a pill.
+**Primary buttons** are compact rectangular actions with a 6px radius, yellow fill, charcoal text, and a tactile one-pixel press. **Secondary actions** use white fill with a structural line and charcoal text. Tertiary actions should be text links with the yellow accent; do not make every action a pill.
 
 **Product cards** use a single crisp border and a generous image area. Elevation is communicated by whitespace and a very soft tinted shadow on hover, not by heavy gray shadows. Product imagery should use consistent cropping and descriptive alt text. Stock labels are small rounded status badges; the badge is allowed to be pill-shaped because it is a compact status primitive, not a container.
 
-**Forms** place labels above inputs, keep helper or error text below, and use an orange focus ring. Validation is inline and specific. Blocking browser alerts are not part of the experience. Loading states use layout-matched skeletons; empty states explain how to add or find the first item; error states explain what failed and provide a recoverable action.
+**Forms** place labels above inputs, keep helper or error text below, and use a yellow focus ring. Validation is inline and specific. Blocking browser alerts are not part of the experience. Loading states use layout-matched skeletons; empty states explain how to add or find the first item; error states explain what failed and provide a recoverable action.
 
 **Navigation** keeps the active route visibly selected. On mobile, the menu is a right-side sheet with a scrim, clear close control, preserved focus order, and a visible route marker. The cart count is an accessible live status and should not be the only signal that an item was added.
 

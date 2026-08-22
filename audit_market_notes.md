@@ -12,3 +12,13 @@ Sources:
 ## Runtime validation note
 
 The public root route raised a server-side exception when local Supabase environment variables were absent, because it attempted to create a Supabase client before rendering anonymous content. The root route should tolerate missing auth configuration for local preview and render the public landing page; protected routes may still require configured Supabase credentials.
+
+## ملاحظات إطلاق المرحلة الأولى
+
+- موقع Yalidine الرسمي يذكر خدمات توصيل التجارة الإلكترونية، خدمة التحصيل عند الاستلام، التتبع في الوقت الحقيقي، وتغطية وطنية عبر مكاتب محلية. لذلك يجب أن يتضمن نموذج QuincaDZ منذ البداية عقد خدمة أو آلية تشغيل واضحة مع ناقل، مع حساب الرسوم، التحصيل، المرتجعات، ورقم التتبع.
+- موقع الديوان الوطني للإحصائيات ONS يوفر جداول السكان حسب الولاية، لكن الصفحة المفتوحة تعرض جداول قديمة مرتبطة بـ RGPH 1998. لا ينبغي استخدام أرقام سكانية حديثة من هذه الصفحة دون تنزيل الجدول والتحقق من سنة البيانات.
+- اقتراح أولي للولايات الثلاث: الجزائر، البليدة، ووهران. الجزائر والبليدة مناسبتان كعنقود افتتاحي قريب نسبياً من مركز التشغيل، بينما وهران تختبر قابلية التوسع إلى قطب غربي مستقل. يجب اعتمادها نهائياً بعد مقابلات التجار والتحقق من عروض التوصيل الفعلية.
+
+Sources:
+- https://yalidine-express.com.dz/
+- https://www.ons.dz/spip.php?article15

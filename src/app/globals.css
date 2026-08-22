@@ -3,14 +3,19 @@
 @tailwind utilities;
 
 :root {
-  --canvas: #f7f6f3;
-  --surface: #ffffff;
-  --ink: #171717;
-  --muted: #6f6d68;
-  --line: #e4e1dc;
-  --accent: #d96b27;
-  --accent-dark: #b75419;
-  --success: #2f6f4e;
+  --canvas: #F5F2EA;
+  --surface: #FFFFFF;
+  --ink: #111111;
+  --muted: #777777;
+  --line: #D8D4CB;
+  --accent: #F5C400;
+  --accent-hover: #FFD21F;
+  --dark-elevated: #242424;
+  --success: #234F32;
+  --warning: #F5C400;
+  --error: #C62828;
+  --info: #3F6475;
+  --disabled: #B5B5B5;
 }
 
 * {
@@ -56,7 +61,7 @@ body {
   }
 
   .btn-primary:hover {
-    background: var(--accent-dark);
+    background: var(--accent-hover);
   }
 
   .btn-primary:active {
@@ -81,7 +86,7 @@ body {
 
   .input:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(217, 107, 39, 0.14);
+    box-shadow: 0 0 0 3px rgba(245, 196, 0, 0.2);
   }
 
   .card-hover {
@@ -89,8 +94,8 @@ body {
   }
 
   .card-hover:hover {
-    border-color: rgba(217, 107, 39, 0.42);
-    box-shadow: 0 8px 24px rgba(62, 45, 31, 0.07);
+    border-color: rgba(245, 196, 0, 0.65);
+    box-shadow: 0 8px 24px rgba(17, 17, 17, 0.07);
     transform: translateY(-2px);
   }
 
@@ -105,7 +110,7 @@ body {
   }
 
   .badge-success {
-    background: #edf3ec;
+    background: rgba(35, 79, 50, 0.12);
     color: var(--success);
   }
 
@@ -135,6 +140,17 @@ body {
 }
 
 :focus-visible {
-  outline: 3px solid rgba(217, 107, 39, 0.45);
+  outline: 3px solid rgba(245, 196, 0, 0.6);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

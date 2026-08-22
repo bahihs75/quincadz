@@ -75,7 +75,7 @@ Secondary reporting on Algeriaâ€™s digital-commerce growth describes strong mobi
 | Area | Revision |
 |---|---|
 | Public entry | Replaced the create-next-app-style root page with an Arabic-first marketplace landing page with distinct customer and merchant paths |
-| Visual system | Added warm paper canvas, charcoal ink, one construction-orange accent, structural lines, accessible focus states, reusable buttons, inputs, badges, and product-grid primitives |
+| Visual system | Added warm paper canvas, charcoal ink, one industrial-yellow accent, structural lines, accessible focus states, reusable buttons, inputs, badges, and product-grid primitives |
 | Runtime resilience | Allowed the anonymous root route to render without local Supabase credentials, which improves local preview and first-run setup |
 | Checkout | Added missing `react-hook-form`, `@hookform/resolvers`, and `zod` dependencies; added typed form validation, profile prefill, inserted order IDs, order-item persistence, stock RPC calls, cleanup of partial orders, and inline error reporting |
 | Product UI | Added shared product/cart types, removed the broken `/logo.png` reference in the client header, improved touch targets, and removed the emoji fallback from the product card path |
@@ -145,7 +145,7 @@ Inventory should use an atomic conditional update or database function such as â
 
 ### Design and visual direction
 
-The new design direction is **Swiss-industrial marketplace utility**: paper canvas, charcoal ink, construction orange, crisp structural lines, and generous editorial whitespace on public surfaces. This gives QuincaDZ a recognizable identity connected to tools and materials without falling into generic neon SaaS styling. The implementation-ready rules are in `DESIGN.md`.
+The new design direction is **Swiss-industrial marketplace utility**: paper canvas, charcoal ink, industrial yellow, crisp structural lines, and generous editorial whitespace on public surfaces. This gives QuincaDZ a recognizable identity connected to tools and materials without falling into generic neon SaaS styling. The implementation-ready rules are in `DESIGN.md`.
 
 For the web, keep the landing page asymmetric and image-led only when the imagery clarifies the product. Use compact technical labels for catalog identifiers, stronger typography for category hierarchy, and cards only where elevation communicates a real relationship. For the mobile future, use a coherent cross-platform premium-neutral model with bottom navigation for Browse, Cart, Orders, and Profile. Keep text readable, use safe-area spacing, and avoid turning a desktop dashboard into a compressed phone layout.
 
