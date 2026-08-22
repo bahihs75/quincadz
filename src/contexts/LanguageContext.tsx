@@ -85,6 +85,8 @@ const translations: Record<Language, Record<string, string>> = {
     location_unavailable: 'خدمة الموقع غير متوفرة',
     location_timeout: 'انتهت مهلة تحديد الموقع',
     details: 'التفاصيل',
+    member_since: 'عضو منذ',
+    edit_profile: 'تعديل الملف الشخصي',
     logout_success: 'تم تسجيل الخروج بنجاح',
   },
   fr: {
@@ -161,6 +163,8 @@ const translations: Record<Language, Record<string, string>> = {
     location_unavailable: 'Service de localisation indisponible',
     location_timeout: 'Délai de localisation dépassé',
     details: 'Détails',
+    member_since: 'Membre depuis',
+    edit_profile: 'Modifier le profil',
     logout_success: 'Déconnexion réussie',
   },
   en: {
@@ -237,6 +241,8 @@ const translations: Record<Language, Record<string, string>> = {
     location_unavailable: 'Location service unavailable',
     location_timeout: 'Location timeout',
     details: 'Details',
+    member_since: 'Member since',
+    edit_profile: 'Edit profile',
     logout_success: 'Logout successful',
   },
 }

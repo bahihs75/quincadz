@@ -2,21 +2,30 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client'
 import Link from 'next/link'
+import { useLanguage } from '@/contexts/LanguageContext'
 import { Package, Clock, CheckCircle, XCircle, Truck } from 'lucide-react'
 
 function OrdersContent() {
   const searchParams = useSearchParams()
+  const { t } = useLanguage()
   const success = searchParams.get('success')
-  const supabase = createClient()
+  const supabase = isSupabaseConfigured ? createClient() : null
   const [orders, setOrders] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchOrders = async () => {
+      if (!supabase) {
+        setLoading(false)
+        return
+      }
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
+      if (!user) {
+        setLoading(false)
+        return
+      }
 
       const { data } = await supabase
         .from('orders')
@@ -54,7 +63,7 @@ function OrdersContent() {
   }
 
   if (loading) {
-    return <div className="text-center py-12">Loading...</div>
+    return <div className="container mx-auto py-12 text-center text-[#777777]">{t('loading')}</div>
   }
 
   return (

@@ -45,7 +45,8 @@ export default function ClientHomePage() {
         .order('sort_order')
 
       if (categoriesError) {
-        setError('تعذر تحميل التصنيفات حالياً.')
+        console.error('QuincaDZ categories query failed', { code: categoriesError.code, message: categoriesError.message, details: categoriesError.details })
+        setError(categoriesError.code === '42501' ? 'لا تملك هذه الجلسة صلاحية قراءة التصنيفات في Supabase.' : 'تعذر تحميل التصنيفات حالياً.')
         return
       }
       setCategories((data || []) as Category[])
@@ -66,14 +67,15 @@ export default function ClientHomePage() {
 
     const { data, error: productsError } = await supabase
       .from('products')
-      .select('id, name_ar, name_fr, description_ar, description_fr, price, images, store_id, unit, stock_quantity, is_available, stores(id, store_name, phone, address)')
+      .select('*, stores(*)')
       .eq('is_available', true)
       .gt('stock_quantity', 0)
       .order('created_at', { ascending: false })
       .range(currentOffset, currentOffset + PAGE_SIZE - 1)
 
     if (productsError) {
-      setError('تعذر تحميل المنتجات حالياً. حاول مرة أخرى.')
+      console.error('QuincaDZ products query failed', { code: productsError.code, message: productsError.message, details: productsError.details })
+      setError(productsError.code === '42501' ? 'لا تملك هذه الجلسة صلاحية قراءة المنتجات. راجع سياسة قراءة المنتجات في Supabase.' : 'تعذر تحميل المنتجات حالياً. حاول مرة أخرى.')
     } else {
       const nextProducts = (data || []) as unknown as Product[]
       setProducts((current) => loadMore ? [...current, ...nextProducts] : nextProducts)

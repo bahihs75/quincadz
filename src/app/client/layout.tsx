@@ -1,17 +1,21 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { createClient, isSupabaseConfigured } from '@/lib/supabase/client'
 import { useCart } from '@/contexts/CartContext'
+import { useLanguage } from '@/contexts/LanguageContext'
 import CartSidebar from '@/components/client/CartSidebar'
 import LocationPicker from '@/components/LocationPicker'
-import { ShoppingCart, Menu, X, MapPin } from 'lucide-react'
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher'
+import { LogIn, LogOut, Menu, MapPin, ShoppingCart, UserCircle, X } from 'lucide-react'
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const { getItemCount, openCart, closeCart } = useCart()
+  const router = useRouter()
+  const { getItemCount, openCart } = useCart()
+  const { t } = useLanguage()
   const [user, setUser] = useState<unknown>(null)
   const [userLocation, setUserLocation] = useState<{ wilaya_name: string; baladiya_name?: string } | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -21,8 +25,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   useEffect(() => {
     if (supabase) {
       const getUser = async () => {
-        const { data: { user } } = await supabase.auth.getUser()
-        setUser(user)
+        const { data: { user: currentUser } } = await supabase.auth.getUser()
+        setUser(currentUser)
       }
       void getUser()
     }
@@ -35,121 +39,92 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }
   }, [supabase])
 
-  const handleLocationSelect = (loc: { wilaya_name: string; baladiya_name?: string }) => {
-    setUserLocation(loc)
-    localStorage.setItem('quincadz_location', JSON.stringify(loc))
+  const handleLocationSelect = (location: { wilaya_name: string; baladiya_name?: string }) => {
+    setUserLocation(location)
+    localStorage.setItem('quincadz_location', JSON.stringify(location))
     setShowLocationPicker(false)
   }
 
-  const closeMenu = () => setIsMenuOpen(false)
+  const handleLogout = async () => {
+    if (supabase) await supabase.auth.signOut()
+    setUser(null)
+    setIsMenuOpen(false)
+    router.push('/')
+  }
 
   const navItems = [
-    { href: '/client', label: 'Home' },
-    { href: '/client/products', label: 'Products' },
-    { href: '/client/orders', label: 'My Orders' },
-    { href: '/client/profile', label: 'Profile' },
+    { href: '/client', label: t('home') },
+    { href: '/client/products', label: t('products') },
+    { href: '/client/orders', label: t('orders') },
+    { href: '/client/profile', label: t('profile') },
   ]
 
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-[#D8D4CB] bg-[#F5F2EA]/95 shadow-[0_2px_12px_rgba(17,17,17,0.05)] backdrop-blur">
         <div className="container mx-auto px-4">
-          <div className="flex h-16 items-center justify-between gap-4">
-            {/* Hamburger menu button (left side) */}
-            <button
-              onClick={() => setIsMenuOpen(true)}
-              className="p-2 text-gray-600 hover:text-[#F5C400] md:hidden"
-            >
-              <Menu size={24} />
-            </button>
-
-            {/* Logo centered */}
-            <div className="flex-1 flex justify-center">
-              <Link href="/client" onClick={closeMenu} className="flex items-center gap-2">
-                <img src="/logo.svg" alt="QuincaDZ" className="h-8 w-auto" />
-                <span className="text-xl font-bold text-[#F5C400]">QuincaDZ</span>
-              </Link>
+          <div className="relative flex h-16 items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <button type="button" onClick={() => setIsMenuOpen(true)} aria-label="فتح القائمة" className="icon-button">
+                <Menu size={19} strokeWidth={1.8} aria-hidden="true" />
+              </button>
+              <nav aria-label="التنقل الرئيسي" className="hidden items-center gap-4 md:flex">
+                {navItems.slice(1, 3).map((item) => <Link key={item.href} href={item.href} className={`text-sm font-bold transition hover:text-[#F5C400] ${pathname === item.href ? 'text-[#111111] underline decoration-[#F5C400] decoration-2 underline-offset-4' : 'text-[#777777]'}`}>{item.label}</Link>)}
+              </nav>
             </div>
 
-            {/* Cart icon (right side) */}
-            <button
-              onClick={openCart}
-              className="relative min-h-11 min-w-11 p-2 text-gray-600 transition-colors hover:text-[#F5C400]"
-            >
-              <ShoppingCart size={20} />
-              {getItemCount() > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#F5C400] text-xs text-[#111111]">
-                  {getItemCount()}
-                </span>
-              )}
-            </button>
+            <Link href="/client" className="absolute left-1/2 flex -translate-x-1/2 items-center gap-2" aria-label="QuincaDZ">
+              <img src="/logo.svg" alt="QuincaDZ" className="h-8 w-auto" />
+              <span className="hidden text-xl font-extrabold tracking-tight text-[#111111] sm:inline">Quinca<span className="text-[#F5C400]">DZ</span></span>
+            </Link>
+
+            <div className="flex items-center gap-2">
+              <Link href="/client/profile" aria-label={t('profile')} title={t('profile')} className="icon-button hidden sm:inline-flex">
+                <UserCircle size={19} strokeWidth={1.8} aria-hidden="true" />
+              </Link>
+              <button type="button" onClick={openCart} aria-label={t('cart')} title={t('cart')} className="icon-button relative">
+                <ShoppingCart size={19} strokeWidth={1.8} aria-hidden="true" />
+                {getItemCount() > 0 && <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#F5C400] px-1 text-xs text-[#111111]">{getItemCount()}</span>}
+              </button>
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Slide‑out menu (sidebar) */}
       {isMenuOpen && (
         <>
-          <div
-            className="fixed inset-0 bg-[#111111]/60 z-50"
-            onClick={closeMenu}
-          />
-          <div className="fixed top-0 right-0 h-full w-64 bg-[#FFFFFF] shadow-[0_18px_48px_rgba(17,17,17,0.12)] z-50 p-6 transform transition-transform duration-300">
-            <div className="flex justify-end mb-6">
-              <button onClick={closeMenu} className="p-1 text-gray-500 hover:text-[#F5C400]">
-                <X size={24} />
-              </button>
+          <button type="button" aria-label="إغلاق القائمة" className="fixed inset-0 z-50 bg-[#111111]/60 backdrop-blur-[2px]" onClick={() => setIsMenuOpen(false)} />
+          <aside className="fixed right-0 top-0 z-50 flex h-full w-[min(22rem,88vw)] flex-col border-l border-[#D8D4CB] bg-[#FFFFFF] p-6 shadow-[0_24px_64px_rgba(17,17,17,0.16)]">
+            <div className="flex items-center justify-between border-b border-[#D8D4CB] pb-5">
+              <div><p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#777777]">QUINCADZ / MENU</p><p className="mt-1 text-lg font-extrabold">القائمة</p></div>
+              <button type="button" onClick={() => setIsMenuOpen(false)} aria-label="إغلاق القائمة" className="icon-button"><X size={18} strokeWidth={1.8} aria-hidden="true" /></button>
             </div>
-            <nav className="flex flex-col gap-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={closeMenu}
-                  className={`text-base font-medium transition-colors ${
-                    pathname === item.href
-                      ? 'text-[#F5C400] border-r-2 border-[#F5C400] pr-2'
-                      : 'text-gray-700 hover:text-[#F5C400]'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              {/* Optional: show location inside menu */}
-              {userLocation && (
-                <button
-                  onClick={() => {
-                    closeMenu()
-                    setShowLocationPicker(true)
-                  }}
-                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-[#F5C400] mt-4 pt-4 border-t border-gray-200"
-                >
-                  <MapPin size={16} />
-                  <span className="truncate">{userLocation.wilaya_name}</span>
-                </button>
-              )}
+
+            <nav aria-label="قائمة العميل" className="grid gap-1 py-5">
+              {navItems.map((item) => <Link key={item.href} href={item.href} onClick={() => setIsMenuOpen(false)} className={`flex min-h-11 items-center rounded-xl px-4 py-3 text-sm font-bold transition ${pathname === item.href ? 'bg-[#F5C400] text-[#111111]' : 'text-[#777777] hover:bg-[#F5F2EA] hover:text-[#111111]'}`}>{item.label}</Link>)}
+              <button type="button" onClick={() => { setIsMenuOpen(false); setShowLocationPicker(true) }} className="mt-2 flex min-h-11 items-center gap-3 border-t border-[#D8D4CB] px-4 pt-4 text-right text-sm font-bold text-[#777777] transition hover:text-[#111111]">
+                <MapPin size={18} strokeWidth={1.8} className="text-[#F5C400]" aria-hidden="true" />
+                <span>{userLocation ? `${t('choose_location')}: ${userLocation.wilaya_name}` : t('choose_location')}</span>
+              </button>
             </nav>
-          </div>
+
+            <div className="mt-auto grid gap-5 border-t border-[#D8D4CB] pt-5">
+              <div><p className="mb-3 text-xs font-bold text-[#777777]">{t('language')}</p><LanguageSwitcher /></div>
+              {user ? <button type="button" onClick={handleLogout} className="flex min-h-11 items-center gap-3 rounded-xl px-4 py-3 text-right text-sm font-bold text-[#777777] transition hover:bg-[#F5F2EA] hover:text-[#111111]"><LogOut size={18} strokeWidth={1.8} aria-hidden="true" />{t('logout')}</button> : <Link href="/auth/login" onClick={() => setIsMenuOpen(false)} className="btn-primary w-full"><LogIn size={18} strokeWidth={1.8} aria-hidden="true" />{t('login')}</Link>}
+            </div>
+          </aside>
         </>
       )}
 
-      {/* Location picker modal */}
       {showLocationPicker && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#111111]/60 p-4">
-          <div className="relative w-full max-w-md rounded-2xl bg-[#FFFFFF] shadow-[0_18px_48px_rgba(17,17,17,0.12)]">
-            <LocationPicker
-              onLocationSelect={handleLocationSelect}
-              initialLocation={userLocation}
-              onClose={() => setShowLocationPicker(false)}
-            />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#111111]/60 p-4 backdrop-blur-[2px]">
+          <div className="relative w-full max-w-md bg-[#FFFFFF] shadow-[0_24px_64px_rgba(17,17,17,0.16)]">
+            <LocationPicker onLocationSelect={handleLocationSelect} initialLocation={userLocation} onClose={() => setShowLocationPicker(false)} />
           </div>
         </div>
       )}
 
-      <main className="min-h-screen">
-        {children}
-      </main>
-
+      <main className="min-h-screen">{children}</main>
       <CartSidebar />
     </>
   )

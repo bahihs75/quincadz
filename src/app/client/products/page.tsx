@@ -67,7 +67,7 @@ function ProductsContent() {
 
     let query = supabase
       .from('products')
-      .select('id, name_ar, name_fr, description_ar, description_fr, price, images, store_id, unit, stock_quantity, is_available, stores(id, store_name, phone, address)')
+      .select('*, stores(*)')
       .eq('is_available', true)
       .gt('stock_quantity', 0)
       .range(currentOffset, currentOffset + PAGE_SIZE - 1)
@@ -91,7 +91,8 @@ function ProductsContent() {
 
     const { data, error: productsError } = await query
     if (productsError) {
-      setError('تعذر تحميل المنتجات حالياً. حاول مرة أخرى.')
+      console.error('QuincaDZ catalog query failed', { code: productsError.code, message: productsError.message, details: productsError.details })
+      setError(productsError.code === '42501' ? 'لا تملك هذه الجلسة صلاحية قراءة المنتجات. راجع سياسة قراءة المنتجات في Supabase.' : 'تعذر تحميل المنتجات حالياً. حاول مرة أخرى.')
     } else {
       const nextProducts = (data || []) as unknown as Product[]
       setProducts((current) => loadMore ? [...current, ...nextProducts] : nextProducts)

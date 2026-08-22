@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { createClient, isSupabaseConfigured } from '@/lib/supabase/client'
 import { useLanguage } from '@/contexts/LanguageContext'
 import { User, Mail, Phone, LogOut, Globe } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export default function ProfilePage() {
   const router = useRouter()
-  const supabase = createClient()
+  const supabase = isSupabaseConfigured ? createClient() : null
   const { t, language, setLanguage } = useLanguage()
   const [user, setUser] = useState<any>(null)
   const [profile, setProfile] = useState<any>(null)
@@ -22,6 +22,10 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const fetchUser = async () => {
+      if (!supabase) {
+        setLoading(false)
+        return
+      }
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
         router.push('/auth/login')
@@ -45,12 +49,13 @@ export default function ProfilePage() {
   }, [supabase, router])
 
   const handleLogout = async () => {
-    await supabase.auth.signOut()
+    if (supabase) await supabase.auth.signOut()
     router.push('/')
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!supabase || !user) return
     setSaving(true)
 
     const { error } = await supabase
@@ -88,7 +93,7 @@ export default function ProfilePage() {
               <div>
                 <h2 className="text-xl font-bold text-slate-800">{profile?.full_name || t('user')}</h2>
                 <p className="text-slate-500 text-sm">{profile?.email}</p>
-                <p className="text-xs text-slate-400 mt-1">{t('member_since')} {new Date(profile?.created_at).toLocaleDateString()}</p>
+                {profile?.created_at && <p className="text-xs text-slate-400 mt-1">{t('member_since')} {new Date(profile.created_at).toLocaleDateString()}</p>}
               </div>
             </div>
           </div>

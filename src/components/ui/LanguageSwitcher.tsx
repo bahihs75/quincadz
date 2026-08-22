@@ -3,45 +3,21 @@
 import { useLanguage } from '@/contexts/LanguageContext'
 
 export default function LanguageSwitcher() {
-  const { language, setLanguage } = useLanguage()
-
-  const handleChange = (lang: 'ar' | 'fr' | 'en') => {
-    setLanguage(lang)
-  }
+  const { language, setLanguage, t } = useLanguage()
 
   return (
-    <div className="language-switcher">
-      <label>
-        <input
-          type="radio"
-          name="language"
-          value="ar"
-          checked={language === 'ar'}
-          onChange={() => handleChange('ar')}
-        />
-        <span>العربية</span>
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="language"
-          value="fr"
-          checked={language === 'fr'}
-          onChange={() => handleChange('fr')}
-        />
-        <span>Français</span>
-      </label>
-      <label>
-        <input
-          type="radio"
-          name="language"
-          value="en"
-          checked={language === 'en'}
-          onChange={() => handleChange('en')}
-        />
-        <span>English</span>
-      </label>
-      <span className="selection"></span>
-    </div>
+    <label className="block">
+      <span className="sr-only">{t('language')}</span>
+      <select
+        aria-label={t('language')}
+        value={language}
+        onChange={(event) => setLanguage(event.target.value as 'ar' | 'fr' | 'en')}
+        className="input w-full bg-[#FFFFFF] text-sm font-bold"
+      >
+        <option value="ar">العربية</option>
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+      </select>
+    </label>
   )
 }
